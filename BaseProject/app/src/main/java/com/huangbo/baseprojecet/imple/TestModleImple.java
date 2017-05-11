@@ -1,6 +1,5 @@
 package com.huangbo.baseprojecet.imple;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import com.huangbo.baseprojecet.App;
@@ -41,7 +40,7 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
             @Override
             public void onNext(LocationBean taobaoIPLocationInfo) {
                 mView.success(taobaoIPLocationInfo);
-                Toast.makeText(App.get(), taobaoIPLocationInfo.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.get(), taobaoIPLocationInfo.getData().toString(),Toast.LENGTH_SHORT).show();
             }
 
         });
