@@ -2,6 +2,7 @@ package com.huangbo.baseprojecet.compoment;
 
 
 import com.huangbo.baseprojecet.module.AppModule;
+import com.huangbo.baseprojecet.module.activity.MainModule;
 import com.huangbo.baseprojecet.module.http.HttpClientModule;
 import com.huangbo.baseprojecet.module.http.RetrofitModule;
 import com.huangbo.baseprojecet.module.http.ServiceModule;
@@ -21,4 +22,7 @@ import dagger.Component;
         RetrofitModule.class,
         ServiceModule.class})
 public interface AppCpmpoment {
+
+
+    MainComponent setUp(MainModule mainModle);
 }
