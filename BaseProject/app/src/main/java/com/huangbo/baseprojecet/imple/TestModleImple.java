@@ -1,16 +1,16 @@
 package com.huangbo.baseprojecet.imple;
 
-import android.widget.Toast;
-
-import com.huangbo.baseprojecet.App;
 import com.huangbo.baseprojecet.base.BaseModleImple;
 import com.huangbo.baseprojecet.bean.LocationBean;
 import com.huangbo.baseprojecet.http.MineService;
 import com.huangbo.baseprojecet.modle.TestModle;
 import com.huangbo.baseprojecet.view.TestView;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -26,7 +26,7 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
 
     @Override
     public void getIpInfo(String ip) {
-        addSubscription(mService.getIPInfo(), new Subscriber<LocationBean>() {
+        addSubscription(mService.getIPInfo(), new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
 
@@ -34,13 +34,20 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
 
             @Override
             public void onError(Throwable e) {
-                mView.success(new LocationBean());
+//                mView.success(new LocationBean());
+                e.printStackTrace();
             }
 
             @Override
-            public void onNext(LocationBean taobaoIPLocationInfo) {
-                mView.success(taobaoIPLocationInfo);
-                Toast.makeText(App.get(), taobaoIPLocationInfo.getData().toString(),Toast.LENGTH_SHORT).show();
+            public void onNext(ResponseBody taobaoIPLocationInfo) {
+                try {
+//                    String string = taobaoIPLocationInfo.string();
+                    String gbk = new String(taobaoIPLocationInfo.bytes(), "GBK");
+                    String s = new String(gbk.getBytes("UTF-8"), "UTF-8");
+                    System.out.println(s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
         });

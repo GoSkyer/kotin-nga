@@ -6,8 +6,11 @@ import com.huangbo.baseprojecet.http.MineService;
 import com.huangbo.baseprojecet.modle.MainModle;
 import com.huangbo.baseprojecet.view.MainView;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -23,7 +26,7 @@ public class MainModleImp extends BaseModleImple<MainView<LocationBean>> impleme
 
     @Override
     public void getData(String ip) {
-        addSubscription(mService.getIPInfo(), new Subscriber<Object>() {
+        addSubscription(mService.getIPInfo(), new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
 
@@ -36,8 +39,14 @@ public class MainModleImp extends BaseModleImple<MainView<LocationBean>> impleme
             }
 
             @Override
-            public void onNext(Object taobaoIPLocationInfo) {
-                System.out.println(taobaoIPLocationInfo.toString());
+            public void onNext(ResponseBody  taobaoIPLocationInfo) {
+                try {
+//                    String string = taobaoIPLocationInfo.string();
+                    String gbk = new String(taobaoIPLocationInfo.bytes(), "UTF-8");
+                    System.out.println(gbk);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 //                mView.success(taobaoIPLocationInfo);
 //                Toast.makeText(App.get(), taobaoIPLocationInfo.getData().toString(),Toast.LENGTH_SHORT).show();
             }
