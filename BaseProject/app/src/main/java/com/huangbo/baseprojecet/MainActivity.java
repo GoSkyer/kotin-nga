@@ -2,16 +2,12 @@ package com.huangbo.baseprojecet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.huangbo.baseprojecet.base.BasePersenterActivity;
 import com.huangbo.baseprojecet.bean.LocationBean;
 import com.huangbo.baseprojecet.module.activity.MainModule;
 import com.huangbo.baseprojecet.persenter.MainPersenter;
 import com.huangbo.baseprojecet.view.MainView;
-
-import javax.inject.Inject;
 
 public class MainActivity extends BasePersenterActivity<MainPersenter> implements MainView<LocationBean> {
 

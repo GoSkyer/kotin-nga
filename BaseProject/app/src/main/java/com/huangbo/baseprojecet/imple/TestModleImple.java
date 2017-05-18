@@ -26,7 +26,7 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
 
     @Override
     public void getIpInfo(String ip) {
-        addSubscription(mService.getIPInfo(ip), new Subscriber<LocationBean>() {
+        addSubscription(mService.getIPInfo(), new Subscriber<LocationBean>() {
             @Override
             public void onCompleted() {
 

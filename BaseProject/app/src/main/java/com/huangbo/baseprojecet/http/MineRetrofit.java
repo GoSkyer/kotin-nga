@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class MineRetrofit {
-    private static final String BASE_URL = "http://ip.taobao.com/";
+    private static final String BASE_URL = "http://bbs.nga.cn/";
     private static volatile Retrofit retrofit;
 
     public MineRetrofit(OkHttpClient okHttpClient) {
