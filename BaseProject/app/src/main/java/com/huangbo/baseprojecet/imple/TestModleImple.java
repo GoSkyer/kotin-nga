@@ -8,8 +8,11 @@ import com.huangbo.baseprojecet.http.MineService;
 import com.huangbo.baseprojecet.modle.TestModle;
 import com.huangbo.baseprojecet.view.TestView;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -25,7 +28,7 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
 
     @Override
     public void getIpInfo(String ip) {
-        addSubscription(mService.getIPInfo(), new Subscriber<String>() {
+        addSubscription(mService.getIPInfo(), new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
 
@@ -38,8 +41,12 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
             }
 
             @Override
-            public void onNext(String taobaoIPLocationInfo) {
-                Log.i(getClass().getName(),taobaoIPLocationInfo);
+            public void onNext(ResponseBody taobaoIPLocationInfo) {
+                try {
+                    Log.i(getClass().getName(),taobaoIPLocationInfo.string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
         });

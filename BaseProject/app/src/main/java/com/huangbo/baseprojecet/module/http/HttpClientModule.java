@@ -1,6 +1,11 @@
 package com.huangbo.baseprojecet.module.http;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
@@ -10,8 +15,10 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.GzipSource;
@@ -35,6 +42,7 @@ public class HttpClientModule {
             synchronized (this) {
                 if (mKOkHttpClient == null) {
                     mKOkHttpClient = new OkHttpClient.Builder()
+                            .addInterceptor(new Gbk2utf8Interceptor())
                             .addInterceptor(new UnzippingInterceptor())
                             .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                             .retryOnConnectionFailure(true)
@@ -73,5 +81,36 @@ public class HttpClientModule {
                 .build();
     }
 
+
+    private class Gbk2utf8Interceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Response response = chain.proceed(chain.request());
+            return gbk2utf8(response);
+        }
+    }
+
+    private Response gbk2utf8(Response response) throws IOException {
+        if (response.body() == null)
+            return response;
+        InputStream in = response.body().byteStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "GBK"));
+//        BufferedReader reader=new BufferedReader(new InputStreamReader(in));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        String s = sb.toString();
+        Log.d("okhttp", s);
+        ResponseBody responseBody = response.body();
+        MediaType contentType = responseBody.contentType();
+        ResponseBody body = ResponseBody.create(contentType, s);
+        return response.newBuilder()
+                .body(body)
+                .build();
+    }
 
 }
