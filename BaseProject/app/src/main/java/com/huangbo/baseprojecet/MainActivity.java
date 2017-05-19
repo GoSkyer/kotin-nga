@@ -17,7 +17,7 @@ public class MainActivity extends BasePersenterActivity<MainPersenter> implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         App.get().getAppComponent().setUp(new MainModule(this)).inject(this);
-        mPersenter.getData();
+//        mPersenter.getData();
         findViewById(R.id.button).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, TestActiviyu.class))
         );

@@ -1,16 +1,15 @@
 package com.huangbo.baseprojecet.imple;
 
+import android.util.Log;
+
 import com.huangbo.baseprojecet.base.BaseModleImple;
 import com.huangbo.baseprojecet.bean.LocationBean;
 import com.huangbo.baseprojecet.http.MineService;
 import com.huangbo.baseprojecet.modle.TestModle;
 import com.huangbo.baseprojecet.view.TestView;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -26,7 +25,7 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
 
     @Override
     public void getIpInfo(String ip) {
-        addSubscription(mService.getIPInfo(), new Subscriber<ResponseBody>() {
+        addSubscription(mService.getIPInfo(), new Subscriber<String>() {
             @Override
             public void onCompleted() {
 
@@ -39,15 +38,8 @@ public class TestModleImple extends BaseModleImple<TestView<LocationBean>> imple
             }
 
             @Override
-            public void onNext(ResponseBody taobaoIPLocationInfo) {
-                try {
-//                    String string = taobaoIPLocationInfo.string();
-                    String gbk = new String(taobaoIPLocationInfo.bytes(), "GBK");
-                    String s = new String(gbk.getBytes("UTF-8"), "UTF-8");
-                    System.out.println(s);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public void onNext(String taobaoIPLocationInfo) {
+                Log.i(getClass().getName(),taobaoIPLocationInfo);
             }
 
         });

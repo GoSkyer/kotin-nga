@@ -1,9 +1,6 @@
 package com.huangbo.baseprojecet.module.http;
 
-import com.orhanobut.logger.Logger;
-
 import java.io.IOException;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
@@ -11,10 +8,14 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.internal.http.RealResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okio.GzipSource;
+import okio.Okio;
 
 /**
  * Created by huangb on 2017/5/10.
@@ -34,7 +35,8 @@ public class HttpClientModule {
             synchronized (this) {
                 if (mKOkHttpClient == null) {
                     mKOkHttpClient = new OkHttpClient.Builder()
-                            .addNetworkInterceptor(new LogInterceptor())
+                            .addInterceptor(new UnzippingInterceptor())
+                            .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                             .retryOnConnectionFailure(true)
                             .connectTimeout(10, TimeUnit.SECONDS)
                             .build();
@@ -46,25 +48,30 @@ public class HttpClientModule {
     }
 
 
-    /**
-     * LOG
-     */
-    public static class LogInterceptor implements Interceptor {
+    private class UnzippingInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-//            Logger.e("request:" + request.toString());
-            long t1 = System.nanoTime();
             Response response = chain.proceed(chain.request());
-            long t2 = System.nanoTime();
-            Logger.e(String.format(Locale.getDefault(), "Received response for %s in %.1fms%n%s",
-                    response.request().url(), (t2 - t1) / 1e6d, response.headers()));
-            okhttp3.MediaType mediaType = response.body().contentType();
-            String content = response.body().string();
-            Logger.e(content);
-            return response.newBuilder()
-                    .body(okhttp3.ResponseBody.create(mediaType, content))
-                    .build();
+            return unzip(response);
         }
     }
+
+    private Response unzip(final Response response) throws IOException {
+
+        if (response.body() == null) {
+            return response;
+        }
+
+        GzipSource responseBody = new GzipSource(response.body().source());
+        Headers strippedHeaders = response.headers().newBuilder()
+                .removeAll("Content-Encoding")
+                .removeAll("Content-Length")
+                .build();
+        return response.newBuilder()
+                .headers(strippedHeaders)
+                .body(new RealResponseBody(strippedHeaders, Okio.buffer(responseBody)))
+                .build();
+    }
+
+
 }
