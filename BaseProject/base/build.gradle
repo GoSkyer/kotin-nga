@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -51,5 +51,5 @@ dependencies {
     compile 'com.google.dagger:dagger:2.5'
     //花式log
     compile 'com.orhanobut:logger:1.15'
-
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.2-4'
 }
