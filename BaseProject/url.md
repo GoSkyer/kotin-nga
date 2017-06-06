@@ -25,10 +25,19 @@ http://account.178.com/q_vcode.php?_act=gen_reg
 ### 登陆
 #### http请求方式
 `post`
+#### 请求url
 http://account.178.com/q_account.php?_act=login&print=login
-
+#### 请求参数
 | key | value |
 | --- | ----- |
 | email	| 用户名或邮箱|
 | password | 密码|
 | vcode | 验证码 |
+#### 返回结果
+返回请求头中
+`location` 字段 
+eg: `http://account.178.com/?p=login_failed&error=1&message=error_vcode&next=%2F%3Fp%3Dlogin&secure=0&from=login`
+
+`login_failed` 表示登陆失败
+`error_vcode` 表示验证码错误
+`e_login` 表示密码错误
