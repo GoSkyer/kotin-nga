@@ -1,6 +1,6 @@
 package com.huangbo.baseprojecet.base;
 
-import com.huangbo.baseprojecet.http.MineService;
+import com.huangbo.baseprojecet.http.ApiServices;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -14,11 +14,11 @@ import rx.subscriptions.CompositeSubscription;
 
 public class BaseModleImple<T> {
 
-    public MineService mService;
+    public ApiServices mService;
     public T mView;
     private CompositeSubscription mCompositeSubscription;
 
-    public BaseModleImple(MineService mService, T mView) {
+    public BaseModleImple(ApiServices mService, T mView) {
         this.mService = mService;
         this.mView = mView;
     }

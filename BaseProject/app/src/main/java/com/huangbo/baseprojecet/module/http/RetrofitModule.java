@@ -1,6 +1,6 @@
 package com.huangbo.baseprojecet.module.http;
 
-import com.huangbo.baseprojecet.http.MineRetrofit;
+import com.huangbo.baseprojecet.http.RetrofitBuilder;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -19,7 +19,7 @@ public class RetrofitModule {
 
     @Singleton
     @Provides
-    MineRetrofit ProvidesRetrofit(@Named("default") OkHttpClient okHttpClient){
-        return new MineRetrofit(okHttpClient);
+    RetrofitBuilder ProvidesRetrofit(@Named("default") OkHttpClient okHttpClient){
+        return new RetrofitBuilder(okHttpClient);
     }
 }

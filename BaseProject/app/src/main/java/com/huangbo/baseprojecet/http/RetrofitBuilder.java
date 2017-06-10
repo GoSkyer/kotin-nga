@@ -10,11 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * retrofit 类
  */
 
-public class MineRetrofit {
+public class RetrofitBuilder {
     private static final String BASE_URL = "http://bbs.nga.cn/";
     private static volatile Retrofit retrofit;
 
-    public MineRetrofit(OkHttpClient okHttpClient) {
+    public RetrofitBuilder(OkHttpClient okHttpClient) {
         if (retrofit == null) {
             synchronized (this) {
                 if (retrofit == null) {

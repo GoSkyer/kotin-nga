@@ -10,7 +10,7 @@ import rx.Observable;
  * 接口类
  */
 
-public interface MineService {
+public interface ApiServices {
 
     @GET("/thread.php?fid=-7&page=1&lite=js&noprefix")
     @Headers({
@@ -20,4 +20,12 @@ public interface MineService {
             "User-Agent:Nga_Official/573([LGE LG-F500L];Android5.1)"
     })
     Observable<ResponseBody> getIPInfo();
+
+
+    Observable<ResponseBody> login();
+
+    @GET("http://account.178.com/q_vcode.php?_act=gen_reg")
+    Observable<ResponseBody> getAuthCode();
+
+
 }

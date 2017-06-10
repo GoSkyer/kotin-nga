@@ -1,8 +1,8 @@
-package com.huangbo.baseprojecet.imple;
+package com.huangbo.baseprojecet.impl;
 
 import com.huangbo.baseprojecet.base.BaseModleImple;
 import com.huangbo.baseprojecet.bean.LocationBean;
-import com.huangbo.baseprojecet.http.MineService;
+import com.huangbo.baseprojecet.http.ApiServices;
 import com.huangbo.baseprojecet.modle.MainModle;
 import com.huangbo.baseprojecet.view.MainView;
 
@@ -19,7 +19,7 @@ import rx.Subscriber;
 
 public class MainModleImp extends BaseModleImple<MainView<LocationBean>> implements MainModle{
     @Inject
-    public MainModleImp(MineService mService, MainView<LocationBean> mView) {
+    public MainModleImp(ApiServices mService, MainView<LocationBean> mView) {
         super(mService, mView);
     }
 

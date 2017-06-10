@@ -2,8 +2,8 @@ package com.huangbo.baseprojecet.persenter;
 
 import com.huangbo.baseprojecet.base.BasePersenter;
 import com.huangbo.baseprojecet.bean.LocationBean;
-import com.huangbo.baseprojecet.http.MineService;
-import com.huangbo.baseprojecet.imple.MainModleImp;
+import com.huangbo.baseprojecet.http.ApiServices;
+import com.huangbo.baseprojecet.impl.MainModleImp;
 import com.huangbo.baseprojecet.view.MainView;
 
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 public class MainPersenter extends BasePersenter<MainView<LocationBean>, MainModleImp> {
 
     @Inject
-    public MainPersenter(MineService mService, MainView<LocationBean> mView, MainModleImp mModuleImpl) {
+    public MainPersenter(ApiServices mService, MainView<LocationBean> mView, MainModleImp mModuleImpl) {
         super(mService, mView, mModuleImpl);
     }
 

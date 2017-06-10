@@ -1,10 +1,10 @@
-package com.huangbo.baseprojecet.imple;
+package com.huangbo.baseprojecet.impl;
 
 import android.util.Log;
 
 import com.huangbo.baseprojecet.base.BaseModleImple;
 import com.huangbo.baseprojecet.bean.LocationBean;
-import com.huangbo.baseprojecet.http.MineService;
+import com.huangbo.baseprojecet.http.ApiServices;
 import com.huangbo.baseprojecet.modle.TestModle;
 import com.huangbo.baseprojecet.view.TestView;
 
@@ -22,7 +22,7 @@ import rx.Subscriber;
 public class TestModleImple extends BaseModleImple<TestView<LocationBean>> implements TestModle{
 
     @Inject
-    public TestModleImple(MineService mService, TestView mView) {
+    public TestModleImple(ApiServices mService, TestView mView) {
         super(mService, mView);
     }
 

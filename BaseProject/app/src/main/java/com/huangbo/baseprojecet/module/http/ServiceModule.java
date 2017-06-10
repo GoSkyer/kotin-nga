@@ -1,7 +1,7 @@
 package com.huangbo.baseprojecet.module.http;
 
-import com.huangbo.baseprojecet.http.MineRetrofit;
-import com.huangbo.baseprojecet.http.MineService;
+import com.huangbo.baseprojecet.http.RetrofitBuilder;
+import com.huangbo.baseprojecet.http.ApiServices;
 
 import javax.inject.Singleton;
 
@@ -17,7 +17,7 @@ public class ServiceModule {
 
     @Singleton
     @Provides
-    public MineService proidverIPLocationServiceModule(MineRetrofit retrofit) {
-        return retrofit.getRetrofit().create(MineService.class);
+    public ApiServices proidverIPLocationServiceModule(RetrofitBuilder retrofit) {
+        return retrofit.getRetrofit().create(ApiServices.class);
     }
 }

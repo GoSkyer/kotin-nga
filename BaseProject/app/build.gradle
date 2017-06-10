@@ -31,7 +31,8 @@ android {
 
 dependencies {
     //使用APT生成工具，生成需要的DI代码
-    apt 'com.google.dagger:dagger-compiler:2.5'
     compile project(':base')
     compile files('libs/commons-io-2.4.jar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    kapt 'com.google.dagger:dagger-compiler:2.5'
 }
