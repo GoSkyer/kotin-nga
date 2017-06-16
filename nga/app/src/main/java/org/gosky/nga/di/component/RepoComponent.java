@@ -10,10 +10,6 @@ import org.gosky.nga.ui.fragment.RecommendFragment;
 import dagger.Component;
 
 
-/**
- * Created by jess on 9/4/16 11:17
- * Contact with jess.yan.effort@gmail.com
- */
 @ActivityScope
 @Component(dependencies = AppComponent.class)
 public interface RepoComponent {

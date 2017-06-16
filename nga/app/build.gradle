@@ -3,6 +3,8 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 //apply plugin: 'tinyPIC'
 apply plugin: 'bugly'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -74,6 +76,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.0"
     }
 }
 
@@ -81,8 +84,8 @@ buildscript {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.github.GoSkyer.ActivityRouter:router:1.0'
-    apt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
-    apt "com.google.dagger:dagger-compiler:2.11"
+    kapt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
+    kapt "com.google.dagger:dagger-compiler:2.11"
     compile 'co.lujun:androidtagview:1.0.3'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.liulishuo.magicprogresswidget:library:1.0.9'
@@ -92,4 +95,6 @@ dependencies {
     compile 'me.shaohui:bottomdialog:1.1.9'
     compile project(':base')
     compile files('libs/MiPush_SDK_Client_3_4_0.jar')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.0"
+
 }
