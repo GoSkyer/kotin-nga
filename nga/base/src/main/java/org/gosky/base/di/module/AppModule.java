@@ -3,6 +3,7 @@ package org.gosky.base.di.module;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Singleton;
 
@@ -29,4 +30,10 @@ public class AppModule {
     @Singleton
     @Provides
     public Gson provideGson(){return new Gson();}
+
+    @Singleton
+    @Provides
+    public RxPermissions provideRxPermissions(){
+        return RxPermissions.getInstance(mApplication);
+    }
 }

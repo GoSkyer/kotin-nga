@@ -2,10 +2,7 @@ package org.gosky.base.di.module;
 
 import android.app.Application;
 
-import com.tbruyelle.rxpermissions.RxPermissions;
-
 import org.gosky.base.http.BasicAuthIntercept;
-import org.gosky.base.http.GlobeHttpHandler;
 import org.gosky.base.utils.DataHelper;
 
 import java.io.File;
@@ -26,40 +23,22 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by jessyan on 2016/3/14.
- */
+
 @Module
 public class ClientModule {
     private static final int TOME_OUT = 10;
     public static final int HTTP_RESPONSE_DISK_CACHE_MAX_SIZE = 10 * 1024 * 1024;//缓存文件最大值为10Mb
     public HttpUrl mApiUrl;
-    public GlobeHttpHandler mHandler;
-    public Interceptor[] mInterceptors;
 
-    /**
-     * @author: jess
-     * @date 8/5/16 11:03 AM
-     * @description: 设置baseurl
-     */
     public ClientModule(Buidler buidler) {
         this.mApiUrl = buidler.apiUrl;
-        this.mHandler = buidler.handler;
-        this.mInterceptors = buidler.interceptors;
     }
 
     public static Buidler buidler() {
         return new Buidler();
     }
 
-    /**
-     * @param cache     缓存
-     * @param intercept 拦截器
-     * @return
-     * @author: jess
-     * @date 8/30/16 1:12 PM
-     * @description:提供OkhttpClient
-     */
+
     @Singleton
     @Provides
     public OkHttpClient provideClient(Cache cache, Interceptor intercept) {
@@ -67,14 +46,7 @@ public class ClientModule {
         return configureClient(okHttpClient, cache, intercept);
     }
 
-    /**
-     * @param client
-     * @param httpUrl
-     * @return
-     * @author: jess
-     * @date 8/30/16 1:13 PM
-     * @description: 提供retrofit
-     */
+
     @Singleton
     @Provides
     public Retrofit provideRetrofit(OkHttpClient client, HttpUrl httpUrl) {
@@ -98,7 +70,6 @@ public class ClientModule {
     @Singleton
     @Provides
     public Interceptor provideIntercept() {
-//        return new RequestIntercept(mHandler);//打印请求信息的拦截器
         return new BasicAuthIntercept();
     }
 
@@ -128,29 +99,6 @@ public class ClientModule {
     }
 
 
-
-    /**
-     * 提供权限管理类,用于请求权限,适配6.0的权限管理
-     *
-     * @param application
-     * @return
-     */
-    @Singleton
-    @Provides
-    public RxPermissions provideRxPermissions(Application application) {
-        return RxPermissions.getInstance(application);
-    }
-
-
-    /**
-     * @param builder
-     * @param client
-     * @param httpUrl
-     * @return
-     * @author: jess
-     * @date 8/30/16 1:15 PM
-     * @description:配置retrofit
-     */
     private Retrofit configureRetrofit(Retrofit.Builder builder, OkHttpClient client, final HttpUrl httpUrl) {
         return builder
                 .baseUrl(httpUrl)//域名
@@ -175,11 +123,6 @@ public class ClientModule {
                 .addInterceptor(intercept)
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
-//        if (mInterceptors != null && mInterceptors.length > 0) {//如果外部提供了interceptor的数组则遍历添加
-//            for (Interceptor interceptor : mInterceptors) {
-//                builder.addInterceptor(interceptor);
-//            }
-//        }
         return builder
                 .build();
     }
@@ -187,8 +130,6 @@ public class ClientModule {
 
     public static class Buidler {
         private HttpUrl apiUrl = HttpUrl.parse("https://api.github.com/");
-        private GlobeHttpHandler handler;
-        private Interceptor[] interceptors;
 
         public Buidler() {
         }
@@ -198,53 +139,11 @@ public class ClientModule {
             return this;
         }
 
-        public Buidler globeHttpHandler(GlobeHttpHandler handler) {//用来处理http响应结果
-            this.handler = handler;
-            return this;
-        }
-
-        public Buidler interceptors(Interceptor[] interceptors) {//动态添加任意个interceptor
-            this.interceptors = interceptors;
-            return this;
-        }
-
-
-
         public ClientModule build() {
             if (apiUrl == null) {
                 throw new IllegalStateException("baseurl is required");
             }
             return new ClientModule(this);
         }
-
-
     }
-
-//    .addNetworkInterceptor(new Interceptor() {
-//        @Override
-//        public Response intercept(Interceptor.Chain chain) throws IOException {
-//            Request request = chain.request();
-//            if(!DeviceUtils.netIsConnected(UiUtils.getContext())){
-//                request = request.newBuilder()
-//                        .cacheControl(CacheControl.FORCE_CACHE)
-//                        .build();
-//                LogUtils.warnInfo("http","no network");
-//            }
-//            Response originalResponse = chain.proceed(request);
-//            if(DeviceUtils.netIsConnected(UiUtils.getContext())){
-//                //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
-//                String cacheControl = request.cacheControl().toString();
-//                return originalResponse.newBuilder()
-//                        .header("Cache-Control", cacheControl)
-//                        .removeHeader("Pragma")
-//                        .build();
-//            }else{
-//                return originalResponse.newBuilder()
-//                        .header("Cache-Control", "public, only-if-cached, max-stale=2419200")
-//                        .removeHeader("Pragma")
-//                        .build();
-//            }
-//        }
-//    })
-
 }

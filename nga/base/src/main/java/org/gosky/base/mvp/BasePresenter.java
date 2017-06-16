@@ -7,7 +7,7 @@ import android.support.annotation.UiThread;
  */
 public interface BasePresenter<V extends BaseView> {
     @UiThread
-    void attachView(V view);
+    void attachView(V  view);
     @UiThread
     void detachView();
 }

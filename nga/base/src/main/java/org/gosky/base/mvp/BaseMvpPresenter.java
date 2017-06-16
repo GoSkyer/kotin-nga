@@ -3,8 +3,9 @@ package org.gosky.base.mvp;
 
 import android.widget.Toast;
 
-import org.gosky.base.base.BaseApplication;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import org.gosky.base.base.BaseApplication;
 
 /**
  * Created by hunji on 16/7/7.

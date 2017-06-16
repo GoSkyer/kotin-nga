@@ -14,10 +14,7 @@ import org.gosky.base.mvp.BaseMvpPresenter;
 import org.gosky.base.mvp.BaseView;
 
 
-/**
- * Created by jess on 8/5/16 13:13
- * contact with jess.yan.effort@gmail.com
- */
+
 public abstract class MvpActivity<P extends BaseMvpPresenter> extends BaseMvpActivity<P> implements BaseView {
     protected App mApp;
 
@@ -35,11 +32,6 @@ public abstract class MvpActivity<P extends BaseMvpPresenter> extends BaseMvpAct
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter.attachView(this);
-    }
-
-    @Override
-    public void showMessage(String agr0) {
-
     }
 
     @Override
@@ -72,13 +64,4 @@ public abstract class MvpActivity<P extends BaseMvpPresenter> extends BaseMvpAct
         TastyToast.makeText(App.getContext(), message, TastyToast.LENGTH_LONG, type);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 }

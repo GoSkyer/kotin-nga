@@ -10,24 +10,14 @@ import com.squareup.leakcanary.LeakCanary;
 import org.gosky.base.di.module.AppModule;
 import org.gosky.base.di.module.ClientModule;
 import org.gosky.base.di.module.ImageModule;
-import org.gosky.base.http.GlobeHttpHandler;
+import org.gosky.base.http.BaseApi;
 import org.gosky.base.http.HttpUser;
 
 import java.util.LinkedList;
 
 import jonathanfinerty.once.Once;
-import okhttp3.Interceptor;
 import timber.log.Timber;
 
-/**
- * 本项目由
- * mvp
- * +dagger2
- * +retrofit
- * +rxjava
- * +androideventbus
- * +butterknife组成
- */
 public abstract class BaseApplication extends Application {
     static private BaseApplication mApplication;
     public LinkedList<BaseActivity> mActivityList;
@@ -43,9 +33,7 @@ public abstract class BaseApplication extends Application {
         mApplication = this;
         this.mClientModule = ClientModule//用于提供okhttp和retrofit的单列
                 .buidler()
-                .baseurl(getBaseUrl())
-                .globeHttpHandler(getHttpHandler())
-                .interceptors(getInterceptors())
+                .baseurl(BaseApi.APP_DOMAIN)
                 .build();
         this.mAppModule = new AppModule(this);//提供application
         this.mImagerModule = new ImageModule();//图片加载框架默认使用glide
@@ -59,14 +47,6 @@ public abstract class BaseApplication extends Application {
         }
         Once.initialise(this);
     }
-
-    /**
-     * 提供基础url给retrofit
-     *
-     * @return
-     */
-    protected abstract String getBaseUrl();
-
 
     /**
      * 返回一个存储所有存在的activity的列表
@@ -92,30 +72,6 @@ public abstract class BaseApplication extends Application {
     public ImageModule getImageModule() {
         return mImagerModule;
     }
-
-
-    /**
-     * 这里可以提供一个全局处理http响应结果的处理类,
-     * 这里可以比客户端提前一步拿到服务器返回的结果,可以做一些操作,比如token超时,重新获取
-     * 默认不实现,如果有需求可以重写此方法
-     *
-     * @return
-     */
-    protected GlobeHttpHandler getHttpHandler() {
-        return null;
-    }
-
-    /**
-     * 用来提供interceptor,如果要提供额外的interceptor可以让子application实现此方法
-     *
-     * @return
-     */
-    protected Interceptor[] getInterceptors() {
-        return null;
-    }
-
-
-
 
     /**
      * 返回上下文

@@ -1,4 +1,4 @@
-package org.gosky.nga.data.api;
+package org.gosky.base.http;
 
 /**
  * Created by jess on 8/5/16 11:25

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-
+    <uses-permission android:name="android.permission.GET_TASKS"/>
     <permission
         android:name="org.gosky.nga.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature"/>

@@ -3,8 +3,6 @@ package org.gosky.base.base;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -27,7 +25,6 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends RxAppCompatActivity {
     protected final String TAG = this.getClass().getSimpleName();
-    private BroadcastReceiver mBroadcastReceiver;
     public static final String ACTION_RECEIVER_ACTIVITY = "com.jess.activity";
     protected BaseApplication mApplication;
     protected Context mContext;
@@ -60,13 +57,11 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registReceiver();//注册广播
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregistReceriver();
     }
 
     @Nullable
@@ -91,19 +86,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         initData();
     }
 
-    public void FullScreencall() {
-        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
-            View v = this.getWindow().getDecorView();
-            v.setSystemUiVisibility(View.GONE);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-            //for new api versions.
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
-    }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -113,37 +95,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    /**
-     * 注册广播
-     */
-    public void registReceiver() {
-        try {
-            mBroadcastReceiver = new BaseActivity.ActivityReceriver();
-            IntentFilter filter = new IntentFilter(ACTION_RECEIVER_ACTIVITY);
-            registerReceiver(mBroadcastReceiver, filter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * 解除注册广播
-     */
-    public void unregistReceriver() {
-        if (mBroadcastReceiver == null) return;
-        try {
-            unregisterReceiver(mBroadcastReceiver);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     protected abstract int rootView();
 
