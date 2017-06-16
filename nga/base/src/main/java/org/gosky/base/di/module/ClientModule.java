@@ -1,11 +1,16 @@
 package org.gosky.base.di.module;
 
 import android.app.Application;
+import android.util.Log;
 
 import org.gosky.base.http.BasicAuthIntercept;
 import org.gosky.base.utils.DataHelper;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -15,10 +20,17 @@ import dagger.Provides;
 import io.rx_cache.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.Cache;
+import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.internal.http.RealResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.GzipSource;
+import okio.Okio;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,9 +53,9 @@ public class ClientModule {
 
     @Singleton
     @Provides
-    public OkHttpClient provideClient(Cache cache, Interceptor intercept) {
+    public OkHttpClient provideClient(Cache cache) {
         final OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-        return configureClient(okHttpClient, cache, intercept);
+        return configureClient(okHttpClient, cache);
     }
 
 
@@ -64,13 +76,6 @@ public class ClientModule {
     @Provides
     public Cache provideCache(File cacheFile) {
         return new Cache(cacheFile, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE);//设置缓存路径和大小
-    }
-
-
-    @Singleton
-    @Provides
-    public Interceptor provideIntercept() {
-        return new BasicAuthIntercept();
     }
 
 
@@ -114,18 +119,79 @@ public class ClientModule {
      * @param okHttpClient
      * @return
      */
-    private OkHttpClient configureClient(OkHttpClient.Builder okHttpClient, Cache cache, Interceptor intercept) {
+    private OkHttpClient configureClient(OkHttpClient.Builder okHttpClient, Cache cache) {
 
         OkHttpClient.Builder builder = okHttpClient
                 .connectTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .cache(cache)//设置缓存
-                .addInterceptor(intercept)
+                .addInterceptor(new Gbk2utf8Interceptor())
+                .addInterceptor(new UnzippingInterceptor())
+                .addInterceptor(new BasicAuthIntercept())
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
         return builder
                 .build();
     }
+
+    private class UnzippingInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Response response = chain.proceed(chain.request());
+            return unzip(response);
+        }
+    }
+
+    private Response unzip(final Response response) throws IOException {
+
+        if (response.body() == null) {
+            return response;
+        }
+
+        GzipSource responseBody = new GzipSource(response.body().source());
+        Headers strippedHeaders = response.headers().newBuilder()
+                .removeAll("Content-Encoding")
+                .removeAll("Content-Length")
+                .build();
+        return response.newBuilder()
+                .headers(strippedHeaders)
+                .body(new RealResponseBody(strippedHeaders, Okio.buffer(responseBody)))
+                .build();
+    }
+
+
+    private class Gbk2utf8Interceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Response response = chain.proceed(chain.request());
+            return gbk2utf8(response);
+        }
+    }
+
+    private Response gbk2utf8(Response response) throws IOException {
+        if (response.body() == null)
+            return response;
+        InputStream in = response.body().byteStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "GBK"));
+//        BufferedReader reader=new BufferedReader(new InputStreamReader(in));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        String s = sb.toString();
+        Log.d("okhttp", s);
+        ResponseBody responseBody = response.body();
+        MediaType contentType = responseBody.contentType();
+        ResponseBody body = ResponseBody.create(contentType, s);
+        return response.newBuilder()
+                .body(body)
+                .build();
+    }
+
+
 
 
     public static class Buidler {
@@ -145,5 +211,9 @@ public class ClientModule {
             }
             return new ClientModule(this);
         }
+
+
+
+
     }
 }

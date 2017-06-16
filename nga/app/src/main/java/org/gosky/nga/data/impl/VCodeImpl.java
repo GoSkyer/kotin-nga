@@ -1,9 +1,13 @@
 package org.gosky.nga.data.impl;
 
+import org.gosky.nga.common.utils.RxHelper;
 import org.gosky.nga.data.api.cache.CacheManager;
 import org.gosky.nga.data.api.service.ApiManager;
 
 import javax.inject.Inject;
+
+import okhttp3.ResponseBody;
+import rx.Observable;
 
 /**
  * Created by guozhong on 16/10/21.
@@ -19,12 +23,11 @@ public class VCodeImpl {
         this.cacheManager = cacheManager;
     }
 
-//    public Observable<Object> getSmsVCode( String type, String address) {
-//        return apiManager.getCommonService()
-//                .getSmsVcode(type, address, AppUtils.getAppName(App.getContext()))
-//                .compose(RxHelper.rxSchedulerHelper())
-//                .compose(RxHelper.handleResult());
-//    }
+    public Observable<ResponseBody> getSmsVCode() {
+        return apiManager.getCommonService()
+                .getIPInfo()
+                .compose(RxHelper.rxSchedulerHelper());
+    }
 //
 //    public Observable<Object> getCaptcha(String uuid
 //            , String timestamp) {

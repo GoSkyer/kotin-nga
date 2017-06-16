@@ -5,5 +5,5 @@ package org.gosky.base.http;
  * contact with jess.yan.effort@gmail.com
  */
 public interface BaseApi {
-    String APP_DOMAIN = "http://xxxx/";
+    String APP_DOMAIN = "http://bbs.nga.cn/";
 }
