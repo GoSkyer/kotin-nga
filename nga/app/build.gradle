@@ -1,0 +1,95 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'tinyPIC'
+apply plugin: 'bugly'
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
+    defaultConfig {
+        applicationId "org.gosky.nga"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
+        resConfigs "zh"
+        aaptOptions {
+            cruncherEnabled = false
+        }
+    }
+    signingConfigs {
+        myConfig {
+            storeFile file("../jie.jks")
+            storePassword "qn123456"
+            keyAlias "jie"
+            keyPassword "qn123456"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.myConfig
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.myConfig
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    tinyinfo {
+//        apiKey = 'U3fTslGM__koaAXHPWGMv_d8vwCEr_pI'
+//        skip = false
+//        isShowLog = true
+//        path = 'mipmap'
+//    }
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+bugly {
+    appId = '900060152'
+    appKey = 'ydHVTb1r8Yvo5e4O'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.github.GoSkyer.ActivityRouter:router:1.0'
+    apt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
+    apt "com.google.dagger:dagger-compiler:2.11"
+    compile 'co.lujun:androidtagview:1.0.3'
+    compile 'com.zhy:flowlayout-lib:1.0.3'
+    compile 'com.liulishuo.magicprogresswidget:library:1.0.9'
+    compile 'me.drakeet.materialdialog:library:1.3.1'
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.kaopiz:kprogresshud:1.0.5'
+    compile 'me.shaohui:bottomdialog:1.1.9'
+    compile project(':base')
+    compile files('libs/MiPush_SDK_Client_3_4_0.jar')
+}

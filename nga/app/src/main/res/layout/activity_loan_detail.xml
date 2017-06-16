@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#eee"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="88px"
+        android:background="#267aeb">
+
+       <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:src="@mipmap/fanhui"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="贷款详情"
+            android:textColor="#fff"
+            android:textSize="32px"
+            />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#267aeb"
+                android:paddingLeft="30px"
+                android:paddingTop="30px">
+
+                <ImageView
+                    android:id="@+id/iv_icon_loan"
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:layout_marginRight="18px"
+                    tools:src="@mipmap/kuaishu"
+                    android:scaleType="centerCrop"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_loan_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8px"
+                        android:textColor="#fff"
+                        android:textSize="32px"
+                        tools:text="123123带宽为"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="成功率:"
+                            android:textColor="#fff"
+                            android:textSize="26px"
+                            />
+
+                        <RatingBar
+                            android:id="@+id/rb_loan_success_rate"
+                            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/RatingBar"
+                            tools:rating="5"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#267aeb"
+                android:paddingBottom="20px"
+                android:paddingTop="18px"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="149px"
+                    android:text="成功贷款人数："
+                    android:textColor="#fff"
+                    android:textSize="26px"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_loan_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23333"
+                    android:textColor="#fff"
+                    android:textSize="26px"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="人"
+                    android:textColor="#fff"
+                    android:textSize="26px"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#267aeb"
+                android:alpha="0.85"
+                />
+
+            <co.lujun.androidtagview.TagContainerLayout
+                android:id="@+id/tag_view_loan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15px"
+                android:paddingTop="15px"
+                android:paddingLeft="28px"
+                android:paddingRight="28px"
+                android:background="#267aeb"
+                app:container_background_color="#00ffffff"
+                app:container_border_color="#00ffffff"
+                app:container_enable_drag="false"
+                app:horizontal_interval="5dp"
+                app:tag_background_color="#00ffffff"
+                app:tag_border_color="#ccffffff"
+                app:tag_clickable="false"
+                app:tag_vertical_padding = "15px"
+                app:tag_corner_radius="10dp"
+                app:tag_text_color="#ccffffff"
+                app:tag_text_size="11dp"
+                app:tag_theme="none"
+                app:vertical_interval="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140px"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_loan_scopeOf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6876a6"
+                        android:textSize="32px"
+                        tools:text="1111~2123"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18px"
+                        android:text="贷款范围"
+                        android:textColor="#999"
+                        android:textSize="22px"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="50px"
+                    android:background="#c3ccda"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_month_scopeOf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6876a6"
+                        android:textSize="32px"
+                        tools:text="1111~2123"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18px"
+                        android:text="范围期限"
+                        android:textColor="#999"
+                        android:textSize="22px"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="50px"
+                    android:background="#c3ccda"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_rate_scopeOf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6876a6"
+                        android:textSize="32px"
+                        tools:text="1111~2123"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18px"
+                        android:text="利率范围"
+                        android:textColor="#999"
+                        android:textSize="22px"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="50px"
+                    android:background="#c3ccda"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24px"
+                android:background="#eee"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:gravity="center_vertical"
+                android:paddingLeft="30px"
+                android:text="申请条件"
+                android:textColor="#333"
+                android:textSize="26px"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#e5e5e5"/>
+
+            <TextView
+                android:id="@+id/tv_apply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/line_bottom"
+                android:paddingTop="30px"
+                android:paddingLeft="30px"
+                android:lineSpacingExtra="20px"
+                android:textColor="#666"
+                android:textSize="26px"
+                tools:text="有信用卡就能贷"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#e5e5e5"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24px"
+                android:background="#eee"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:gravity="center_vertical"
+                android:paddingLeft="30px"
+                android:text="所需材料"
+                android:textColor="#333"
+                android:textSize="26px"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#e5e5e5"/>
+
+            <TextView
+                android:id="@+id/tv_proof"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="20px"
+                android:paddingBottom="30px"
+                android:paddingLeft="30px"
+                android:paddingTop="30px"
+                android:textColor="#666"
+                android:textSize="26px"
+                tools:text="1、手机号，真实姓名\n1、手机号，真实姓名"
+                />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24px"
+                android:background="#eee"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:gravity="center_vertical"
+                android:paddingLeft="30px"
+                android:text="审核说明"
+                android:textColor="#333"
+                android:textSize="26px"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#e5e5e5"/>
+
+            <TextView
+                android:id="@+id/remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="20px"
+                android:paddingBottom="30px"
+                android:paddingLeft="30px"
+                android:paddingTop="30px"
+                android:textColor="#666"
+                android:textSize="26px"
+                tools:text="1、手机号，真实姓名\n1、手机号，真实姓名"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tv_request_loan"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:background="#267aeb"
+        android:gravity="center"
+        android:text="申请贷款"
+        android:textColor="#fff"
+        android:textSize="36px"
+        />
+
+
+</LinearLayout>
