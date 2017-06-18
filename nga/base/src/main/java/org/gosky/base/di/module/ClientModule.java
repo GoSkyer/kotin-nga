@@ -3,7 +3,6 @@ package org.gosky.base.di.module;
 import android.app.Application;
 import android.util.Log;
 
-import org.gosky.base.http.BasicAuthIntercept;
 import org.gosky.base.utils.DataHelper;
 
 import java.io.BufferedReader;
@@ -127,7 +126,7 @@ public class ClientModule {
                 .cache(cache)//设置缓存
                 .addInterceptor(new Gbk2utf8Interceptor())
                 .addInterceptor(new UnzippingInterceptor())
-                .addInterceptor(new BasicAuthIntercept())
+//                .addInterceptor(new BasicAuthIntercept())
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
         return builder
@@ -138,7 +137,10 @@ public class ClientModule {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            return unzip(response);
+            if ("gzip".equals(response.header("Content-Encoding")))
+                return unzip(response);
+            else
+                return response;
         }
     }
 
@@ -165,7 +167,10 @@ public class ClientModule {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            return gbk2utf8(response);
+            if ("application/x-javascript".equals(response.header("Content-Type")))
+                return gbk2utf8(response);
+            else
+                return response;
         }
     }
 

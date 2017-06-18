@@ -16,4 +16,8 @@ public interface CommonApi {
             "User-Agent:Nga_Official/573([LGE LG-F500L];Android5.1)"
     })
     Observable<ResponseBody> getIPInfo();
+
+
+    @GET("http://account.178.com/q_vcode.php?_act=gen_reg")
+    Observable<ResponseBody> getImageValidCode();
 }

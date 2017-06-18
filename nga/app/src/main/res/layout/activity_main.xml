@@ -4,124 +4,21 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_main"
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="48dp">
+
+    </android.support.design.widget.TabLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
     </android.support.v4.view.ViewPager>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#ccc"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f9f9f9"
-        >
 
-        <LinearLayout
-            android:id="@+id/ll_home_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_home_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10px"
-                android:layout_marginTop="15px"
-                android:src="@mipmap/zhuye_d"/>
-
-            <TextView
-                android:id="@+id/tv_home_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6px"
-                android:text="首页"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_loan_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_loan_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10px"
-                android:layout_marginTop="15px"
-                android:src="@mipmap/daikuan_d"/>
-
-            <TextView
-                android:id="@+id/tv_loan_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6px"
-                android:text="贷款搜索"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_recommend_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_recommend_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10px"
-                android:layout_marginTop="15px"
-                android:src="@mipmap/jingzhun_d"/>
-
-            <TextView
-                android:id="@+id/tv_recommend_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6px"
-                android:text="精准推荐"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_mine_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_mine_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10px"
-                android:layout_marginTop="15px"
-                android:src="@mipmap/wode_d"/>
-
-            <TextView
-                android:id="@+id/tv_mine_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6px"
-                android:text="我的"/>
-
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

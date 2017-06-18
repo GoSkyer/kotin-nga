@@ -83,6 +83,7 @@ public abstract class BaseApplication extends Application {
     }
 
 
+
     /**
      * 退出所有activity
      */

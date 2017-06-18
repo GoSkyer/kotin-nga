@@ -13,6 +13,8 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.gosky.base.base.BaseApplication;
 import org.gosky.nga.common.config.AppConfig;
+import org.gosky.nga.common.config.BoardConfig;
+import org.gosky.nga.data.entity.BoardHolder;
 import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerAppComponent;
 import org.gosky.nga.di.module.CacheModule;
@@ -23,12 +25,17 @@ import java.util.List;
 
 public class App extends BaseApplication {
     private static AppComponent mAppComponent;
+    private static App mInstance;
+    private List<BoardHolder> boardHolders;
+
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         if (!shouldInit())
             return;
+        mInstance = this;
         mAppComponent = DaggerAppComponent
                 .builder()
                 .appModule(getAppModule())//baseApplication提供
@@ -57,6 +64,7 @@ public class App extends BaseApplication {
         };
         Logger.setLogger(this, newLogger);
         CrashReport.initCrashReport(getApplicationContext(), "900060152", false);
+        boardHolders = new BoardConfig().buildBoardData();
         Log.i(TAG, "onCreate: ");
     }
 
@@ -80,6 +88,14 @@ public class App extends BaseApplication {
      */
     public AppComponent getAppComponent() {
         return mAppComponent;
+    }
+
+    public static App getInstance() {
+        return mInstance;
+    }
+
+    public List<BoardHolder> getBoardHolders(){
+        return boardHolders;
     }
 
 

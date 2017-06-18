@@ -1,5 +1,8 @@
 package org.gosky.nga.data.impl;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import org.gosky.nga.common.utils.RxHelper;
 import org.gosky.nga.data.api.cache.CacheManager;
 import org.gosky.nga.data.api.service.ApiManager;
@@ -23,10 +26,12 @@ public class VCodeImpl {
         this.cacheManager = cacheManager;
     }
 
-    public Observable<ResponseBody> getSmsVCode() {
+    public Observable<Bitmap> getSmsVCode() {
         return apiManager.getCommonService()
-                .getIPInfo()
-                .compose(RxHelper.rxSchedulerHelper());
+                .getImageValidCode()
+                .compose(RxHelper.rxSchedulerHelper())
+                .map(ResponseBody::byteStream)
+                .map(BitmapFactory::decodeStream);
     }
 //
 //    public Observable<Object> getCaptcha(String uuid

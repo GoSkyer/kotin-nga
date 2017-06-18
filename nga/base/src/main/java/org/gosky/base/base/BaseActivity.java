@@ -17,8 +17,6 @@ import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.LinkedList;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by guozhong on 16/11/3.
  */
@@ -74,7 +72,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             mApplication.getActivityList().add(this);
         }
         setContentView(rootView());
-        ButterKnife.bind(this);//绑定到butterknife
+//        ButterKnife.bind(this);//绑定到butterknife
         Log.i(TAG, "onCreate: base");
     }
 
@@ -92,7 +90,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         synchronized (BaseActivity.class) {
             mApplication.getActivityList().remove(this);
         }
-        ButterKnife.unbind(this);
+//        ButterKnife.unbind(this);
     }
 
 

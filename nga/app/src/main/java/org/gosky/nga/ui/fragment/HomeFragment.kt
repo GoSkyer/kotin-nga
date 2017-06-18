@@ -1,6 +1,6 @@
 package org.gosky.nga.ui.fragment
 
-import android.util.Log
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.gosky.nga.R
 import org.gosky.nga.common.utils.RxHelper
 import org.gosky.nga.data.impl.VCodeImpl
@@ -33,7 +33,7 @@ class HomeFragment : MvpFragment<HomePresenter>(), HomeView {
     override fun initData() {
         vCodeImpl.smsVCode
                 .compose(RxHelper.rxSchedulerHelper())
-                .subscribe({ Log.d("HomeFragment", it.string()) }, { it.printStackTrace() });
+                .subscribe({ ivTest.setImageBitmap(it) }, { it.printStackTrace() });
 
     }
 
