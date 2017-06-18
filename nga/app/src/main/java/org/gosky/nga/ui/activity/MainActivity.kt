@@ -4,6 +4,8 @@ import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import kale.adapter.CommonRcvAdapter
+import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.activity_main.*
 import org.gosky.nga.App
 import org.gosky.nga.R
@@ -11,6 +13,7 @@ import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpActivity
+import org.gosky.nga.ui.fragment.MainAdapter
 import org.gosky.nga.view.MainView
 
 /**
@@ -35,7 +38,12 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView {
     override fun setupView() {
         views = ArrayList();
         val recyclerView = RecyclerView(mContext)
+        recyclerView.adapter = object :CommonRcvAdapter<Any>(null){
+            override fun createItem(p0: Any?): AdapterItem<*> {
+                return MainAdapter()
+            }
 
+        }
         views.add(recyclerView)
         views.add(RecyclerView(mContext))
 //        views.add(RecyclerView(mContext))
