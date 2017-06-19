@@ -13,7 +13,7 @@ import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpActivity
-import org.gosky.nga.ui.fragment.MainAdapter
+import org.gosky.nga.ui.item.MainAdapter
 import org.gosky.nga.view.MainView
 
 /**
@@ -51,6 +51,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView {
 //        views.add(RecyclerView(mContext))
         vpMain.adapter = viewPagerAdapter()
         tabLayout.setupWithViewPager(vpMain)
+
     }
 
     override fun initData() {

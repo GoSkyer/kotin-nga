@@ -4,6 +4,7 @@ import org.gosky.base.di.scope.ActivityScope;
 import org.gosky.nga.ui.activity.MainActivity;
 import org.gosky.nga.ui.fragment.HomeFragment;
 import org.gosky.nga.ui.fragment.LoanFragment;
+import org.gosky.nga.ui.fragment.MainFragment;
 import org.gosky.nga.ui.fragment.MineFragment;
 import org.gosky.nga.ui.fragment.RecommendFragment;
 
@@ -18,4 +19,5 @@ public interface RepoComponent {
     void inject(LoanFragment loanFragment);
     void inject(RecommendFragment recommendFragment);
     void inject(MineFragment mineFragment);
+    void inject(MainFragment mainFragment);
 }

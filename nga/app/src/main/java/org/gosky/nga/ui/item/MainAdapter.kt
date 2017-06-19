@@ -1,4 +1,4 @@
-package org.gosky.nga.ui.fragment
+package org.gosky.nga.ui.item
 
 import android.view.View
 import kale.adapter.item.AdapterItem
@@ -12,7 +12,7 @@ import org.gosky.nga.data.entity.Board
  * desc:
  */
 class MainAdapter : AdapterItem<Board> {
-    private lateinit var view:View
+    private lateinit var view: View
     override fun OnRootClickListener(p0: Board?, p1: Int) {
     }
 
