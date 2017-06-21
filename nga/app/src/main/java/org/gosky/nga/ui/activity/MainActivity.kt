@@ -33,6 +33,8 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView {
     }
 
     override fun setupView() {
+        toolbar_main_activity.title = "nga开源版"
+        setSupportActionBar(toolbar_main_activity);
         views = ArrayList();
         val boardHolders = App.getInstance().boardHolders
         boardHolders.map {
@@ -41,7 +43,6 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView {
         Log.d(TAG, ": " + boardHolders.size);
         vpMain.adapter = viewPagerAdapter()
         tabLayout.setupWithViewPager(vpMain)
-
     }
 
     override fun initData() {
