@@ -63,6 +63,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled = true
+    }
+
 }
 bugly {
     appId = '900060152'
@@ -96,5 +101,6 @@ dependencies {
     compile project(':base')
     compile files('libs/MiPush_SDK_Client_3_4_0.jar')
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.0"
-    compile "org.jetbrains.anko:anko-commons:0.10.0"
+    compile "org.jetbrains.anko:anko-support-v4-commons:0.10.0"
+
 }

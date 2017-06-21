@@ -1,5 +1,6 @@
 package org.gosky.nga.ui.item
 
+import android.util.Log
 import android.view.View
 import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.item_main.view.*
@@ -26,13 +27,13 @@ class MainAdapter : AdapterItem<Board> {
     }
 
     override fun handleData(p0: Board?, p1: Int) {
+        Log.d("tag", ": " + p0.toString());
         view.tvNameItemMain.text = p0?.getName()
-
+        p0?.getIcon()?.let { view.ivIconItemMain.setImageResource(it) }
     }
 
     override fun bindViews(p0: View?) {
         view = p0 as View
-//        val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_main,parent,false)
     }
 }
 

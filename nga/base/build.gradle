@@ -86,5 +86,4 @@ dependencies {
     compile "com.mobsandgeeks:android-saripaar:2.0.3"
     debugCompile "com.squareup.leakcanary:leakcanary-android:1.4-beta2"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2"
-
 }
