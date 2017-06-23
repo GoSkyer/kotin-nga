@@ -3,6 +3,7 @@ package org.gosky.base.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public abstract class BaseFragment<P extends BaseMvpPresenter> extends RxFragmen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(rootView(), null);
         ButterKnife.bind(this, mRootView);
+        Log.i(TAG, "onCreateView: ");
         return mRootView;
     }
 
@@ -34,12 +36,14 @@ public abstract class BaseFragment<P extends BaseMvpPresenter> extends RxFragmen
         super.onActivityCreated(savedInstanceState);
         mActivity = (BaseMvpActivity) getActivity();
         mContext = getContext();
+        Log.i(TAG, "onActivityCreated: ");
         setupView();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart: ");
         initData();
     }
 

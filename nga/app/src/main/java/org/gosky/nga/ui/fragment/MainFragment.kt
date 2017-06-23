@@ -8,6 +8,8 @@ import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.gosky.nga.R
 import org.gosky.nga.data.entity.Board
+import org.gosky.nga.data.impl.ThreadImpl
+import org.gosky.nga.data.impl.VCodeImpl
 import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
@@ -15,6 +17,8 @@ import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpFragment
 import org.gosky.nga.ui.item.MainAdapter
 import org.gosky.nga.view.MainView
+import javax.inject.Inject
+
 
 /**
  * @author guozhong
@@ -22,6 +26,11 @@ import org.gosky.nga.view.MainView
  */
 class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainView {
 
+    @Inject
+    lateinit var threadImpl: ThreadImpl
+
+    @Inject
+    lateinit var vCodeImpl:VCodeImpl
 
     override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
         DaggerRepoComponent
@@ -38,7 +47,7 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
 
     override fun setupView() {
         Log.d(TAG, ": " + list.size);
-        rcv_main_fragment.layoutManager = GridLayoutManager(mContext, 3,LinearLayoutManager.VERTICAL,false);
+        rcv_main_fragment.layoutManager = GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
         rcv_main_fragment.adapter = object : CommonRcvAdapter<Board>(list) {
             override fun createItem(p0: Any?): AdapterItem<*> {
                 return MainAdapter()
@@ -48,6 +57,10 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
     }
 
     override fun initData() {
+//        threadImpl
+//                .test()
+
+        vCodeImpl.test()
     }
 
 
@@ -55,3 +68,4 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
 
     }
 }
+

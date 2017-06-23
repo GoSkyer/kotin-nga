@@ -1,10 +1,13 @@
 package org.gosky.nga.data.api.service;
 
 
+import com.google.gson.JsonObject;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Query;
 
 
 public interface CommonApi {
@@ -17,7 +20,15 @@ public interface CommonApi {
     })
     Observable<ResponseBody> getIPInfo();
 
-
+    /**
+     * 获取验证码
+     *
+     * @return
+     */
     @GET("http://account.178.com/q_vcode.php?_act=gen_reg")
     Observable<ResponseBody> getImageValidCode();
+
+
+    @GET("http://nga.178.com/thread.php?lite=js&noprefix")
+    Observable<JsonObject> getThreads(@Query("fid") String fid, @Query("page") String page);
 }
