@@ -7,12 +7,14 @@ import android.widget.Toast;
 
 import com.sdsmdg.tastytoast.TastyToast;
 
-import org.gosky.nga.App;
-import org.gosky.nga.di.component.AppComponent;
 import org.gosky.base.base.BaseMvpActivity;
+import org.gosky.base.di.module.ActivityModule;
 import org.gosky.base.mvp.BaseMvpPresenter;
 import org.gosky.base.mvp.BaseView;
-
+import org.gosky.nga.App;
+import org.gosky.nga.di.component.DaggerActivityComponent;
+import org.gosky.nga.di.component.DaggerRepoComponent;
+import org.gosky.nga.di.component.RepoComponent;
 
 
 public abstract class MvpActivity<P extends BaseMvpPresenter> extends BaseMvpActivity<P> implements BaseView {
@@ -21,11 +23,15 @@ public abstract class MvpActivity<P extends BaseMvpPresenter> extends BaseMvpAct
     @Override
     protected void ComponentInject() {
         mApp = (App) getApplication();
-        setupActivityComponent(mApp.getAppComponent());
+        RepoComponent repoComponent = DaggerRepoComponent.builder()
+                .appComponent(mApp.getAppComponent())
+                .activityComponent(DaggerActivityComponent.builder().activityModule(new ActivityModule(this)).build())
+                .build();
+        setupActivityComponent(repoComponent);
     }
 
     //提供AppComponent(提供所有的单例对象)给子类，进行Component依赖
-    protected abstract void setupActivityComponent(AppComponent appComponent);
+    protected abstract void setupActivityComponent(RepoComponent repoComponent);
 
     @Nullable
     @Override

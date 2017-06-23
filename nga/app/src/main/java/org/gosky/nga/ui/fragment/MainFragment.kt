@@ -8,6 +8,7 @@ import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.gosky.nga.R
 import org.gosky.nga.data.entity.Board
+import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.presenter.MainPresenter
@@ -22,10 +23,11 @@ import org.gosky.nga.view.MainView
 class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainView {
 
 
-    override fun setupFragmentComponent(appComponent: AppComponent?) {
+    override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
         DaggerRepoComponent
                 .builder()
                 .appComponent(appComponent)
+                .activityComponent(activityComponent)
                 .build()
                 .inject(this)
     }

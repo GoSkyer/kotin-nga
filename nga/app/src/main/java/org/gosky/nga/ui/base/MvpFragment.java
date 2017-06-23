@@ -5,15 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.gosky.base.base.BaseFragment;
+import org.gosky.base.di.module.ActivityModule;
 import org.gosky.base.mvp.BaseMvpPresenter;
 import org.gosky.base.mvp.BaseView;
 import org.gosky.nga.App;
+import org.gosky.nga.di.component.ActivityComponent;
 import org.gosky.nga.di.component.AppComponent;
+import org.gosky.nga.di.component.DaggerActivityComponent;
 
 import javax.inject.Inject;
 
 
-public abstract class MvpFragment<P extends BaseMvpPresenter> extends BaseFragment<P> implements BaseView  {
+public abstract class MvpFragment<P extends BaseMvpPresenter> extends BaseFragment<P> implements BaseView {
     protected App mApp;
     @Inject
     protected P mPresenter;
@@ -33,12 +36,12 @@ public abstract class MvpFragment<P extends BaseMvpPresenter> extends BaseFragme
 
     protected void ComponentInject() {
         mApp = (App) mActivity.getApplication();
-        setupFragmentComponent(mApp.getAppComponent());
+        setupFragmentComponent(mApp.getAppComponent(), DaggerActivityComponent.builder().activityModule(new ActivityModule(getActivity())).build());
     }
 
 
     //提供AppComponent(提供所有的单例对象)给子类，进行Component依赖
-    protected abstract void setupFragmentComponent(AppComponent appComponent);
+    protected abstract void setupFragmentComponent(AppComponent appComponent, ActivityComponent activityComponent);
 
     @Override
     public Context getActivityContext() {

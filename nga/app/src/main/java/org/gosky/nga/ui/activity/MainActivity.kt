@@ -12,8 +12,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.App
 import org.gosky.nga.R
-import org.gosky.nga.di.component.AppComponent
-import org.gosky.nga.di.component.DaggerRepoComponent
+import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpActivity
 import org.gosky.nga.ui.fragment.MainFragment
@@ -22,11 +21,8 @@ import org.gosky.nga.view.MainView
 class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var views: ArrayList<Fragment>
 
-    override fun setupActivityComponent(appComponent: AppComponent?) {
-        DaggerRepoComponent.builder()
-                .appComponent(appComponent)
-                .build()
-                .inject(this);
+    override fun setupActivityComponent(repoComponent: RepoComponent) {
+        repoComponent.inject(this);
     }
 
     override fun rootView(): Int {

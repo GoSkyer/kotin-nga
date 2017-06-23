@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.rx_cache.internal.RxCache;
+import io.rx_cache2.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.Cache;
 import okhttp3.Headers;
@@ -31,7 +31,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import okio.GzipSource;
 import okio.Okio;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
@@ -107,7 +107,7 @@ public class ClientModule {
         return builder
                 .baseUrl(httpUrl)//域名
                 .client(client)//设置okhttp
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())//使用rxjava
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用rxjava
                 .addConverterFactory(GsonConverterFactory.create())//使用Gson
                 .build();
     }

@@ -12,12 +12,17 @@ import dagger.Component;
 
 
 @ActivityScope
-@Component(dependencies = AppComponent.class)
+@Component(dependencies = {AppComponent.class, ActivityComponent.class})
 public interface RepoComponent {
     void inject(MainActivity activity);
+
     void inject(HomeFragment homeFragment);
+
     void inject(LoanFragment loanFragment);
+
     void inject(RecommendFragment recommendFragment);
+
     void inject(MineFragment mineFragment);
+
     void inject(MainFragment mainFragment);
 }

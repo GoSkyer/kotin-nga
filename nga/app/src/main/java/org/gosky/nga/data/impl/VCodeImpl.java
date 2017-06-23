@@ -9,8 +9,8 @@ import org.gosky.nga.data.api.service.ApiManager;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import rx.Observable;
 
 /**
  * Created by guozhong on 16/10/21.

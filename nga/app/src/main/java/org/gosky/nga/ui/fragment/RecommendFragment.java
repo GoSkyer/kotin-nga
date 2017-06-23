@@ -1,6 +1,7 @@
 package org.gosky.nga.ui.fragment;
 
 import org.gosky.nga.R;
+import org.gosky.nga.di.component.ActivityComponent;
 import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerRepoComponent;
 import org.gosky.nga.presenter.RecommendPresenter;
@@ -15,9 +16,10 @@ public class RecommendFragment extends MvpFragment<RecommendPresenter> implement
 
 
     @Override
-    protected void setupFragmentComponent(AppComponent appComponent) {
+    protected void setupFragmentComponent(AppComponent appComponent, ActivityComponent activityComponent) {
         DaggerRepoComponent.builder()
                 .appComponent(appComponent)
+                .activityComponent(activityComponent)
                 .build()
                 .inject(this);
     }

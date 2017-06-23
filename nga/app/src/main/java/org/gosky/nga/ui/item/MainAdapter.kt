@@ -14,11 +14,11 @@ import org.gosky.nga.data.entity.Board
  */
 class MainAdapter : AdapterItem<Board> {
     private lateinit var view: View
+
     override fun OnRootClickListener(p0: Board?, p1: Int) {
     }
 
     override fun getLayoutResId(): Int {
-
        return R.layout.item_main
     }
 

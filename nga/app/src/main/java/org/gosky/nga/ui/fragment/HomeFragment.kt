@@ -4,6 +4,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.gosky.nga.R
 import org.gosky.nga.common.utils.RxHelper
 import org.gosky.nga.data.impl.VCodeImpl
+import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.presenter.HomePresenter
@@ -19,9 +20,10 @@ class HomeFragment : MvpFragment<HomePresenter>(), HomeView {
     @Inject
     lateinit var vCodeImpl: VCodeImpl;
 
-    override fun setupFragmentComponent(appComponent: AppComponent?) {
+    override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
         DaggerRepoComponent.builder()
                 .appComponent(appComponent)
+                .activityComponent(activityComponent)
                 .build()
                 .inject(this);
     }
