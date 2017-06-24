@@ -15,11 +15,11 @@ import io.reactivex.Single;
  * Created by guozhong on 16/10/24.
  */
 
-public class ThreadListPresenter extends BaseMvpPresenter<MainView> {
+public class ForumPresenter extends BaseMvpPresenter<MainView> {
 
     private ThreadImpl threadImpl;
     @Inject
-    public ThreadListPresenter(ThreadImpl threadImpl) {
+    public ForumPresenter(ThreadImpl threadImpl) {
         this.threadImpl = threadImpl;
     }
 

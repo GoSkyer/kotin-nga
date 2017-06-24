@@ -6,6 +6,6 @@ import org.gosky.base.mvp.BaseView;
  * Created by guozhong on 16/10/24.
  */
 
-public interface ThreadListView extends BaseView {
+public interface ForumView extends BaseView {
     void showContent(String str);
 }

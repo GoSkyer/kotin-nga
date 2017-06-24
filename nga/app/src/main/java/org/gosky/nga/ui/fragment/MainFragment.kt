@@ -12,7 +12,7 @@ import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.presenter.MainPresenter
-import org.gosky.nga.ui.activity.ThreadListActivity
+import org.gosky.nga.ui.activity.ForumActivity
 import org.gosky.nga.ui.base.MvpFragment
 import org.gosky.nga.ui.item.MainAdapter
 import org.gosky.nga.view.MainView
@@ -48,7 +48,7 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
 
             override fun onItemClick(model: Board?, position: Int) {
                 super.onItemClick(model, position)
-                startActivity<ThreadListActivity>()
+                startActivity<ForumActivity>()
             }
         }
         rcv_main_fragment.adapter.notifyDataSetChanged()
