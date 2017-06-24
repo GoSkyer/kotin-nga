@@ -11,6 +11,7 @@ import org.gosky.nga.common.config.DataConfig;
 import org.gosky.nga.common.utils.RxHelper;
 import org.gosky.nga.data.api.cache.CacheManager;
 import org.gosky.nga.data.api.service.ApiManager;
+import org.gosky.nga.data.entity.ThreadBean;
 
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class VCodeImpl {
 //    }
 
     public void test() {
-        Map<String, Thread> o = new Gson().fromJson(DataConfig.str, new TypeToken<Map<String, Thread>>() {
+        Map<String, ThreadBean> o = new Gson().fromJson(DataConfig.str, new TypeToken<Map<String, ThreadBean>>() {
         }.getType());
         Log.i(TAG, "test: " + o.toString());
     }

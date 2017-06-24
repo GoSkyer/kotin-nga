@@ -8,16 +8,15 @@ import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.gosky.nga.R
 import org.gosky.nga.data.entity.Board
-import org.gosky.nga.data.impl.ThreadImpl
-import org.gosky.nga.data.impl.VCodeImpl
 import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.presenter.MainPresenter
+import org.gosky.nga.ui.activity.ThreadListActivity
 import org.gosky.nga.ui.base.MvpFragment
 import org.gosky.nga.ui.item.MainAdapter
 import org.gosky.nga.view.MainView
-import javax.inject.Inject
+import org.jetbrains.anko.support.v4.startActivity
 
 
 /**
@@ -25,12 +24,6 @@ import javax.inject.Inject
  * @date 2017/6/19
  */
 class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainView {
-
-    @Inject
-    lateinit var threadImpl: ThreadImpl
-
-    @Inject
-    lateinit var vCodeImpl:VCodeImpl
 
     override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
         DaggerRepoComponent
@@ -52,15 +45,17 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
             override fun createItem(p0: Any?): AdapterItem<*> {
                 return MainAdapter()
             }
+
+            override fun onItemClick(model: Board?, position: Int) {
+                super.onItemClick(model, position)
+                startActivity<ThreadListActivity>()
+            }
         }
         rcv_main_fragment.adapter.notifyDataSetChanged()
     }
 
     override fun initData() {
-//        threadImpl
-//                .test()
 
-        vCodeImpl.test()
     }
 
 

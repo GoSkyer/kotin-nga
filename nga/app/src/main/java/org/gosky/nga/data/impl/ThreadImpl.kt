@@ -9,6 +9,7 @@ import io.reactivex.Single
 import org.gosky.nga.common.config.DataConfig
 import org.gosky.nga.common.utils.RxHelper
 import org.gosky.nga.data.api.service.ApiManager
+import org.gosky.nga.data.entity.ThreadBean
 import javax.inject.Inject
 
 
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class ThreadImpl @Inject
 constructor(private val apiManager: ApiManager) {
     val TAG = "ThreadImpl"
-    fun getThreads(): Single<MutableList<Thread>> {
+    fun getThreads(): Single<MutableList<ThreadBean>> {
         return apiManager.commonService
                 .getThreads("7", "1")
                 .compose(RxHelper.rxSchedulerHelper<JsonObject>())
@@ -33,7 +34,7 @@ constructor(private val apiManager: ApiManager) {
                 }
                 .map {
                     Log.i(TAG, ": it " + it.toString());
-                    val fromJson = Gson().fromJson<Map<String, Thread>>(it.toString(), object : TypeToken<Map<String, Thread>>() {}.type)
+                    val fromJson = Gson().fromJson<Map<String, ThreadBean>>(it.toString(), object : TypeToken<Map<String, ThreadBean>>() {}.type)
                     Log.i(TAG, ": gson" + fromJson);
                     fromJson
                 }
@@ -46,8 +47,8 @@ constructor(private val apiManager: ApiManager) {
     }
 
     fun test(){
-        val type = object : TypeToken<Map<String, Thread>>() {}.type
-        val fromJson = Gson().fromJson<Map<String, Thread>>(DataConfig.str, type)
+        val type = object : TypeToken<Map<String, ThreadBean>>() {}.type
+        val fromJson = Gson().fromJson<Map<String, ThreadBean>>(DataConfig.str, type)
         Log.i(TAG, ": gson" + fromJson);
     }
 

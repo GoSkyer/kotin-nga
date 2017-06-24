@@ -47,6 +47,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.ThreadListActivity"
+                  android:launchMode="singleTask"
+                  android:screenOrientation="portrait">
+
+        </activity>
+
         <meta-data
             android:name="design_width"
             android:value="720"/>

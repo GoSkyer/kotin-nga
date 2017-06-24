@@ -2,6 +2,7 @@ package org.gosky.nga.di.component;
 
 import org.gosky.base.di.scope.ActivityScope;
 import org.gosky.nga.ui.activity.MainActivity;
+import org.gosky.nga.ui.activity.ThreadListActivity;
 import org.gosky.nga.ui.fragment.HomeFragment;
 import org.gosky.nga.ui.fragment.LoanFragment;
 import org.gosky.nga.ui.fragment.MainFragment;
@@ -25,4 +26,6 @@ public interface RepoComponent {
     void inject(MineFragment mineFragment);
 
     void inject(MainFragment mainFragment);
+
+    void inject(ThreadListActivity threadListActivity);
 }

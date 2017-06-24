@@ -5,7 +5,7 @@ package org.gosky.nga.data.entity;
  * @date 2017/6/23
  */
 
-public class Thread {
+public class ThreadBean {
 
     private int tid;
     private int fid;
@@ -159,5 +159,28 @@ public class Thread {
 
     public void setTpcurl(String tpcurl) {
         this.tpcurl = tpcurl;
+    }
+
+    @Override
+    public String toString() {
+        return "ThreadBean{" +
+                "tid=" + tid +
+                ", fid=" + fid +
+                ", quote_from=" + quote_from +
+                ", quote_to='" + quote_to + '\'' +
+                ", icon=" + icon +
+                ", topic_misc='" + topic_misc + '\'' +
+                ", author='" + author + '\'' +
+                ", authorid=" + authorid +
+                ", subject='" + subject + '\'' +
+                ", type=" + type +
+                ", postdate=" + postdate +
+                ", lastpost=" + lastpost +
+                ", lastposter='" + lastposter + '\'' +
+                ", replies=" + replies +
+                ", lastmodify=" + lastmodify +
+                ", recommend=" + recommend +
+                ", tpcurl='" + tpcurl + '\'' +
+                '}';
     }
 }
