@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface ForumView extends BaseView {
     void refreshRcv(List<ThreadBean> str);
+    void loadMoreRcv(List<ThreadBean> list);
 }

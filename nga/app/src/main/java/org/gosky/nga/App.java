@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Process;
 import android.util.Log;
 
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lcodecore.tkrefreshlayout.footer.BallPulseView;
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.thejoyrun.router.Router;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
@@ -67,6 +70,8 @@ public class App extends BaseApplication {
         CrashReport.initCrashReport(getApplicationContext(), "900060152", false);
         boardHolders = new BoardConfig().buildBoardData();
         Log.i(TAG, "onCreate: ");
+        TwinklingRefreshLayout.setDefaultHeader(ProgressLayout.class.getName());
+        TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
     }
 
     private boolean shouldInit() {
