@@ -22,9 +22,9 @@ import javax.inject.Inject
 class ThreadImpl @Inject
 constructor(private val apiManager: ApiManager) {
     val TAG = "ThreadImpl"
-    fun getThreads(): Single<MutableList<ThreadBean>> {
+    fun getThreads(fid:String): Single<MutableList<ThreadBean>> {
         return apiManager.commonService
-                .getThreads("7", "1")
+                .getThreads(fid, "1")
                 .compose(RxHelper.rxSchedulerHelper<JsonObject>())
                 .map {
                     val asJsonObject = it.getAsJsonObject("data")

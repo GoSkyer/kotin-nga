@@ -1,13 +1,17 @@
 package org.gosky.nga.ui.activity
 
-import io.reactivex.functions.Consumer
+import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
+import kale.adapter.CommonRcvAdapter
+import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.activity_forum.*
 import org.gosky.nga.R
+import org.gosky.nga.data.entity.ThreadBean
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.ForumPresenter
 import org.gosky.nga.ui.base.MvpActivity
+import org.gosky.nga.ui.item.ForumItem
 import org.gosky.nga.view.ForumView
-import javax.inject.Inject
 
 /**
  * Created by zohar on 2017/6/24.
@@ -15,9 +19,7 @@ import javax.inject.Inject
  */
 class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
 
-    @Inject
-    lateinit var forumPresenter: ForumPresenter
-
+    val threadList:List<ThreadBean> = ArrayList()
 
     override fun setupActivityComponent(repoComponent: RepoComponent) {
         repoComponent.inject(this)
@@ -29,13 +31,29 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
 
     override fun setupView() {
         setSupportActionBar(toolbar_forum_activity)
+        toolbar_forum_activity.title = intent.extras["name"].toString()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        rcv_forum_activity.layoutManager = LinearLayoutManager(mContext)
+        rcv_forum_activity.adapter = object : CommonRcvAdapter<ThreadBean>(threadList){
+            override fun createItem(p0: Any?): AdapterItem<*> {
+                return ForumItem()
+            }
+        }
+
+    }
+
+   override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun initData() {
-        forumPresenter.threads
-                .subscribe(Consumer {  })
+        mPresenter.getThreads(intent.extras["forumId"].toString())
     }
 
-    override fun showContent(str: String?) {
+    override fun refreshRcv(list: MutableList<ThreadBean>?) {
+        (rcv_forum_activity.adapter as CommonRcvAdapter<*>).data = list
     }
 }

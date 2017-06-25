@@ -1,6 +1,7 @@
 package org.gosky.base.mvp;
 
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.sdsmdg.tastytoast.TastyToast;
@@ -11,16 +12,18 @@ import org.gosky.base.base.BaseApplication;
  * Created by hunji on 16/7/7.
  */
 public class BaseMvpPresenter<V extends BaseView> implements BasePresenter<V> {
-
+    private static final String TAG = "BaseMvpPresenter";
     private V mMvpView;
 
     @Override
     public void attachView(V mvpView) {
         mMvpView = mvpView;
+        Log.i(TAG, "attachView: " + mMvpView);
     }
 
     @Override
     public void detachView() {
+
         mMvpView = null;
     }
 
@@ -29,6 +32,7 @@ public class BaseMvpPresenter<V extends BaseView> implements BasePresenter<V> {
     }
 
     public V getMvpView() {
+        Log.i(TAG, "getMvpView: " + mMvpView);
         return mMvpView;
     }
 

@@ -48,7 +48,7 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
 
             override fun onItemClick(model: Board?, position: Int) {
                 super.onItemClick(model, position)
-                startActivity<ForumActivity>()
+                startActivity<ForumActivity>("forumId" to model?.url.toString(),"name" to model?.name.toString())
             }
         }
         rcv_main_fragment.adapter.notifyDataSetChanged()
