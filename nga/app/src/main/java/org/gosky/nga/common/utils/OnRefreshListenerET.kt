@@ -18,8 +18,8 @@ fun TwinklingRefreshLayout.onRefreshListener(block1: RefreshContract.() -> Unit)
 
 class RefreshContract(val a: TwinklingRefreshLayout) {
 
-    lateinit var load: () -> Unit
-    lateinit var refresh: () -> Unit
+    private lateinit var load: () -> Unit
+    private lateinit var refresh: () -> Unit
 
     val lis = object : RefreshListenerAdapter() {
         override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
@@ -38,11 +38,11 @@ class RefreshContract(val a: TwinklingRefreshLayout) {
     }
 
 
-    fun loadL(block: () -> Unit) {
+    fun loadCallBack(block: () -> Unit) {
         load = block
     }
 
-    fun refreshL(block: () -> Unit) {
+    fun refreshCallBack(block: () -> Unit) {
         refresh = block
     }
 }

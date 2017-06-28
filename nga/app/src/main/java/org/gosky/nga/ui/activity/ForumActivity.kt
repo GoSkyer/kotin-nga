@@ -42,11 +42,11 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
             }
         }
         refresh_forum_activity.onRefreshListener {
-            refreshL {
+            refreshCallBack {
                 mPresenter.getThreads(fid)
             }
 
-            loadL {
+            loadCallBack {
                 mPresenter.getMoreThread(fid, (threadList.size / 40 + 1).toString())
             }
         }
