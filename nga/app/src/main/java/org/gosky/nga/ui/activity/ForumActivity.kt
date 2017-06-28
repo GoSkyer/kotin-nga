@@ -41,11 +41,16 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
                 return ForumItem()
             }
         }
-        refresh_forum_activity.onRefreshListener({
-            mPresenter.getThreads(fid)
-        }, {
-            mPresenter.getMoreThread(fid, (threadList.size / 40 + 1).toString())
-        })
+        refresh_forum_activity.onRefreshListener {
+            refreshL {
+                mPresenter.getThreads(fid)
+            }
+
+            loadL {
+                mPresenter.getMoreThread(fid, (threadList.size / 40 + 1).toString())
+            }
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

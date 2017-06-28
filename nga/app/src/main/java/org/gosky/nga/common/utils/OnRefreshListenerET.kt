@@ -7,20 +7,42 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
  * @author guozhong
  * @date 2017/6/28
  */
-fun TwinklingRefreshLayout.onRefreshListener(block1: () -> Unit, block2: () -> Unit) {
+fun TwinklingRefreshLayout.onRefreshListener(block1: RefreshContract.() -> Unit): RefreshContract {
+
+    this.setFloatRefresh(true)
+    this.setEnableOverScroll(false)
+    val refreshContract = RefreshContract(this)
+    block1.invoke(refreshContract)
+    return refreshContract
+}
+
+class RefreshContract(val a: TwinklingRefreshLayout) {
+
+    lateinit var load: () -> Unit
+    lateinit var refresh: () -> Unit
 
     val lis = object : RefreshListenerAdapter() {
         override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
             super.onRefresh(refreshLayout)
-            block1()
+            refresh()
         }
 
         override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
             super.onLoadMore(refreshLayout)
-            block2()
+            load()
         }
     }
-    this.setFloatRefresh(true)
-    this.setEnableOverScroll(false)
-    this.setOnRefreshListener(lis)
+
+    init {
+        a.setOnRefreshListener(lis)
+    }
+
+
+    fun loadL(block: () -> Unit) {
+        load = block
+    }
+
+    fun refreshL(block: () -> Unit) {
+        refresh = block
+    }
 }

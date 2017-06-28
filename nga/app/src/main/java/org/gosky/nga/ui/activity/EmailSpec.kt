@@ -16,5 +16,5 @@ class BodySpec {
 }
 
 fun String.email(init: EmailSpec.() -> Unit): Unit {
-
+        
 }
