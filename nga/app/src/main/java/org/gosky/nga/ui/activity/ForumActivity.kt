@@ -2,12 +2,11 @@ package org.gosky.nga.ui.activity
 
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kale.adapter.CommonRcvAdapter
 import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.activity_forum.*
 import org.gosky.nga.R
+import org.gosky.nga.common.utils.onRefreshListener
 import org.gosky.nga.data.entity.ThreadBean
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.ForumPresenter
@@ -22,7 +21,7 @@ import org.gosky.nga.view.ForumView
 class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
 
     val threadList: ArrayList<ThreadBean> = ArrayList()
-    val fid:String by lazy { intent.extras["forumId"].toString() }
+    val fid: String by lazy { intent.extras["forumId"].toString() }
 
     override fun setupActivityComponent(repoComponent: RepoComponent) {
         repoComponent.inject(this)
@@ -42,20 +41,11 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
                 return ForumItem()
             }
         }
-        refresh_forum_activity.setFloatRefresh(true)
-        refresh_forum_activity.setEnableOverScroll(false)
-        refresh_forum_activity.setOnRefreshListener(object : RefreshListenerAdapter() {
-            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
-                super.onRefresh(refreshLayout)
-                mPresenter.getThreads(fid)
-            }
-
-            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
-                super.onLoadMore(refreshLayout)
-                mPresenter.getMoreThread(fid, (threadList.size / 40 + 1).toString())
-            }
+        refresh_forum_activity.onRefreshListener({
+            mPresenter.getThreads(fid)
+        }, {
+            mPresenter.getMoreThread(fid, (threadList.size / 40 + 1).toString())
         })
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
