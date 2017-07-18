@@ -46,11 +46,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.activity.ForumActivity"
-                  android:launchMode="singleTask"
-                  android:screenOrientation="portrait">
-
+        <activity
+            android:name=".ui.activity.ForumActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
 
         <meta-data
@@ -112,6 +111,16 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login">
+        </activity>
+        <activity
+            android:name=".ui.activity.TestActivity"
+            android:label="ngaDebug"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

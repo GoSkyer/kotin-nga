@@ -58,7 +58,6 @@ class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainVi
 
     }
 
-
     override fun showContent(str: String?) {
 
     }
