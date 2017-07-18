@@ -5,6 +5,7 @@ apply plugin: 'bugly'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.chenenyu.router'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -100,7 +101,7 @@ dependencies {
     compile 'com.kaopiz:kprogresshud:1.0.5'
     compile 'me.shaohui:bottomdialog:1.1.9'
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.0'
-    compile 'org.jetbrains.anko:anko-support-v4-commons:0.10.0'
+    compile 'org.jetbrains.anko:anko-support-v4-commons:0.10.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     kapt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
     kapt 'com.google.dagger:dagger-compiler:2.11'
