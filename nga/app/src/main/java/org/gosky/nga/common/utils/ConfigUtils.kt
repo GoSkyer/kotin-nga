@@ -10,7 +10,7 @@ class AddRouter {
     fun config(block: ConfigBuilder.() -> Unit) {
         val configBuilder = ConfigBuilder()
         configBuilder.block()
-        Router.handleRouteTable() {
+        Router.handleRouteTable {
             it.put(configBuilder.key, configBuilder.value)
         }
     }

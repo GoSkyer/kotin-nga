@@ -63,6 +63,29 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <ImageView
+                android:id="@+id/iv_image_check_code"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_captcha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="captcha"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"

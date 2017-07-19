@@ -17,6 +17,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import org.gosky.base.base.BaseApplication;
 import org.gosky.nga.common.config.AppConfig;
 import org.gosky.nga.common.config.BoardConfig;
+import org.gosky.nga.common.config.RouterTableKt;
 import org.gosky.nga.data.entity.BoardHolder;
 import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerAppComponent;
@@ -72,6 +73,7 @@ public class App extends BaseApplication {
         Log.i(TAG, "onCreate: ");
         TwinklingRefreshLayout.setDefaultHeader(ProgressLayout.class.getName());
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
+        RouterTableKt.init();
     }
 
     private boolean shouldInit() {

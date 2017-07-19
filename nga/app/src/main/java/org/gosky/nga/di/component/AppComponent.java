@@ -9,7 +9,7 @@ import org.gosky.base.di.module.ClientModule;
 import org.gosky.base.di.module.ImageModule;
 import org.gosky.base.widget.imageloader.ImageLoader;
 import org.gosky.nga.data.api.cache.CacheManager;
-import org.gosky.nga.data.api.service.ApiManager;
+import org.gosky.nga.data.api.service.CommonApi;
 import org.gosky.nga.di.module.CacheModule;
 import org.gosky.nga.di.module.ServiceModule;
 
@@ -25,7 +25,7 @@ public interface AppComponent {
     Application Application();
 
     //服务管理器,retrofitApi
-    ApiManager serviceManager();
+    CommonApi serviceManager();
 
     //缓存管理器
     CacheManager cacheManager();

@@ -5,8 +5,11 @@ import com.google.gson.JsonObject;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 
@@ -25,10 +28,26 @@ public interface CommonApi {
      *
      * @return
      */
-    @GET("http://account.178.com/q_vcode.php?_act=gen_reg")
-    Observable<ResponseBody> getImageValidCode();
+    @Headers({
+            "cache-control:no-cache",
+            "referer:https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui"
+    })
+    @GET("https://bbs.nga.cn/login_check_code.php")
+    Observable<ResponseBody> getImageValidCode(@Query("id") String id);
+
+    @Headers({
+            "referer:https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui",
+            "accept-encoding:gzip, deflate, br",
+            "accept-language:zh-CN,zh;q=0.8"
+    })
+    @POST("https://bbs.nga.cn/nuke.php?__lib=login&__act=login&raw=3")
+    @FormUrlEncoded
+    Observable<ResponseBody> login(@Field("name") String name,@Field("type") String type,@Field("password") String password,
+                                   @Field("rid") String rid,@Field("captcha") String captcha);
 
 
     @GET("http://nga.178.com/thread.php?lite=js&noprefix")
     Observable<JsonObject> getThreads(@Query("fid") String fid, @Query("page") String page);
+
+
 }

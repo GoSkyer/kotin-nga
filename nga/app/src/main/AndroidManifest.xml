@@ -52,6 +52,12 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
+
         <meta-data
             android:name="design_width"
             android:value="720"/>
@@ -108,10 +114,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:label="@string/title_activity_login">
-        </activity>
         <activity
             android:name=".ui.activity.TestActivity"
             android:label="ngaDebug"

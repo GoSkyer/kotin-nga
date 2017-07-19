@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import org.gosky.nga.common.config.DataConfig;
 import org.gosky.nga.common.utils.RxHelper;
 import org.gosky.nga.data.api.cache.CacheManager;
-import org.gosky.nga.data.api.service.ApiManager;
+import org.gosky.nga.data.api.service.CommonApi;
 import org.gosky.nga.data.entity.ThreadBean;
 
 import java.util.Map;
@@ -25,33 +25,25 @@ import okhttp3.ResponseBody;
  */
 
 public class VCodeImpl {
-    private ApiManager apiManager;
+    private CommonApi apiManager;
     private CacheManager cacheManager;
     private static final String TAG = "VCodeImpl";
 
 
     @Inject
-    public VCodeImpl(ApiManager apiManager, CacheManager cacheManager) {
+    public VCodeImpl(CommonApi apiManager, CacheManager cacheManager) {
         this.apiManager = apiManager;
         this.cacheManager = cacheManager;
     }
 
-    public Observable<Bitmap> getSmsVCode() {
-        return apiManager.getCommonService()
-                .getImageValidCode()
+    public Observable<Bitmap> getSmsVCode(String rid) {
+        return apiManager
+                .getImageValidCode(rid)
                 .compose(RxHelper.rxSchedulerHelper())
                 .map(ResponseBody::byteStream)
                 .map(BitmapFactory::decodeStream);
     }
-//
-//    public Observable<Object> getCaptcha(String uuid
-//            , String timestamp) {
-//        return apiManager.getCommonService()
-//                .getCaptcha(uuid
-//                        , timestamp)
-//                .compose(RxHelper.rxSchedulerHelper())
-//                .compose(RxHelper.handleResult());
-//    }
+
 
     public void test() {
         Map<String, ThreadBean> o = new Gson().fromJson(DataConfig.str, new TypeToken<Map<String, ThreadBean>>() {

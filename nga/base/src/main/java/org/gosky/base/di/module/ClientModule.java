@@ -167,7 +167,8 @@ public class ClientModule {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            if ("application/x-javascript".equals(response.header("Content-Type")))
+            String contentType = response.header("Content-Type");
+            if ("application/x-javascript".equals(contentType) || "text/html".equals(contentType))
                 return gbk2utf8(response);
             else
                 return response;

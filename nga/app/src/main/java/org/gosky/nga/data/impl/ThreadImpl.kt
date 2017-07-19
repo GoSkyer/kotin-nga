@@ -8,7 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import org.gosky.nga.common.config.DataConfig
 import org.gosky.nga.common.utils.RxHelper
-import org.gosky.nga.data.api.service.ApiManager
+import org.gosky.nga.data.api.service.CommonApi
 import org.gosky.nga.data.entity.ThreadBean
 import javax.inject.Inject
 
@@ -20,10 +20,10 @@ import javax.inject.Inject
  */
 
 class ThreadImpl @Inject
-constructor(private val apiManager: ApiManager) {
+constructor(private val apiManager: CommonApi) {
     val TAG = "ThreadImpl"
     fun getThreads(fid: String, page: String): Single<MutableList<ThreadBean>> {
-        return apiManager.commonService
+        return apiManager
                 .getThreads(fid, page)
                 .compose(RxHelper.rxSchedulerHelper<JsonObject>())
                 .map {

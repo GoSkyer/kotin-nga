@@ -12,6 +12,8 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.App
 import org.gosky.nga.R
+import org.gosky.nga.common.config.loginActivity
+import org.gosky.nga.common.utils.router
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpActivity
@@ -95,6 +97,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            router(loginActivity)
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
