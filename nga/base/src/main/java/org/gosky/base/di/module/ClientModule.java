@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -24,10 +25,13 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.Buffer;
 import okio.GzipSource;
 import okio.Okio;
 import retrofit2.Retrofit;
@@ -126,6 +130,7 @@ public class ClientModule {
                 .cache(cache)//设置缓存
                 .addInterceptor(new Gbk2utf8Interceptor())
                 .addInterceptor(new UnzippingInterceptor())
+                .addInterceptor(new GBKUrlEncodeInterceptor())
 //                .addInterceptor(new BasicAuthIntercept())
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
@@ -197,8 +202,31 @@ public class ClientModule {
                 .build();
     }
 
+    private class GBKUrlEncodeInterceptor implements Interceptor {
 
-
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            Request.Builder requestBuilder = request.newBuilder();
+            if (request.body() != null)
+                request = requestBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=GBK"),
+                        URLDecoder.decode(bodyToString(request.body()), "UTF-8")))
+                        .build();
+            return chain.proceed(request);
+        }
+    }
+    private static String bodyToString(final RequestBody request) {
+        try {
+            final Buffer buffer = new Buffer();
+            if (request != null)
+                request.writeTo(buffer);
+            else
+                return "";
+            return buffer.readUtf8();
+        } catch (final IOException e) {
+            return "did not work";
+        }
+    }
 
     public static class Buidler {
         private HttpUrl apiUrl = HttpUrl.parse("https://api.github.com/");
@@ -217,8 +245,6 @@ public class ClientModule {
             }
             return new ClientModule(this);
         }
-
-
 
 
     }

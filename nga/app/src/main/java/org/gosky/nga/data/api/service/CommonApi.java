@@ -42,8 +42,17 @@ public interface CommonApi {
     })
     @POST("https://bbs.nga.cn/nuke.php?__lib=login&__act=login&raw=3")
     @FormUrlEncoded
-    Observable<ResponseBody> login(@Field("name") String name,@Field("type") String type,@Field("password") String password,
-                                   @Field("rid") String rid,@Field("captcha") String captcha);
+    Observable<ResponseBody> login(@Field(encoded = true, value = "name") String name, @Field("type") String type, @Field("password") String password,
+                                   @Field("rid") String rid, @Field("captcha") String captcha);
+
+    @Headers({
+            "referer:https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui",
+            "accept-encoding:gzip, deflate, br",
+            "accept-language:zh-CN,zh;q=0.8"
+    })
+    @POST("https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui/nuke.php?__lib=login&__act=set_cookie&nojump=1&raw=3&to=https://bbs.nga.cn/nuke.php?__lib=login&__act=set_cookie_complete&raw=3")
+    @FormUrlEncoded
+    Observable<ResponseBody> getCookie(String uid, String cid);
 
 
     @GET("http://nga.178.com/thread.php?lite=js&noprefix")

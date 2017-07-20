@@ -16,7 +16,8 @@ class UserImpl @Inject constructor(private val commonApi: CommonApi) {
     fun login(name: String, password: String, captcha: String, rid: String) {
         commonApi.login(name, "name", password, rid, captcha)
                 .compose(RxHelper.rxSchedulerHelper())
-                .subscribe { Log.d(TAG, ": " + it.string()) }
+                .subscribe({ Log.d(TAG, ": " + it.string()) }
+                        , { it.printStackTrace() })
 
     }
 }
