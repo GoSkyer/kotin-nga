@@ -105,4 +105,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     kapt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
     kapt 'com.google.dagger:dagger-compiler:2.11'
+    compile 'org.jsoup:jsoup:1.10.3'
 }
