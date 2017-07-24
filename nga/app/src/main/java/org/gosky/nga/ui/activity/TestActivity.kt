@@ -124,7 +124,7 @@ class TestActivity : AppCompatActivity() {
              * 参数 uid，cid是在登陆成功后返回结果中获取的
              */
             val mediaType = MediaType.parse("application/x-www-form-urlencoded")
-            val body = RequestBody.create(mediaType, "uid=25944452&cid=Z8faorhcdddijfheljgl2anvolb13i5t5uta6ikn&to=")
+            val body = RequestBody.create(mediaType, "uid=25944452&cid=Z8fb0soavsk4ppdhrlhs85bmbg7avt72n8mrvgb0&to=")
             val request = Request.Builder()
                     .url("https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui%2Fnuke.php%3F__lib%3Dlogin&__act=set_cookie&nojump=1&raw=3&to=https%3A%2F%2Fbbs.nga.cn%2Fnuke.php%3F__lib%3Dlogin%26__act%3Dset_cookie_complete%26raw%3D3")
                     .post(body)
@@ -137,19 +137,23 @@ class TestActivity : AppCompatActivity() {
             val string = response.body()?.string()
             Log.d("heads", ": " + response.headers().toString());
             uiThread {
-                val s = string?.split("<script>")?.get(1)
-                val json = s?.split("</script>")?.get(0)?.replace("window.script_muti_get_var_store=", "")
-                Log.d("getCookie", ": " + string);
-                val j: JsonObject = JsonParser().parse(json).getAsJsonObject()
-                val asJsonObject = j.getAsJsonObject("data")
-                val url1 = asJsonObject.get("0").asString
-                val url2 = asJsonObject.get("1").asString
-                val url3 = asJsonObject.get("2").asString
-                Log.d("url1", ": " + url1);
-                Log.d("url2", ": " + url2);
-                Log.d("url3", ": " + url3);
-                doAsync {
-                    setCookie(url1, url2, url3)
+                try {
+                    val s = string?.split("<script>")?.get(1)
+                    val json = s?.split("</script>")?.get(0)?.replace("window.script_muti_get_var_store=", "")
+                    Log.d("getCookie", ": " + string);
+                    val j: JsonObject = JsonParser().parse(json).getAsJsonObject()
+                    val asJsonObject = j.getAsJsonObject("data")
+                    val url1 = asJsonObject.get("0").asString
+                    val url2 = asJsonObject.get("1").asString
+                    val url3 = asJsonObject.get("2").asString
+                    Log.d("url1", ": " + url1);
+                    Log.d("url2", ": " + url2);
+                    Log.d("url3", ": " + url3);
+                    doAsync {
+                        setCookie(url1, url2, url3)
+                    }
+                } catch(e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }

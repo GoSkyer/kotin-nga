@@ -3,6 +3,11 @@ package org.gosky.base.di.module;
 import android.app.Application;
 import android.util.Log;
 
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+
+import org.gosky.base.base.BaseApplication;
 import org.gosky.base.utils.DataHelper;
 
 import java.io.BufferedReader;
@@ -11,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -20,6 +28,8 @@ import dagger.Provides;
 import io.rx_cache2.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.Cache;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -44,6 +54,7 @@ public class ClientModule {
     private static final int TOME_OUT = 10;
     public static final int HTTP_RESPONSE_DISK_CACHE_MAX_SIZE = 10 * 1024 * 1024;//缓存文件最大值为10Mb
     public HttpUrl mApiUrl;
+    private static final String TAG = "ClientModule";
 
     public ClientModule(Buidler buidler) {
         this.mApiUrl = buidler.apiUrl;
@@ -123,7 +134,6 @@ public class ClientModule {
      * @return
      */
     private OkHttpClient configureClient(OkHttpClient.Builder okHttpClient, Cache cache) {
-
         OkHttpClient.Builder builder = okHttpClient
                 .connectTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TOME_OUT, TimeUnit.SECONDS)
@@ -132,10 +142,32 @@ public class ClientModule {
                 .addInterceptor(new UnzippingInterceptor())
                 .addInterceptor(new GBKUrlEncodeInterceptor())
 //                .addInterceptor(new BasicAuthIntercept())
-                .addInterceptor(new HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BODY));
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(BaseApplication.getContext())));
         return builder
                 .build();
+    }
+
+
+    private class MyCookieJar implements CookieJar {
+
+        final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            String key = url.url().getHost() + url.url().getPath();
+            if (key.equals("bbs.ngacn.cc/nuke.php"))
+                cookieStore.put(key, cookies);
+            Log.i(TAG, "saveFromResponse: " + cookieStore.toString());
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            List<Cookie> cookies = cookieStore.get("bbs.ngacn.cc/nuke.php");
+            Log.i(TAG, "loadForRequest: " + cookieStore.toString());
+            Log.i(TAG, "loadForRequest size: " + cookieStore.size());
+            return cookies == null ? new ArrayList<Cookie>() : cookies;
+        }
     }
 
     private class UnzippingInterceptor implements Interceptor {
@@ -215,6 +247,7 @@ public class ClientModule {
             return chain.proceed(request);
         }
     }
+
     private static String bodyToString(final RequestBody request) {
         try {
             final Buffer buffer = new Buffer();

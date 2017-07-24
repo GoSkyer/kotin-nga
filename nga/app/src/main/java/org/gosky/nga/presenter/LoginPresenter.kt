@@ -1,5 +1,6 @@
 package org.gosky.nga.presenter
 
+import android.util.Log
 import org.gosky.base.mvp.BaseMvpPresenter
 import org.gosky.nga.data.impl.UserImpl
 import org.gosky.nga.data.impl.VCodeImpl
@@ -13,7 +14,7 @@ import javax.inject.Inject
  */
 
 class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl: UserImpl) : BaseMvpPresenter<LoginView>() {
-
+    private val TAG = "LoginPresenter";
     val rid = "_" + Random().nextFloat()
 
     fun getVCode() {
@@ -24,6 +25,14 @@ class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl:
 
     fun login(name: String, password: String, captcha: String) {
         userImpl.login(name = "大蘑菇菇", password = "hunji_wisdom", captcha = captcha, rid = rid)
+                .flatMap { userImpl.getCookie(it.uid, it.cid) }
+                .map {
+                    userImpl.setCookie(it.get("0").asString, it.get("1").asString, it.get("2").asString)
+                }
+                .subscribe({
+                    Log.i(TAG, ": login success" )
+                }, { it.printStackTrace() })
+
     }
 
 

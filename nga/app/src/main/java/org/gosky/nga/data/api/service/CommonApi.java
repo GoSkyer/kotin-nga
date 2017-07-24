@@ -11,6 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 
 public interface CommonApi {
@@ -50,13 +51,15 @@ public interface CommonApi {
             "accept-encoding:gzip, deflate, br",
             "accept-language:zh-CN,zh;q=0.8"
     })
-    @POST("https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui/nuke.php?__lib=login&__act=set_cookie&nojump=1&raw=3&to=https://bbs.nga.cn/nuke.php?__lib=login&__act=set_cookie_complete&raw=3")
+    @POST("https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui%2Fnuke.php%3F__lib%3Dlogin&__act=set_cookie&nojump=1&raw=3&to=https%3A%2F%2Fbbs.nga.cn%2Fnuke.php%3F__lib%3Dlogin%26__act%3Dset_cookie_complete%26raw%3D3")
     @FormUrlEncoded
-    Observable<ResponseBody> getCookie(String uid, String cid);
+    Observable<ResponseBody> getCookie(@Field("uid") int uid, @Field("cid") String cid);
+
+    @GET
+    Observable<ResponseBody> setCookie(@Url String url);
 
 
     @GET("http://nga.178.com/thread.php?lite=js&noprefix")
     Observable<JsonObject> getThreads(@Query("fid") String fid, @Query("page") String page);
-
 
 }

@@ -14,7 +14,7 @@ public class ThreadBean {
     private int icon;
     private String topic_misc;
     private String author;
-    private int authorid;
+    private String authorid;
     private String subject;
     private int type;
     private int postdate;
@@ -81,11 +81,11 @@ public class ThreadBean {
         this.author = author;
     }
 
-    public int getAuthorid() {
+    public String getAuthorid() {
         return authorid;
     }
 
-    public void setAuthorid(int authorid) {
+    public void setAuthorid(String authorid) {
         this.authorid = authorid;
     }
 
