@@ -2,6 +2,7 @@ package org.gosky.nga.di.component;
 
 import android.app.Application;
 
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.google.gson.Gson;
 
 import org.gosky.base.di.module.AppModule;
@@ -37,4 +38,7 @@ public interface AppComponent {
 
     //gson
     Gson gson();
+
+    // cookie
+    PersistentCookieJar cookieJar();
 }

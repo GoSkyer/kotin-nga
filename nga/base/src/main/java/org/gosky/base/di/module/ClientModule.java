@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -28,8 +25,6 @@ import dagger.Provides;
 import io.rx_cache2.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.Cache;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -67,9 +62,9 @@ public class ClientModule {
 
     @Singleton
     @Provides
-    public OkHttpClient provideClient(Cache cache) {
+    public OkHttpClient provideClient(Cache cache, PersistentCookieJar cookieJar) {
         final OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-        return configureClient(okHttpClient, cache);
+        return configureClient(okHttpClient, cache, cookieJar);
     }
 
 
@@ -92,6 +87,11 @@ public class ClientModule {
         return new Cache(cacheFile, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE);//设置缓存路径和大小
     }
 
+    @Singleton
+    @Provides
+    public PersistentCookieJar provideCookieJar(Application application) {
+        return new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(BaseApplication.getContext()));
+    }
 
     /**
      * 提供缓存地址
@@ -133,7 +133,7 @@ public class ClientModule {
      * @param okHttpClient
      * @return
      */
-    private OkHttpClient configureClient(OkHttpClient.Builder okHttpClient, Cache cache) {
+    private OkHttpClient configureClient(OkHttpClient.Builder okHttpClient, Cache cache, PersistentCookieJar cookieJar) {
         OkHttpClient.Builder builder = okHttpClient
                 .connectTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TOME_OUT, TimeUnit.SECONDS)
@@ -143,32 +143,11 @@ public class ClientModule {
                 .addInterceptor(new GBKUrlEncodeInterceptor())
 //                .addInterceptor(new BasicAuthIntercept())
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(BaseApplication.getContext())));
+                .cookieJar(cookieJar);
         return builder
                 .build();
     }
 
-
-    private class MyCookieJar implements CookieJar {
-
-        final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
-
-        @Override
-        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-            String key = url.url().getHost() + url.url().getPath();
-            if (key.equals("bbs.ngacn.cc/nuke.php"))
-                cookieStore.put(key, cookies);
-            Log.i(TAG, "saveFromResponse: " + cookieStore.toString());
-        }
-
-        @Override
-        public List<Cookie> loadForRequest(HttpUrl url) {
-            List<Cookie> cookies = cookieStore.get("bbs.ngacn.cc/nuke.php");
-            Log.i(TAG, "loadForRequest: " + cookieStore.toString());
-            Log.i(TAG, "loadForRequest size: " + cookieStore.size());
-            return cookies == null ? new ArrayList<Cookie>() : cookies;
-        }
-    }
 
     private class UnzippingInterceptor implements Interceptor {
         @Override

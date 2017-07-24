@@ -1,6 +1,7 @@
 package org.gosky.nga.presenter
 
 import android.util.Log
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import org.gosky.base.mvp.BaseMvpPresenter
 import org.gosky.nga.data.impl.UserImpl
 import org.gosky.nga.data.impl.VCodeImpl
@@ -13,7 +14,7 @@ import javax.inject.Inject
  * @date 2017/7/19
  */
 
-class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl: UserImpl) : BaseMvpPresenter<LoginView>() {
+class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl: UserImpl,val cookieJar: PersistentCookieJar) : BaseMvpPresenter<LoginView>() {
     private val TAG = "LoginPresenter";
     val rid = "_" + Random().nextFloat()
 
@@ -32,8 +33,6 @@ class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl:
                 .subscribe({
                     Log.i(TAG, ": login success" )
                 }, { it.printStackTrace() })
-
     }
-
 
 }
