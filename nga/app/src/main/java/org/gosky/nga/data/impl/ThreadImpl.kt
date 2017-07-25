@@ -10,6 +10,7 @@ import org.gosky.nga.common.config.DataConfig
 import org.gosky.nga.common.utils.RxHelper
 import org.gosky.nga.data.api.service.CommonApi
 import org.gosky.nga.data.entity.ThreadBean
+import org.gosky.nga.data.entity.TopicBean
 import javax.inject.Inject
 
 
@@ -23,6 +24,7 @@ class ThreadImpl @Inject
 constructor(private val apiManager: CommonApi) {
     val TAG = "ThreadImpl"
     fun getThreads(fid: String, page: String): Single<MutableList<ThreadBean>> {
+        test()
         return apiManager
                 .getThreads(fid, page)
                 .compose(RxHelper.rxSchedulerHelper<JsonObject>())
@@ -47,9 +49,15 @@ constructor(private val apiManager: CommonApi) {
     }
 
     fun test() {
-        val type = object : TypeToken<Map<String, ThreadBean>>() {}.type
-        val fromJson = Gson().fromJson<Map<String, ThreadBean>>(DataConfig.str, type)
-        Log.i(TAG, ": gson" + fromJson);
+//        val type = object : TypeToken<Map<String, ThreadBean>>() {}.type
+//        val fromJson = Gson().fromJson<Map<String, ThreadBean>>(DataConfig.str, type)
+
+        try {
+            val fromJson = Gson().fromJson(DataConfig.topic, TopicBean::class.java)
+            Log.i(TAG, ": test" + fromJson);
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

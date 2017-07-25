@@ -23,6 +23,7 @@ public class ForumPresenter extends BaseMvpPresenter<ForumView> {
         threadImpl.getThreads(fid, "1")
                 .subscribe(threadBeen -> getMvpView().refreshRcv(threadBeen)
                         , Throwable::printStackTrace);
+
     }
 
     public void getMoreThread(String fid, String page) {
