@@ -14,7 +14,7 @@ import javax.inject.Inject
  * @date 2017/7/19
  */
 
-class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl: UserImpl,val cookieJar: PersistentCookieJar) : BaseMvpPresenter<LoginView>() {
+class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl: UserImpl, val cookieJar: PersistentCookieJar) : BaseMvpPresenter<LoginView>() {
     private val TAG = "LoginPresenter";
     val rid = "_" + Random().nextFloat()
 
@@ -31,7 +31,7 @@ class LoginPresenter @Inject constructor(val vCodeImpl: VCodeImpl, val userImpl:
                     userImpl.setCookie(it.get("0").asString, it.get("1").asString, it.get("2").asString)
                 }
                 .subscribe({
-                    Log.i(TAG, ": login success" )
+                    Log.i(TAG, ": login success")
                 }, { it.printStackTrace() })
     }
 

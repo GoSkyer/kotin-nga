@@ -6,7 +6,9 @@ import kale.adapter.CommonRcvAdapter
 import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.activity_forum.*
 import org.gosky.nga.R
+import org.gosky.nga.common.config.topicActivity
 import org.gosky.nga.common.utils.onRefreshListener
+import org.gosky.nga.common.utils.router
 import org.gosky.nga.data.entity.ThreadBean
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.ForumPresenter
@@ -39,6 +41,14 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
         rcv_forum_activity.adapter = object : CommonRcvAdapter<ThreadBean>(threadList) {
             override fun createItem(p0: Any?): AdapterItem<*> {
                 return ForumItem()
+            }
+
+            override fun onItemClick(model: ThreadBean?, position: Int) {
+                super.onItemClick(model, position)
+                router {
+                    url = topicActivity
+                    addParams(p = "tid" to model?.tid.toString())
+                }
             }
         }
         refresh_forum_activity.onRefreshListener {

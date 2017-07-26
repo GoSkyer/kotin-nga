@@ -58,6 +58,12 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".ui.activity.TopicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
+
         <meta-data
             android:name="design_width"
             android:value="720"/>

@@ -3,6 +3,8 @@ package org.gosky.nga.data.api.service;
 
 import com.google.gson.JsonObject;
 
+import org.gosky.nga.data.entity.TopicBean;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
@@ -15,19 +17,9 @@ import retrofit2.http.Url;
 
 
 public interface CommonApi {
-    @GET("/thread.php?fid=-7&page=1&lite=js&noprefix")
-    @Headers({
-            "Accept-Charset:GBK",
-            "Accept-Encoding:gzip,deflate",
-            "Cookie:ngaPassportUid=25944452; ngaPassportCid=657deaca89e6ae797c2078f9a6116c69dae1c139",
-            "User-Agent:Nga_Official/573([LGE LG-F500L];Android5.1)"
-    })
-    Observable<ResponseBody> getIPInfo();
 
     /**
      * 获取验证码
-     *
-     * @return
      */
     @Headers({
             "cache-control:no-cache",
@@ -35,6 +27,7 @@ public interface CommonApi {
     })
     @GET("https://bbs.nga.cn/login_check_code.php")
     Observable<ResponseBody> getImageValidCode(@Query("id") String id);
+
 
     @Headers({
             "referer:https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui",
@@ -58,8 +51,23 @@ public interface CommonApi {
     @GET
     Observable<ResponseBody> setCookie(@Url String url);
 
-
+    /**
+     * 获取帖子列表
+     *
+     * @param fid
+     * @param page
+     * @return
+     */
     @GET("http://nga.178.com/thread.php?lite=js&noprefix")
     Observable<JsonObject> getThreads(@Query("fid") String fid, @Query("page") String page);
+
+    /**
+     *  获取帖子详情
+     * @param tid
+     * @param page
+     * @return
+     */
+    @GET("http://bbs.nga.cn/read.php?lite=js&noprefix&v2")
+    Observable<TopicBean> getTopic(@Query("tid") String tid, @Query("page") String page);
 
 }

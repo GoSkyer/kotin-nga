@@ -106,4 +106,6 @@ dependencies {
     kapt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
     kapt 'com.google.dagger:dagger-compiler:2.11'
     compile 'org.jsoup:jsoup:1.10.3'
+    compile 'org.sufficientlysecure:html-textview:3.4'
+    compile 'org.kefirsf:kefirbb:1.5'
 }

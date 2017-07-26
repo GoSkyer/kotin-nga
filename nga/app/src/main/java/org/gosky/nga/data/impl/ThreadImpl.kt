@@ -23,8 +23,8 @@ import javax.inject.Inject
 class ThreadImpl @Inject
 constructor(private val apiManager: CommonApi) {
     val TAG = "ThreadImpl"
+
     fun getThreads(fid: String, page: String): Single<MutableList<ThreadBean>> {
-        test()
         return apiManager
                 .getThreads(fid, page)
                 .compose(RxHelper.rxSchedulerHelper<JsonObject>())
@@ -48,6 +48,13 @@ constructor(private val apiManager: CommonApi) {
                 .toList()
     }
 
+
+    fun getTopic(tid: String, page: String): Observable<TopicBean> {
+        return apiManager
+                .getTopic(tid, page)
+    }
+
+
     fun test() {
 //        val type = object : TypeToken<Map<String, ThreadBean>>() {}.type
 //        val fromJson = Gson().fromJson<Map<String, ThreadBean>>(DataConfig.str, type)
@@ -59,5 +66,6 @@ constructor(private val apiManager: CommonApi) {
             e.printStackTrace()
         }
     }
+
 
 }
