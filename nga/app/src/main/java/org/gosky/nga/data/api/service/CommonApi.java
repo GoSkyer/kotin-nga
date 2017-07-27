@@ -61,6 +61,7 @@ public interface CommonApi {
     @GET("http://nga.178.com/thread.php?lite=js&noprefix")
     Observable<JsonObject> getThreads(@Query("fid") String fid, @Query("page") String page);
 
+
     /**
      *  获取帖子详情
      * @param tid

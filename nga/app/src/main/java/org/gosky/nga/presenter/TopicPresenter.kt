@@ -3,6 +3,7 @@ package org.gosky.nga.presenter
 import android.util.Log
 import org.gosky.base.mvp.BaseMvpPresenter
 import org.gosky.nga.common.utils.RxHelper
+import org.gosky.nga.data.entity.TopicBean
 import org.gosky.nga.data.impl.ThreadImpl
 import org.gosky.nga.view.TopicView
 import javax.inject.Inject
@@ -21,6 +22,7 @@ class TopicPresenter
                 .subscribe({
                     topicBean ->
                     Log.i(TAG, ": " + topicBean.toString())
+                    mvpView.showTopics(topicBean.data.__R.values.toMutableList() as ArrayList<TopicBean.DataBean.RBean>)
                 }, {
                     it.printStackTrace()
                 })
