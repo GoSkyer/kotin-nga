@@ -23,7 +23,7 @@ public class BasicAuthIntercept implements Interceptor {
         Request original = chain.request();
         Context context = BaseApplication.getContext();
         Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization", HttpUser.init.get().getToken())
+//                .header("Authorization", HttpUser.init.get().getToken())
 //                .header("Accept", "application/json")
                 .method(original.method(), original.body());
 
