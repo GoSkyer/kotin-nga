@@ -11,7 +11,9 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.Target
+import org.gosky.nga.R
+
 
 /**
  * @author guozhong
@@ -27,6 +29,10 @@ class GlideImageGetter(context: Context, glide: RequestManager, private val targ
         this.context = context.getApplicationContext()
         this.glide = createGlideRequest(glide, animated)
         targetView.tag = this
+    }
+
+    interface MyDataModel {
+        fun buildUrl(width: Int, height: Int): String
     }
 
     private fun createGlideRequest(glide: RequestManager,
@@ -47,6 +53,7 @@ class GlideImageGetter(context: Context, glide: RequestManager, private val targ
                     // make compatible with target
                     .transcode(BitmapToGlideDrawableTranscoder(context), GlideDrawable::class.java)
                     // cache resized images (RESULT), and re-use SOURCE cached GIFs if any
+                    .placeholder(R.mipmap.ic_launcher)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     // show part of the image when still
                     .centerCrop()
@@ -63,8 +70,9 @@ class GlideImageGetter(context: Context, glide: RequestManager, private val targ
         asyncWrapper.setCallback(this)
 
         // start Glide's async load
-        glide.load("http://img.nga.cn/attachments" + url.replace("./", "/")).into(imageTarget)
-        Log.i(TAG, ": " + "http://img.nga.cn/attachments" + url);
+        val s = "http://img.nga.cn/attachments" + url.replace("./", "/" + ".medium.jpg")
+        glide.load(s).into(imageTarget)
+        Log.i(TAG, ": " + s);
         // save target for clearing it later
         imageTargets.add(imageTarget)
         return asyncWrapper
@@ -78,6 +86,7 @@ class GlideImageGetter(context: Context, glide: RequestManager, private val targ
 
     override fun invalidateDrawable(who: Drawable) {
         targetView.invalidate()
+        targetView.text = targetView.text
     }
 
     override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {

@@ -6,7 +6,9 @@ import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.item_topic.view.*
 import org.gosky.nga.R
 import org.gosky.nga.common.utils.GlideImageGetter
+import org.gosky.nga.common.utils.URLImageParser
 import org.gosky.nga.data.entity.TopicBean
+import org.jetbrains.anko.displayMetrics
 import org.kefirsf.bb.BBProcessorFactory
 
 
@@ -34,7 +36,14 @@ class TopicItem : AdapterItem<TopicBean.DataBean.RBean> {
 
     override fun handleData(p0: TopicBean.DataBean.RBean?, p1: Int) {
         val processor = BBProcessorFactory.getInstance().createFromResource("assets/nga_default.xml")
-        val process = processor.process(p0?.content)
-        view.tv_item_topic.setHtml(process, GlideImageGetter(view.context, Glide.with(view.context), view.tv_item_topic, false, 100, 100))
+        p0?.content?.apply {
+            val process = processor.process(this)
+                    view.tv_item_topic.setHtml(process, GlideImageGetter(view.context, Glide.with(view.context)
+                , view.tv_item_topic, false, view.context.displayMetrics.widthPixels
+                , 100))
+            view.tv_item_topic.setHtml(process, URLImageParser(view.context, view.tv_item_topic))
+
+        }
+
     }
 }
