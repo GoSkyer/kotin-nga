@@ -84,6 +84,7 @@
         <coderef name="i"/>
         <coderef name="color"/>
         <coderef name="size"/>
+        <coderef name="del"/>
 
         <!-- Quotes -->
         <coderef name="code"/>
@@ -123,7 +124,10 @@
         <pattern ignoreCase="true">[i]<var inherit="true"/>[/i]</pattern>
         <template>&lt;i&gt;<var/>&lt;/i&gt;</template>
     </code>
-
+    <code name="del">
+        <pattern ignoreCase="true">[del]<var inherit="true"/>[/del]</pattern>
+        <template>&lt;del&gt;<var/>&lt;/del&gt;</template>
+    </code>
     <!-- Font color -->
     <code name="color">
         <pattern ignoreCase="true">[color=<var name="color" scope="escapeXml"/>]<var name="text" inherit="true"/>[/color]</pattern>
