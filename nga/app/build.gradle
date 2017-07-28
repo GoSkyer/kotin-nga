@@ -108,4 +108,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'org.sufficientlysecure:html-textview:3.4'
     compile 'org.kefirsf:kefirbb:1.5'
+    compile 'com.github.promeg:tinypinyin:2.0.3'
 }

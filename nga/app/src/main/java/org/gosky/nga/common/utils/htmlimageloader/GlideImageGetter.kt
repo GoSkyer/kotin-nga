@@ -1,4 +1,4 @@
-package org.gosky.nga.common.utils
+package org.gosky.nga.common.utils.htmlimageloader
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder
 import com.bumptech.glide.request.target.Target
-import org.gosky.nga.R
+import com.github.promeg.pinyinhelper.Pinyin
 
 
 /**
@@ -53,7 +53,6 @@ class GlideImageGetter(context: Context, glide: RequestManager, private val targ
                     // make compatible with target
                     .transcode(BitmapToGlideDrawableTranscoder(context), GlideDrawable::class.java)
                     // cache resized images (RESULT), and re-use SOURCE cached GIFs if any
-                    .placeholder(R.mipmap.ic_launcher)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     // show part of the image when still
                     .centerCrop()
@@ -68,9 +67,18 @@ class GlideImageGetter(context: Context, glide: RequestManager, private val targ
         val asyncWrapper = imageTarget.getLazyDrawable()
         // listen for Drawable's request for invalidation
         asyncWrapper.setCallback(this)
-
         // start Glide's async load
-        val s = "http://img.nga.cn/attachments" + url.replace("./", "/" + ".medium.jpg")
+        var s: String
+        if (url.startsWith("./"))
+            s = "http://img.nga.cn/attachments" + url.replace("./", "/") + ".medium.jpg"
+        else if (url.startsWith("http"))
+            s = url
+        else {
+            s = Pinyin.toPinyin(url, "").toLowerCase()
+            if (s.startsWith("ac")) {
+                s = "file:///android_asset/emotions/ac/emotion_1_${s.replace("ac:", "")}.png"
+            }
+        }
         glide.load(s).into(imageTarget)
         Log.i(TAG, ": " + s);
         // save target for clearing it later

@@ -1,10 +1,10 @@
 package org.gosky.nga.ui.activity
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_test.*
@@ -42,22 +42,22 @@ class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_test)
         initView()
-        doAsync {
-            val request = Request.Builder()
-                    .url("https://bbs.nga.cn/login_check_code.php?id=_0.2703636995034375")
-                    .get()
-                    .addHeader("referer", "https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui")
-                    .addHeader("cache-control", "no-cache")
-                    .build()
-
-            val response = client.newCall(request).execute()
-            val decodeStream = BitmapFactory.decodeStream(response.body()?.byteStream())
-            uiThread {
-                //                println(response.body()?.byteStream().toString())
-                ivTest?.setImageBitmap(decodeStream)
-            }
-        }
-
+//        doAsync {
+//            val request = Request.Builder()
+//                    .url("https://bbs.nga.cn/login_check_code.php?id=_0.2703636995034375")
+//                    .get()
+//                    .addHeader("referer", "https://bbs.nga.cn/nuke.php?__lib=login&__act=login_ui")
+//                    .addHeader("cache-control", "no-cache")
+//                    .build()
+//
+//            val response = client.newCall(request).execute()
+//            val decodeStream = BitmapFactory.decodeStream(response.body()?.byteStream())
+//            uiThread {
+//                //                println(response.body()?.byteStream().toString())
+//                ivTest?.setImageBitmap(decodeStream)
+//            }
+//        }
+        Glide.with(this).load("file://android_asset/emotions/ac/emotion_1_blink.png").into(ivTest)
 
 
 

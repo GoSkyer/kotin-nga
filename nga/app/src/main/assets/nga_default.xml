@@ -85,6 +85,7 @@
         <coderef name="color"/>
         <coderef name="size"/>
         <coderef name="del"/>
+        <coderef name="emoji"/>
 
         <!-- Quotes -->
         <coderef name="code"/>
@@ -128,6 +129,13 @@
         <pattern ignoreCase="true">[del]<var inherit="true"/>[/del]</pattern>
         <template>&lt;del&gt;<var/>&lt;/del&gt;</template>
     </code>
+    <code name="emoji">
+        <pattern ignoreCase="true">[s:<var inherit="true"/>]</pattern>
+        <template>&lt;img src=&quot;<var/>&quot;/&gt;</template>
+
+    </code>
+
+
     <!-- Font color -->
     <code name="color">
         <pattern ignoreCase="true">[color=<var name="color" scope="escapeXml"/>]<var name="text" inherit="true"/>[/color]</pattern>

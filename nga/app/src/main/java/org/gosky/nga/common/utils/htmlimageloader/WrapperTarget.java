@@ -1,4 +1,4 @@
-package org.gosky.nga.common.utils;
+package org.gosky.nga.common.utils.htmlimageloader;
 
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -19,10 +19,10 @@ class WrapperTarget extends SimpleTarget<GlideDrawable> {
             wrapper = new DrawableWrapper(null/* temporarily null until a setDrawable call*/);
 
     public WrapperTarget(int height, int width) {
-        super(200, 200);
+//        super(200, 200);
         setDrawable(null);
         // set wrapper bounds to fix the size of the view, TextViews don't like ImageSpans git  dimensions
-        wrapper.setBounds(0, 0, 200, 200);
+//        wrapper.setBounds(0, 0, 200, 200);
     }
 
     public Drawable getLazyDrawable() {

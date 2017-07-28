@@ -1,4 +1,4 @@
-package org.gosky.nga.common.utils;
+package org.gosky.nga.common.utils.htmlimageloader;
 
 import android.content.Context;
 import android.graphics.Bitmap;
