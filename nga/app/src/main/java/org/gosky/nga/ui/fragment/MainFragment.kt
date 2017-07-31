@@ -23,7 +23,7 @@ import org.jetbrains.anko.support.v4.startActivity
  * @author guozhong
  * @date 2017/6/19
  */
-class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainView {
+public class MainFragment(val list: List<Board>) : MvpFragment<MainPresenter>(), MainView {
 
     override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
         DaggerRepoComponent

@@ -5,7 +5,6 @@ import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.item_topic.view.*
 import org.gosky.nga.R
 import org.gosky.nga.data.entity.TopicBean
-import org.kefirsf.bb.BBProcessorFactory
 
 
 /**
@@ -31,8 +30,8 @@ class TopicItem : AdapterItem<TopicBean.DataBean.RBean> {
     }
 
     override fun handleData(p0: TopicBean.DataBean.RBean?, p1: Int) {
-        val processor = BBProcessorFactory.getInstance().createFromResource("assets/nga_default.xml")
-        view.tv_item_topic.setText(p0?.content)
+//        val processor = BBProcessorFactory.getInstance().createFromResource("assets/nga_default.xml")
+        p0?.content?.let { view.tv_item_topic.setText(it) }
 
 //        p0?.content?.apply {
 //            val process = processor.process(this)

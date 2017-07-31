@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.Spanned;
@@ -145,12 +146,14 @@ public class FlexibleRichTextView extends LinearLayout {
         }
     }
 
-    public void setText(String text) {
+    public void setText(@NonNull String text) {
         setText(text, new ArrayList<Attachment>());
     }
 
     public void setText(String text, List<Attachment> attachmentList) {
         text = text.replaceAll("\u00AD", "");
+        //</br> 替换为\n
+        text = text.replace("<br/>", "\n");
 
         mAttachmentList = attachmentList;
         mTokenList = tokenizer(text, mAttachmentList);
@@ -392,6 +395,7 @@ public class FlexibleRichTextView extends LinearLayout {
             return builder;
         }
     }
+
     private void append(List<Object> list, Object element) {
         concat(list, Collections.singletonList(element));
     }
@@ -563,7 +567,10 @@ public class FlexibleRichTextView extends LinearLayout {
                         textWithFormula.setSpan(new ClickableSpan() {
                             @Override
                             public void onClick(View widget) {
-                                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(operand[0])));
+                                if (!TextUtils.isEmpty(operand[0]))
+                                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(operand[0])));
+                                else
+                                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(textWithFormula.toString())));
                             }
                         }, 0, textWithFormula.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     }
@@ -796,7 +803,9 @@ public class FlexibleRichTextView extends LinearLayout {
 
     public interface OnViewClickListener {
         void onImgClick(ImageView imageView);
+
         void onAttClick(Attachment attachment);
+
         void onQuoteButtonClick(View view, boolean collapsed);
     }
 }

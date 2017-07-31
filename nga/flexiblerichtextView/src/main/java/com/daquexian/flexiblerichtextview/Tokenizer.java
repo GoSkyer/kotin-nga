@@ -77,7 +77,8 @@ public class Tokenizer {
         public int compareTo(@NotNull TOKEN token) {
             if (position < token.position) {
                 return -1;
-            } if (position == token.position) {
+            }
+            if (position == token.position) {
                 /**
                  * tokenA < tokenB when tokenA.position == tokenB.position and
                  * tokenA.length > tokenB.length,
@@ -119,6 +120,7 @@ public class Tokenizer {
 
     static class URL_START extends TOKEN {
         String url;
+
         URL_START(int position, String url, String value) {
             super(position, value.length(), value);
             this.url = url;
@@ -220,6 +222,7 @@ public class Tokenizer {
 
     static class ATTACHMENT extends TOKEN {
         Attachment attachment;
+
         ATTACHMENT(int position, Attachment attachment, String value) {
             super(position, value.length(), value);
             this.attachment = attachment;
@@ -228,6 +231,7 @@ public class Tokenizer {
 
     static class ICON extends TOKEN {
         int iconId;
+
         ICON(int position, String iconStr, int iconId) {
             super(position, iconStr.length(), iconStr);
             this.iconId = iconId;
@@ -237,6 +241,7 @@ public class Tokenizer {
     static class FORMULA extends TOKEN {
         String content;
         int contentStart;
+
         FORMULA(int position, String content, int contentStart, String value) {
             /*
              * remove all newline character to avoid the ImageSpan shows multiple times when
@@ -263,6 +268,7 @@ public class Tokenizer {
     static class QUOTE_START extends TOKEN {
         String quotedUsername;
         String postId;
+
         QUOTE_START(int position, String value, String quotedUsername, String postId) {
             super(position, value.length(), value);
             this.quotedUsername = quotedUsername;
@@ -320,6 +326,7 @@ public class Tokenizer {
             this.heightPos = heightPos;
             this.urlPos = urlPos;
         }
+
         public ImgPos(byte sizePos, byte urlPos) {
             this.sizePos = sizePos;
             this.urlPos = urlPos;
@@ -352,11 +359,11 @@ public class Tokenizer {
 
         urlStartLabels = new ArrayList<>();
         for (String label : labels) {
-            if (label.contains("\\s")) {
-                urlStartLabels.add(formatLabel(label)
-                        .replaceAll("\\\\s", "(.+?)"));
-                ret--;
-            }
+//            if (label.contains("\\s")) {
+            urlStartLabels.add(formatLabel(label)
+                    .replaceAll("\\\\s", "(.+?)"));
+            ret--;
+//            }
         }
 
         return ret;
@@ -703,13 +710,12 @@ public class Tokenizer {
     }
 
 
-
     private static String formatLabel(String label) {
         return "(?i)" + label.replaceAll("\\[", "\\\\[").replaceAll("\\(", "\\\\(");
     }
 
     private static void initLabels() {
-        setUrlStartLabel("[url=\\s]");
+        setUrlStartLabel("[url=\\s]", "[url]");
         setUrlEndLabels("[/url]");
         setAttachmentLabels("[attachment:\\s]");
         setBoldStartLabels("[b]");
@@ -733,7 +739,7 @@ public class Tokenizer {
         setDeleteEndLabels("[/del]");
         setUnderlineStartLabels("[u]");
         setUnderlineEndLabels("[/u]");
-        /* setIcons(R.drawable.emoticons__0050_1, R.drawable.emoticons__0049_2, R.drawable.emoticons__0048_3, R.drawable.emoticons__0047_4,
+        /*setIcons(R.drawable.emoticons__0050_1, R.drawable.emoticons__0049_2, R.drawable.emoticons__0048_3, R.drawable.emoticons__0047_4,
             R.drawable.emoticons__0046_5, R.drawable.emoticons__0045_6, R.drawable.emoticons__0044_7, R.drawable.emoticons__0043_8, R.drawable.emoticons__0042_9,
             R.drawable.emoticons__0041_10, R.drawable.emoticons__0040_11, R.drawable.emoticons__0039_12, R.drawable.emoticons__0038_13, R.drawable.emoticons__0037_14,
             R.drawable.emoticons__0036_15, R.drawable.emoticons__0035_16, R.drawable.emoticons__0034_17, R.drawable.emoticons__0033_18, R.drawable.emoticons__0032_19,
@@ -776,11 +782,15 @@ public class Tokenizer {
             matcher = pattern.matcher(text);
 
             while (matcher.find()) {
-                String url = matcher.group(1).toLowerCase();
-                if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                    url = "http://" + url;
+                if (matcher.groupCount() > 1) {
+                    String url = matcher.group(1).toLowerCase();
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "http://" + url;
+                        tokenList.add(new URL_START(matcher.start(), url, matcher.group()));
+                    }
+                } else {
+                    tokenList.add(new URL_START(matcher.start(), "", matcher.group()));
                 }
-                tokenList.add(new URL_START(matcher.start(), url, matcher.group()));
 
             }
 
@@ -997,6 +1007,10 @@ public class Tokenizer {
         }
 
         String str = text.toString();
+
+        //</br> 替换为\n
+        str = str.replace("<br/>", "\n");
+
         for (int i = 0; i < iconStrs.size(); i++) {
             int from = 0;
             String iconStr = iconStrs.get(i);
@@ -1005,7 +1019,8 @@ public class Tokenizer {
                 /**
                  * only show icons when iconStr is surrounded by spaces
                  */
-                if (iconStr.equals("/^^")) Log.d(TAG, "parse: " + str.trim().length() + ", " + iconStr.length() + ", " + (from + iconStr.length()) + ", " + str.length());
+                if (iconStr.equals("/^^"))
+                    Log.d(TAG, "parse: " + str.trim().length() + ", " + iconStr.length() + ", " + (from + iconStr.length()) + ", " + str.length());
                 if (str.trim().length() == iconStr.length() ||
                         ((from == 0 || ' ' == str.charAt(from - 1)) && (from + iconStr.length() == str.length() || ' ' == str.charAt(from + iconStr.length()) || '\n' == str.charAt(from + iconStr.length())))) {
                     tokenList.add(new ICON(from, iconStr, icons.get(i)));

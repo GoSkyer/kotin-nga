@@ -12,6 +12,7 @@
         android:id="@+id/button"
         android:background="#F1F1F1"
         android:text="@string/collapse"
+        android:visibility="gone"
         android:textSize="12sp"
         android:minHeight="0dp"
         android:layout_width="match_parent"
