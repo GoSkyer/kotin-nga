@@ -32,12 +32,13 @@ class TopicItem : AdapterItem<TopicBean.DataBean.RBean> {
 
     override fun handleData(p0: TopicBean.DataBean.RBean?, p1: Int) {
         val processor = BBProcessorFactory.getInstance().createFromResource("assets/nga_default.xml")
-        p0?.content?.apply {
-            val process = processor.process(this)
-            view.tv_item_topic.setHtml(process)
-//            view.tv_item_topic.setHtml(process, URLImageParser(view.context, view.tv_item_topic))
+        view.tv_item_topic.setText(p0?.content)
 
-        }
+//        p0?.content?.apply {
+//            val process = processor.process(this)
+////            view.tv_item_topic.setHtml(process, URLImageParser(view.context, view.tv_item_topic))
+//
+//        }
 
     }
 }

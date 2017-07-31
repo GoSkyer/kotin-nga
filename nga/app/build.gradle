@@ -91,7 +91,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':base')
     compile files('libs/MiPush_SDK_Client_3_4_0.jar')
-
     compile 'com.github.GoSkyer.ActivityRouter:router:1.0'
     compile 'co.lujun:androidtagview:1.0.3'
     compile 'com.zhy:flowlayout-lib:1.0.3'
@@ -110,4 +109,5 @@ dependencies {
     compile 'org.kefirsf:kefirbb:1.5'
     compile 'com.github.promeg:tinypinyin:2.0.3'
     compile 'com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.1.0'
+    compile project(':flexiblerichtextView')
 }

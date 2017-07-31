@@ -4,10 +4,12 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <org.sufficientlysecure.htmltextview.HtmlTextView
+    <com.daquexian.flexiblerichtextview.FlexibleRichTextView
         android:id="@+id/tv_item_topic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+    </com.daquexian.flexiblerichtextview.FlexibleRichTextView>
 
     <View
         android:layout_width="wrap_content"
