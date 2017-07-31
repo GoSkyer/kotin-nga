@@ -23,7 +23,7 @@ import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerAppComponent;
 import org.gosky.nga.di.module.CacheModule;
 import org.gosky.nga.di.module.ServiceModule;
-import org.scilab.forge.jlatexmath.core.AjLatexMath;
+
 
 import java.util.List;
 
@@ -75,7 +75,6 @@ public class App extends BaseApplication {
         TwinklingRefreshLayout.setDefaultHeader(ProgressLayout.class.getName());
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
         RouterTableKt.init();
-        AjLatexMath.init(this);
     }
 
     private boolean shouldInit() {
