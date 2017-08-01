@@ -417,7 +417,7 @@ public class TopicBean {
             private int pid;
             private int recommend;
             private int lou;
-            private int content_length;
+            private String content_length;
             private Map<String, AttachsBean> attachs;
             private int postdatetimestamp;
 
@@ -525,11 +525,11 @@ public class TopicBean {
                 this.lou = lou;
             }
 
-            public int getContent_length() {
+            public String getContent_length() {
                 return content_length;
             }
 
-            public void setContent_length(int content_length) {
+            public void setContent_length(String content_length) {
                 this.content_length = content_length;
             }
 
