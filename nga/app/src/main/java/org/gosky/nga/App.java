@@ -1,5 +1,6 @@
 package org.gosky.nga;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Process;
@@ -76,7 +77,7 @@ public class App extends BaseApplication {
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
         RouterTableKt.init();
     }
-
+    @SuppressLint("NewApi")
     private boolean shouldInit() {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();

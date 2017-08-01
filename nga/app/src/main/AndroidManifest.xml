@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.gosky.nga">
+    package="org.gosky.nga">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <permission
         android:name="org.gosky.nga.permission.MIPUSH_RECEIVE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="org.gosky.nga.permission.MIPUSH_RECEIVE"/>
+    <uses-permission android:name="org.gosky.nga.permission.MIPUSH_RECEIVE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".App"
@@ -34,68 +34,62 @@
             android:name=".ui.activity.SplashActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
-        </activity>
+            android:theme="@style/SplashTheme"></activity>
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.ForumActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.TopicActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="design_width"
-            android:value="720"/>
+            android:value="720" />
         <meta-data
             android:name="design_height"
-            android:value="1280"/>
+            android:value="1280" />
 
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
-            android:process=":pushservice"/>
+            android:process=":pushservice" />
         <service
             android:name="com.xiaomi.push.service.XMJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":pushservice"/>
+            android:process=":pushservice" />
         <service
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-            android:enabled="true"/>
+            android:enabled="true" />
 
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
         <receiver
@@ -103,33 +97,33 @@
             android:exported="false"
             android:process=":pushservice">
             <intent-filter>
-                <action android:name="com.xiaomi.push.PING_TIMER"/>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
         </receiver>
         <receiver
             android:name=".receive.XiaoMiMessageReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.xiaomi.mipush.ERROR"/>
+                <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
         </receiver>
 
         <activity
             android:name=".ui.activity.TestActivity"
-            android:label="ngaDebug"
-            >
+            android:label="ngaDebug">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.SecondBoardActivity"></activity>
     </application>
 
 </manifest>

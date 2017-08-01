@@ -3,6 +3,7 @@ package org.gosky.nga.data.api.service;
 
 import com.google.gson.JsonObject;
 
+import org.gosky.nga.data.entity.BoardBean;
 import org.gosky.nga.data.entity.TopicBean;
 
 import io.reactivex.Observable;
@@ -71,4 +72,11 @@ public interface CommonApi {
     @GET("http://bbs.nga.cn/read.php?lite=js&noprefix&v2")
     Observable<TopicBean> getTopic(@Query("tid") String tid, @Query("page") String page);
 
+
+    /**
+     *  获取首页模板
+     * @return
+     */
+    @GET("http://bbs.nga.cn/app_api.php?__lib=home&__act=category&")
+    Observable<BoardBean> getBoard();
 }

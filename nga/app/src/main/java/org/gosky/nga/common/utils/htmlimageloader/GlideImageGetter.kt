@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder
 import com.bumptech.glide.request.target.Target
 import com.github.promeg.pinyinhelper.Pinyin
+import java.util.*
 
 
 /**

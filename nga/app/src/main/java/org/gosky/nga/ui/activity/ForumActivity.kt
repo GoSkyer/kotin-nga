@@ -15,6 +15,7 @@ import org.gosky.nga.presenter.ForumPresenter
 import org.gosky.nga.ui.base.MvpActivity
 import org.gosky.nga.ui.item.ForumItem
 import org.gosky.nga.view.ForumView
+import java.util.*
 
 /**
  * Created by zohar on 2017/6/24.
@@ -35,7 +36,7 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
 
     override fun setupView() {
         setSupportActionBar(toolbar_forum_activity)
-        toolbar_forum_activity.title = intent.extras["name"].toString()
+        supportActionBar?.title = intent.extras["name"].toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         rcv_forum_activity.layoutManager = LinearLayoutManager(mContext)
         rcv_forum_activity.adapter = object : CommonRcvAdapter<ThreadBean>(threadList) {

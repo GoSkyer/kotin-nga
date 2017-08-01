@@ -10,21 +10,26 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.app_bar_main.*
-import org.gosky.nga.App
 import org.gosky.nga.R
 import org.gosky.nga.common.config.loginActivity
 import org.gosky.nga.common.utils.router
+import org.gosky.nga.data.entity.BoardBean
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpActivity
 import org.gosky.nga.ui.fragment.MainFragment
 import org.gosky.nga.view.MainView
+import java.util.*
 
 class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNavigationItemSelectedListener {
+
+
+    private lateinit var titles: ArrayList<String>
     private lateinit var views: ArrayList<Fragment>
 
+
     override fun setupActivityComponent(repoComponent: RepoComponent) {
-        repoComponent.inject(this);
+        repoComponent.inject(this)
     }
 
     override fun rootView(): Int {
@@ -33,15 +38,8 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
 
     override fun setupView() {
         toolbar_main_activity.title = "NGA开源版"
-        setSupportActionBar(toolbar_main_activity);
-        views = ArrayList();
-        val boardHolders = App.getInstance().boardHolders
-        boardHolders.map {
-            views.add(MainFragment(it.boards))
-        }
-        Log.d(TAG, ": " + boardHolders.size);
-        vpMain.adapter = viewPagerAdapter()
-        tabLayout.setupWithViewPager(vpMain)
+        setSupportActionBar(toolbar_main_activity)
+        mPresenter.getBoard()
 
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
@@ -54,11 +52,19 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
         navigationView.setNavigationItemSelectedListener(this)
     }
 
-    override fun initData() {
+    override fun showBoard(mList: MutableList<BoardBean.ResultBean.GroupsBean>) {
+        views = ArrayList()
+        titles = ArrayList()
+        Log.e("mList", "mList" + mList.size)
+        for (item in mList) {
+            views.add(MainFragment(item.forums))
+            titles.add(item.name)
+        }
+        vpMain.adapter = viewPagerAdapter()
+        tabLayout.setupWithViewPager(vpMain)
     }
 
-    override fun showContent(str: String?) {
-
+    override fun initData() {
     }
 
 
@@ -121,7 +127,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return App.getInstance().boardHolders[position].categoryName
+            return titles.get(position);
         }
 
         override fun getCount(): Int {

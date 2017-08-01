@@ -9,6 +9,7 @@ import io.reactivex.Single
 import org.gosky.nga.common.config.DataConfig
 import org.gosky.nga.common.utils.RxHelper
 import org.gosky.nga.data.api.service.CommonApi
+import org.gosky.nga.data.entity.BoardBean
 import org.gosky.nga.data.entity.ThreadBean
 import org.gosky.nga.data.entity.TopicBean
 import javax.inject.Inject
@@ -53,7 +54,9 @@ constructor(private val apiManager: CommonApi) {
         return apiManager
                 .getTopic(tid, page)
     }
-
+    fun getBoard():Observable<BoardBean>{
+        return apiManager.getBoard();
+    }
 
     fun test() {
 //        val type = object : TypeToken<Map<String, ThreadBean>>() {}.type
