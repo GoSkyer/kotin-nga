@@ -35,9 +35,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import org.gosky.nga.R;
 
@@ -445,76 +442,16 @@ public class FlexibleRichTextView extends LinearLayout {
 
         ViewGroup.LayoutParams layoutParams;
 
-        int phWidth, phHeight, imgWidth, imgHeight;
-
-        if (height != -1 && width != -1) {
-            imgHeight = height;
-            imgWidth = width;
-            phHeight = height;
-            phWidth = width;
-        } else if (width != -1) {
-            imgHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
-            imgWidth = width;
-            phHeight = MAX_IMAGE_WIDTH / 2;
-            phWidth = width;
-        } else if (height != -1) {
-            imgHeight = height;
-            imgWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
-            phHeight = height;
-            phWidth = MAX_IMAGE_WIDTH;
-        } else {
-            imgHeight = imgWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
-            phHeight = MAX_IMAGE_WIDTH / 2;
-            phWidth = MAX_IMAGE_WIDTH;
-        }
-
-        if (imageView.centered) {
-            layoutParams = new RelativeLayout.LayoutParams(phWidth, phHeight);
-            ((RelativeLayout.LayoutParams) layoutParams).addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        } else {
-            layoutParams = new LayoutParams(phWidth, phHeight);
-        }
+        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ((RelativeLayout.LayoutParams) layoutParams).addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         imageView.setLayoutParams(layoutParams);
         imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setPadding(0, 0, 0, 10);
 
-        final int finalWidth = imgWidth;
-        final int finalHeight = imgHeight;
         Glide.with(mContext)
                 .load(url)
                 .placeholder(new ColorDrawable(ContextCompat.getColor(mContext, android.R.color.darker_gray)))
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        /**
-                         * adjust the size of ImageView according to image
-                         */
-                        if (imageView.centered) {
-                            final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(finalWidth, finalHeight);
-                            params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-                            imageView.setLayoutParams(params);
-                        } else {
-                            imageView.setLayoutParams(new LayoutParams(finalWidth, finalHeight));
-                        }
-
-                        imageView.setImageDrawable(resource);
-
-                        imageView.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (mOnViewClickListener != null) {
-                                    mOnViewClickListener.onImgClick(imageView);
-                                }
-                            }
-                        });
-                        return false;
-                    }
-                })
                 .into(imageView);
         return imageView;
     }

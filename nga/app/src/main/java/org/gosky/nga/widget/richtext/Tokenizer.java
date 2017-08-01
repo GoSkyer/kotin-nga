@@ -295,9 +295,20 @@ public class Tokenizer {
 
         IMAGE(int position, String url, String value, int width, int height) {
             super(position, value.length(), value);
-            this.url = url;
+
+            this.url = setRealUrl(url);
             this.width = width;
             this.height = height;
+        }
+
+        private String setRealUrl(String url) {
+            String s = url;
+            if (url.startsWith("./"))
+                s = "http://img.nga.cn/attachments" + url.replace("./", "/");
+            if (!url.endsWith(".medium.jpg") && url.endsWith(".jpg"))
+                s = s + ".medium.jpg";
+            Log.i(TAG, "setRealUrl: " + s);
+            return s;
         }
     }
 
