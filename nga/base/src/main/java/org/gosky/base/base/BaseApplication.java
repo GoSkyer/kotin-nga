@@ -1,8 +1,8 @@
 package org.gosky.base.base;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.support.multidex.MultiDexApplication;
 
 import com.cocosw.favor.FavorAdapter;
 import com.squareup.leakcanary.LeakCanary;
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
-public abstract class BaseApplication extends Application {
+public abstract class BaseApplication extends MultiDexApplication {
     static private BaseApplication mApplication;
     public LinkedList<BaseActivity> mActivityList;
     private ClientModule mClientModule;

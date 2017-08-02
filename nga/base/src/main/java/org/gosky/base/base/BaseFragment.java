@@ -12,8 +12,6 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import org.gosky.base.mvp.BaseMvpPresenter;
 
-import butterknife.ButterKnife;
-
 
 public abstract class BaseFragment<P extends BaseMvpPresenter> extends RxFragment {
     protected BaseMvpActivity mActivity;
@@ -26,7 +24,6 @@ public abstract class BaseFragment<P extends BaseMvpPresenter> extends RxFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(rootView(), null);
-        ButterKnife.bind(this, mRootView);
         Log.i(TAG, "onCreateView: ");
         return mRootView;
     }
@@ -50,7 +47,6 @@ public abstract class BaseFragment<P extends BaseMvpPresenter> extends RxFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
     }
 
 

@@ -23,6 +23,8 @@ android {
         aaptOptions {
             cruncherEnabled = false
         }
+        multiDexEnabled true
+
     }
     signingConfigs {
         myConfig {
