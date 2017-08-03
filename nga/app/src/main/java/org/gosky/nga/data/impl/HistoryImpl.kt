@@ -17,16 +17,15 @@ import javax.inject.Inject
 class HistoryImpl @Inject constructor() {
     fun insertHistory(model: BoardBean.ResultBean.GroupsBean.ForumsBean) {
         var adapter: ModelAdapter<History> = FlowManager.getModelAdapter(History::class.java)
-        val historys: List<History> = SQLite.select()
+        var history: History? = SQLite.select()
                 .from(History::class.java).where(History_Table.id.`is`(model.id))
-                .queryList()
-        if (historys.size > 0) {
-            var history: History = historys.get(0)
+                .querySingle()
+        if (history != null) {
             history.date = Date()
             adapter.update(history)
             Log.e("insert", "is exist,do update")
         } else {
-            var history: History = History()
+            history = History()
             history.id = model.id
             history.name = model.name
             history.date = Date()
