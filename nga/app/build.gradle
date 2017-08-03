@@ -71,6 +71,11 @@ android {
         enabled = true
     }
 
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+
 }
 bugly {
     appId = '900060152'
