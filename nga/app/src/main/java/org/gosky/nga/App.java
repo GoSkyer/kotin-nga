@@ -18,10 +18,8 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.gosky.base.base.BaseApplication;
 import org.gosky.nga.common.config.AppConfig;
-import org.gosky.nga.common.config.BoardConfig;
 import org.gosky.nga.common.config.RouterTableKt;
 import org.gosky.nga.data.entity.BoardBean;
-import org.gosky.nga.data.entity.BoardHolder;
 import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerAppComponent;
 import org.gosky.nga.di.module.CacheModule;
@@ -35,8 +33,6 @@ import java.util.List;
 public class App extends BaseApplication {
     private static AppComponent mAppComponent;
     private static App mInstance;
-    private ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean> boardHolders;
-
 
 
     @Override
@@ -108,9 +104,6 @@ public class App extends BaseApplication {
         return mInstance;
     }
 
-    public ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean> getBoardHolders() {
-        return boardHolders;
-    }
     @Override
     public void onTerminate() {
         FlowManager.destroy();
