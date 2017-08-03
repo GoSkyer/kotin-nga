@@ -9,6 +9,7 @@ import android.util.Log;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.BallPulseView;
 import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.thejoyrun.router.Router;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
@@ -19,6 +20,7 @@ import org.gosky.base.base.BaseApplication;
 import org.gosky.nga.common.config.AppConfig;
 import org.gosky.nga.common.config.BoardConfig;
 import org.gosky.nga.common.config.RouterTableKt;
+import org.gosky.nga.data.entity.BoardBean;
 import org.gosky.nga.data.entity.BoardHolder;
 import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerAppComponent;
@@ -26,13 +28,14 @@ import org.gosky.nga.di.module.CacheModule;
 import org.gosky.nga.di.module.ServiceModule;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class App extends BaseApplication {
     private static AppComponent mAppComponent;
     private static App mInstance;
-    private List<BoardHolder> boardHolders;
+    private ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean> boardHolders;
 
 
 
@@ -71,7 +74,9 @@ public class App extends BaseApplication {
         };
         Logger.setLogger(this, newLogger);
         CrashReport.initCrashReport(getApplicationContext(), "900060152", false);
-        boardHolders = new BoardConfig().buildBoardData();
+       // boardHolders = new ArrayList<>();
+        //數據庫初始化
+        FlowManager.init(this);
         Log.i(TAG, "onCreate: ");
         TwinklingRefreshLayout.setDefaultHeader(ProgressLayout.class.getName());
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
@@ -90,7 +95,6 @@ public class App extends BaseApplication {
         }
         return false;
     }
-
     /**
      * 将AppComponent返回出去,供其它地方使用, AppComponent接口中声明的方法返回的实例, 在getAppComponent()拿到对象后都可以直接使用
      *
@@ -104,9 +108,12 @@ public class App extends BaseApplication {
         return mInstance;
     }
 
-    public List<BoardHolder> getBoardHolders(){
+    public ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean> getBoardHolders() {
         return boardHolders;
     }
-
-
+    @Override
+    public void onTerminate() {
+        FlowManager.destroy();
+        super.onTerminate();
+    }
 }

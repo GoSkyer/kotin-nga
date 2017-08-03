@@ -6,6 +6,7 @@ import org.gosky.nga.ui.activity.LoginActivity;
 import org.gosky.nga.ui.activity.MainActivity;
 import org.gosky.nga.ui.activity.SecondBoardActivity;
 import org.gosky.nga.ui.activity.TopicActivity;
+import org.gosky.nga.ui.fragment.HistoryFragment;
 import org.gosky.nga.ui.fragment.MainFragment;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +19,8 @@ public interface RepoComponent {
     void inject(MainActivity activity);
 
     void inject(MainFragment mainFragment);
+
+    void inject(HistoryFragment mainFragment);
 
     void inject(ForumActivity forumActivity);
 

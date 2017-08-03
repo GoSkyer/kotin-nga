@@ -4,11 +4,17 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.kungfu.dbflow.History
+import com.kungfu.dbflow.History_Table
+import com.raizlabs.android.dbflow.config.FlowManager
+import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.raizlabs.android.dbflow.structure.ModelAdapter
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
 import org.gosky.nga.common.config.loginActivity
@@ -17,12 +23,15 @@ import org.gosky.nga.data.entity.BoardBean
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.base.MvpActivity
+import org.gosky.nga.ui.fragment.HistoryFragment
 import org.gosky.nga.ui.fragment.MainFragment
 import org.gosky.nga.view.MainView
 import java.util.*
 
-class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNavigationItemSelectedListener {
-
+class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
+    override fun showHistory(list: MutableList<History>?) {
+        (views.get(0) as HistoryFragment).refresh(list)
+    }
 
     private lateinit var titles: ArrayList<String>
     private lateinit var views: ArrayList<Fragment>
@@ -40,8 +49,6 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
         toolbar_main_activity.title = "NGA开源版"
         setSupportActionBar(toolbar_main_activity)
         mPresenter.getBoard()
-
-
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar_main_activity, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -55,16 +62,32 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
     override fun showBoard(mList: MutableList<BoardBean.ResultBean.GroupsBean>) {
         views = ArrayList()
         titles = ArrayList()
-        Log.e("mList", "mList" + mList.size)
         for (item in mList) {
             views.add(MainFragment(item.forums))
             titles.add(item.name)
         }
+        views.add(0, HistoryFragment(ArrayList<History>()))
+        titles.add(0, "最近访问")
         vpMain.adapter = viewPagerAdapter()
         tabLayout.setupWithViewPager(vpMain)
+        vpMain.currentItem = 1
+        vpMain.addOnPageChangeListener(this)
     }
 
+
+
     override fun initData() {
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
+    }
+
+    override fun onPageSelected(position: Int) {
+        if (position == 0)
+            mPresenter.getHistory()
     }
 
 
@@ -127,7 +150,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return titles.get(position);
+            return titles.get(position)
         }
 
         override fun getCount(): Int {

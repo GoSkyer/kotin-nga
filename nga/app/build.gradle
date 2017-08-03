@@ -87,7 +87,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2-5"
     }
 }
-
+def dbflow_version = "4.0.5"
+def sqlcipher_version="3.5.7"
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -112,5 +113,20 @@ dependencies {
     compile 'com.github.promeg:tinypinyin:2.0.3'
     compile 'com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.1.0'
     compile 'com.github.softwee:codeview-android:1.2.0'
+
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+
+    // use kapt for kotlin apt if you're a Kotlin user
+    kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+
+    // sql-cipher database encryption (optional)
+    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+    compile "net.zetetic:android-database-sqlcipher:${sqlcipher_version}@aar"
+
+    // kotlin extensions
+    compile "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
 
 }

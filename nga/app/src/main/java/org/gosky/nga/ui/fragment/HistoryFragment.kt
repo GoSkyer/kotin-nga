@@ -19,6 +19,7 @@ import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.activity.ForumActivity
 import org.gosky.nga.ui.activity.SecondBoardActivity
 import org.gosky.nga.ui.base.MvpFragment
+import org.gosky.nga.ui.item.HistoryAdapter
 import org.gosky.nga.ui.item.MainAdapter
 import org.gosky.nga.view.MainView
 import org.jetbrains.anko.support.v4.startActivity
@@ -30,11 +31,15 @@ import java.util.*
  * @author guozhong
  * @date 2017/6/19
  */
-class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean>) : MvpFragment<MainPresenter>(), MainView {
-    override fun showHistory(list: MutableList<History>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class HistoryFragment(var list: ArrayList<History>) : MvpFragment<MainPresenter>(), MainView {
+    override fun showHistory(list: List<History>?) {
     }
-
+     fun refresh(list: List<History>?){
+        Log.e("list","list"+list.toString())
+        this.list.clear()
+        this.list.addAll(list!!)
+        rcv_main_fragment.adapter.notifyDataSetChanged()
+    }
     override fun showBoard(mList: MutableList<BoardBean.ResultBean.GroupsBean>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -56,25 +61,19 @@ class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBea
     @SuppressLint("NewApi")
     override fun setupView() {
         rcv_main_fragment.layoutManager = GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false)
-        rcv_main_fragment.adapter = object : CommonRcvAdapter<BoardBean.ResultBean.GroupsBean.ForumsBean>(list) {
+        rcv_main_fragment.adapter = object : CommonRcvAdapter<History>(list) {
             override fun createItem(p0: Any?): AdapterItem<*> {
-                return MainAdapter(mContext)
+                return HistoryAdapter(mContext)
             }
 
-            override fun onItemClick(model: BoardBean.ResultBean.GroupsBean.ForumsBean?, position: Int) {
+            override fun onItemClick(model: History?, position: Int) {
                 super.onItemClick(model, position)
-                if(model?.isIs_forumlist!!){
-                    startActivity<SecondBoardActivity>("list" to model?.forums,"name" to model?.name.toString())
-                }else{
-                    startActivity<ForumActivity>("forumId" to model?.id.toString(),"name" to model?.name.toString())
-                    mPresenter.addHistory(model)
-                }
-
+                startActivity<ForumActivity>("forumId" to model?.id.toString(), "name" to model?.name.toString())
+//                mPresenter.addHistory(model)
             }
         }
         rcv_main_fragment.adapter.notifyDataSetChanged()
     }
-
 
 
     override fun initData() {

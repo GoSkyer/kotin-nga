@@ -6,8 +6,10 @@ import android.util.Log;
 import org.gosky.base.mvp.BaseMvpPresenter;
 import org.gosky.nga.common.utils.RxHelper;
 import org.gosky.nga.data.entity.BoardBean;
+import org.gosky.nga.data.impl.HistoryImpl;
 import org.gosky.nga.data.impl.ThreadImpl;
 import org.gosky.nga.view.MainView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,10 +24,11 @@ import javax.inject.Inject;
 
 public class MainPresenter extends BaseMvpPresenter<MainView> {
     private ThreadImpl threadImpl;
-
+    private HistoryImpl history;
     @Inject
-    public MainPresenter(ThreadImpl thread) {
+    public MainPresenter(ThreadImpl thread,HistoryImpl history) {
         this.threadImpl = thread;
+        this.history = history;
     }
 
     public void getBoard() {
@@ -55,5 +58,13 @@ public class MainPresenter extends BaseMvpPresenter<MainView> {
                       }
                     return mList;
                 }).subscribe(list -> getMvpView().showBoard(list), Throwable::printStackTrace);
+    }
+
+    public void addHistory(@NotNull BoardBean.ResultBean.GroupsBean.ForumsBean model) {
+        history.insertHistory(model);
+    }
+
+    public void getHistory(){
+        getMvpView().showHistory(history.queryAll());
     }
 }
