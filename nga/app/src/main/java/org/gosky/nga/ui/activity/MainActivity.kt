@@ -7,14 +7,9 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.kungfu.dbflow.History
-import com.kungfu.dbflow.History_Table
-import com.raizlabs.android.dbflow.config.FlowManager
-import com.raizlabs.android.dbflow.sql.language.SQLite
-import com.raizlabs.android.dbflow.structure.ModelAdapter
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
 import org.gosky.nga.common.config.loginActivity
@@ -29,8 +24,8 @@ import org.gosky.nga.view.MainView
 import java.util.*
 
 class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
+
     override fun showHistory(list: MutableList<History>?) {
-        (views.get(0) as HistoryFragment).refresh(list)
     }
 
     private lateinit var titles: ArrayList<String>
@@ -87,7 +82,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
 
     override fun onPageSelected(position: Int) {
         if (position == 0)
-            mPresenter.getHistory()
+            (views[0] as HistoryFragment).refresh()
     }
 
 

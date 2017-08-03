@@ -5,7 +5,6 @@ import com.kungfu.dbflow.History;
 import org.gosky.base.mvp.BaseView;
 import org.gosky.nga.data.entity.BoardBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
