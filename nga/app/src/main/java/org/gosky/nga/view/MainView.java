@@ -13,5 +13,4 @@ import java.util.List;
 
 public interface MainView extends BaseView {
     void showBoard(List<BoardBean.ResultBean.GroupsBean> mList);
-    void showHistory(List<History> list);
 }

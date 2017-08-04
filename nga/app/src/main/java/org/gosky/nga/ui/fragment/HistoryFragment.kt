@@ -1,6 +1,5 @@
 package org.gosky.nga.ui.fragment
 
-import android.annotation.SuppressLint
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import com.kungfu.dbflow.History
@@ -8,7 +7,6 @@ import kale.adapter.CommonRcvAdapter
 import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.gosky.nga.R
-import org.gosky.nga.data.entity.BoardBean
 import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
@@ -16,17 +14,15 @@ import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.activity.ForumActivity
 import org.gosky.nga.ui.base.MvpFragment
 import org.gosky.nga.ui.item.HistoryAdapter
-import org.gosky.nga.view.MainView
+import org.gosky.nga.view.HistoryView
 import org.jetbrains.anko.support.v4.startActivity
 import java.util.*
 
-
-@SuppressLint("ValidFragment")
 /**
  * @author guozhong
  * @date 2017/6/19
  */
-class HistoryFragment(var list: ArrayList<History>) : MvpFragment<MainPresenter>(), MainView {
+class HistoryFragment(var list: ArrayList<History>) : MvpFragment<MainPresenter>(), HistoryView {
 
 
     override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
@@ -42,7 +38,7 @@ class HistoryFragment(var list: ArrayList<History>) : MvpFragment<MainPresenter>
         return R.layout.fragment_main
     }
 
-    @SuppressLint("NewApi")
+
     override fun setupView() {
         rcv_main_fragment.layoutManager = GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false)
         rcv_main_fragment.adapter = object : CommonRcvAdapter<History>(list) {
@@ -59,18 +55,14 @@ class HistoryFragment(var list: ArrayList<History>) : MvpFragment<MainPresenter>
         rcv_main_fragment.adapter.notifyDataSetChanged()
     }
 
-    override fun showHistory(list: List<History>?) {
+    override fun showHistory(list: List<History>) {
         this.list.clear()
-        this.list.addAll(list!!)
+        this.list.addAll(list)
         rcv_main_fragment.adapter.notifyDataSetChanged()
     }
 
     fun refresh() {
         mPresenter.getHistory()
-    }
-
-    override fun showBoard(mList: MutableList<BoardBean.ResultBean.GroupsBean>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun initData() {
