@@ -2,7 +2,10 @@ package org.gosky.nga.widget.richtext;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +41,8 @@ import com.bumptech.glide.Glide;
 
 import org.gosky.nga.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -276,7 +281,7 @@ public class FlexibleRichTextView extends LinearLayout {
                     final ICON thisToken = (ICON) thisToken();
 
                     TextWithFormula textWithFormula = new TextWithFormula(thisToken.value);
-                    textWithFormula.setSpan(new ImageSpan(mContext, thisToken.iconId), 0,
+                    textWithFormula.setSpan(new ImageSpan(mContext, getBitmapFromAsset(getContext(), thisToken.iconPath)), 0,
                             thisToken.value.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                     append(ret, textWithFormula);
@@ -584,7 +589,8 @@ public class FlexibleRichTextView extends LinearLayout {
     }
 
     private void next() {
-        mTokenIndex++;
+        if (!(thisToken() instanceof END))
+            mTokenIndex++;
     }
 
     public int getTokenIndex() {
@@ -776,5 +782,24 @@ public class FlexibleRichTextView extends LinearLayout {
         void onAttClick(Attachment attachment);
 
         void onQuoteButtonClick(View view, boolean collapsed);
+    }
+
+    private Bitmap getBitmapFromAsset(Context context, String strName) {
+        AssetManager assetManager = context.getAssets();
+        InputStream istr = null;
+        try {
+            istr = assetManager.open(strName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+        try {
+            if (istr != null) {
+                istr.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

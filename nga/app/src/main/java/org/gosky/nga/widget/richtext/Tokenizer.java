@@ -2,6 +2,8 @@ package org.gosky.nga.widget.richtext;
 
 import android.util.Log;
 
+import com.github.promeg.pinyinhelper.Pinyin;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class Tokenizer {
 
     private static final String TAG = "Tokenizer";
 
-    private static List<String> iconStrs = new ArrayList<>();
+    private static List<String> iconLabels = new ArrayList<>();
     private static List<Integer> icons = new ArrayList<>();
 
     static {
@@ -229,11 +231,11 @@ public class Tokenizer {
     }
 
     static class ICON extends TOKEN {
-        int iconId;
+        String iconPath;
 
-        ICON(int position, String iconStr, int iconId) {
+        ICON(int position, String iconStr, String iconPath) {
             super(position, iconStr.length(), iconStr);
-            this.iconId = iconId;
+            this.iconPath = iconPath;
         }
     }
 
@@ -709,10 +711,21 @@ public class Tokenizer {
         return ret;
     }
 
-    public static void setIconStrs(String... iconStrs) {
-        Tokenizer.iconStrs = new ArrayList<>();
-        Collections.addAll(Tokenizer.iconStrs, iconStrs);
+    public static int setIconLabels(String... iconStart) {
+        int ret = iconStart.length;
+
+        iconLabels = new ArrayList<>();
+        for (String s : iconStart) {
+            if (s.contains("\\s")) {
+                iconLabels.add(formatLabel(s)
+                        .replaceAll("\\\\s", "(.+?)"));
+                ret--;
+            }
+            ret--;
+        }
+        return ret;
     }
+
 
     public static void setIcons(Integer... icons) {
         Tokenizer.icons = new ArrayList<>();
@@ -761,13 +774,8 @@ public class Tokenizer {
             R.drawable.emoticons__0006_45, R.drawable.emoticons__0005_46, R.drawable.emoticons__0004_47, R.drawable.emoticons__0003_48, R.drawable.emoticons__0002_49,
             R.drawable.emoticons__0001_50, R.drawable.asonwwolf_smile, R.drawable.asonwwolf_laugh, R.drawable.asonwwolf_upset, R.drawable.asonwwolf_tear,
             R.drawable.asonwwolf_worry, R.drawable.asonwwolf_shock, R.drawable.asonwwolf_amuse);
-        setIconStrs("/:)", "/:D", "/^b^", "/o.o", "/xx", "/#", "/))", "/--", "/TT", "/==",
-            "/.**", "/:(", "/vv", "/$$", "/??", "/:/", "/xo", "/o0", "/><", "/love",
-            "/...", "/XD", "/ii", "/^^", "/<<", "/>.", "/-_-", "/0o0", "/zz", "/O!O",
-            "/##", "/:O", "/<", "/heart", "/break", "/rose", "/gift", "/bow", "/moon", "/sun",
-            "/coin", "/bulb", "/tea", "/cake", "/music", "/rock", "/v", "/good", "/bad", "/ok",
-            "/asnowwolf-smile", "/asnowwolf-laugh", "/asnowwolf-upset", "/asnowwolf-tear",
-            "/asnowwolf-worry", "/asnowwolf-shock", "/asnowwolf-amuse");*/
+        */
+        setIconLabels("[s:ac:\\s]");
     }
 
     public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {
@@ -1021,21 +1029,16 @@ public class Tokenizer {
         //</br> 替换为\n
         str = str.replace("<br/>", "\n");
 
-        for (int i = 0; i < iconStrs.size(); i++) {
-            int from = 0;
-            String iconStr = iconStrs.get(i);
-            while ((from = str.indexOf(iconStr, from)) >= 0) {
-
-                /**
-                 * only show icons when iconStr is surrounded by spaces
-                 */
-                if (iconStr.equals("/^^"))
-                    Log.d(TAG, "parse: " + str.trim().length() + ", " + iconStr.length() + ", " + (from + iconStr.length()) + ", " + str.length());
-                if (str.trim().length() == iconStr.length() ||
-                        ((from == 0 || ' ' == str.charAt(from - 1)) && (from + iconStr.length() == str.length() || ' ' == str.charAt(from + iconStr.length()) || '\n' == str.charAt(from + iconStr.length())))) {
-                    tokenList.add(new ICON(from, iconStr, icons.get(i)));
-                }
-                from += iconStr.length();
+        for (int i = 0; i < iconLabels.size(); i++) {
+            String iconLabel = iconLabels.get(i);
+            pattern = Pattern.compile(iconLabel);
+            matcher = pattern.matcher(text);
+            while (matcher.find()){
+                Log.i(TAG, "icon: " + matcher.group());
+                String replace = matcher.group(1).replace("ac:", "");
+                replace = Pinyin.toPinyin(replace, "").toLowerCase();
+                String s = "emotions/ac/emotion_1_" + replace + ".png";
+                tokenList.add(new ICON(matcher.start(), matcher.group(), s));
             }
         }
 
