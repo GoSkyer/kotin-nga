@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
-import org.gosky.base.mvp.BaseMvpPresenter;
 
-
-public abstract class BaseFragment<P extends BaseMvpPresenter> extends RxFragment {
+public abstract class BaseFragment extends RxFragment {
     protected BaseMvpActivity mActivity;
     protected View mRootView;
     protected final String TAG = this.getClass().getSimpleName();

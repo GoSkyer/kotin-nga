@@ -16,7 +16,7 @@ import org.gosky.nga.di.component.DaggerActivityComponent;
 import javax.inject.Inject;
 
 
-public abstract class MvpFragment<P extends BaseMvpPresenter> extends BaseFragment<P> implements BaseView {
+public abstract class MvpFragment<P extends BaseMvpPresenter> extends BaseFragment implements BaseView {
     protected App mApp;
     @Inject
     protected P mPresenter;

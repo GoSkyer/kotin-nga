@@ -25,9 +25,6 @@ import java.util.*
 
 class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
-    override fun showHistory(list: MutableList<History>?) {
-    }
-
     private lateinit var titles: ArrayList<String>
     private lateinit var views: ArrayList<Fragment>
 
