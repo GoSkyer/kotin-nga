@@ -53,8 +53,18 @@ constructor(private val apiManager: CommonApi) {
     fun getTopic(tid: String, page: String): Observable<TopicBean> {
         return apiManager
                 .getTopic(tid, page)
+                .flatMap {
+                    if (it.data.__T != null) {
+                        val quote_from = it.data.__T.quote_from
+                        return@flatMap apiManager
+                                .getTopic(quote_from.toString(), page)
+                    } else {
+                        return@flatMap Observable.just(it)
+                    }
+                }
     }
-    fun getBoard():Observable<BoardBean>{
+
+    fun getBoard(): Observable<BoardBean> {
         return apiManager.getBoard();
     }
 

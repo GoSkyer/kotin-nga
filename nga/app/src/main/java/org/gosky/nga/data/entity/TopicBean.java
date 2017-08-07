@@ -51,9 +51,18 @@ public class TopicBean {
         private String __GLOBAL;
         private Map<String, UBean> __U;
         private Map<String, RBean> __R;
+        private TBean __T;
         private int __R__ROWS;
         private int __R__ROWS_PAGE;
         private int __ROWS;
+
+        public TBean get__T() {
+            return __T;
+        }
+
+        public void set__T(TBean __T) {
+            this.__T = __T;
+        }
 
         public CUBean get__CU() {
             return __CU;
@@ -679,6 +688,238 @@ public class TopicBean {
                             ", thumb=" + thumb +
                             '}';
                 }
+            }
+        }
+
+        public static class TBean {
+            /**
+             * fid : 476
+             * tid : 9460053
+             * topic_misc : AQAAACA
+             * subject : [前瞻剧透] [游记] 牧师职业大厅战役全览------预言，拱卫圣光
+             * locked : 0
+             * recommend : 0
+             * quote_to :
+             * quote_from : 9460045
+             * type : 512
+             * replies : 134
+             * authorid : 1035719
+             * postdate : 1465917972
+             * lastpost : 1500509172
+             * author : Enddark
+             * lastposter : Crawling_in
+             * digest : 0
+             * lastmodify : 1500509172
+             * tpid : 0
+             * topic_misc_var : {"1":32}
+             * post_misc_var : {}
+             * this_visit_rows : 1
+             * view_count :
+             */
+
+            private int fid;
+            private int tid;
+            private String topic_misc;
+            private String subject;
+            private int locked;
+            private int recommend;
+            private String quote_to;
+            private int quote_from;
+            private int type;
+            private int replies;
+            private int authorid;
+            private int postdate;
+            private int lastpost;
+            private String author;
+            private String lastposter;
+            private int digest;
+            private int lastmodify;
+            private int tpid;
+            private TopicMiscVarBean topic_misc_var;
+            private PostMiscVarBean post_misc_var;
+            private int this_visit_rows;
+            private String view_count;
+
+            public int getFid() {
+                return fid;
+            }
+
+            public void setFid(int fid) {
+                this.fid = fid;
+            }
+
+            public int getTid() {
+                return tid;
+            }
+
+            public void setTid(int tid) {
+                this.tid = tid;
+            }
+
+            public String getTopic_misc() {
+                return topic_misc;
+            }
+
+            public void setTopic_misc(String topic_misc) {
+                this.topic_misc = topic_misc;
+            }
+
+            public String getSubject() {
+                return subject;
+            }
+
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
+
+            public int getLocked() {
+                return locked;
+            }
+
+            public void setLocked(int locked) {
+                this.locked = locked;
+            }
+
+            public int getRecommend() {
+                return recommend;
+            }
+
+            public void setRecommend(int recommend) {
+                this.recommend = recommend;
+            }
+
+            public String getQuote_to() {
+                return quote_to;
+            }
+
+            public void setQuote_to(String quote_to) {
+                this.quote_to = quote_to;
+            }
+
+            public int getQuote_from() {
+                return quote_from;
+            }
+
+            public void setQuote_from(int quote_from) {
+                this.quote_from = quote_from;
+            }
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
+            public int getReplies() {
+                return replies;
+            }
+
+            public void setReplies(int replies) {
+                this.replies = replies;
+            }
+
+            public int getAuthorid() {
+                return authorid;
+            }
+
+            public void setAuthorid(int authorid) {
+                this.authorid = authorid;
+            }
+
+            public int getPostdate() {
+                return postdate;
+            }
+
+            public void setPostdate(int postdate) {
+                this.postdate = postdate;
+            }
+
+            public int getLastpost() {
+                return lastpost;
+            }
+
+            public void setLastpost(int lastpost) {
+                this.lastpost = lastpost;
+            }
+
+            public String getAuthor() {
+                return author;
+            }
+
+            public void setAuthor(String author) {
+                this.author = author;
+            }
+
+            public String getLastposter() {
+                return lastposter;
+            }
+
+            public void setLastposter(String lastposter) {
+                this.lastposter = lastposter;
+            }
+
+            public int getDigest() {
+                return digest;
+            }
+
+            public void setDigest(int digest) {
+                this.digest = digest;
+            }
+
+            public int getLastmodify() {
+                return lastmodify;
+            }
+
+            public void setLastmodify(int lastmodify) {
+                this.lastmodify = lastmodify;
+            }
+
+            public int getTpid() {
+                return tpid;
+            }
+
+            public void setTpid(int tpid) {
+                this.tpid = tpid;
+            }
+
+            public TopicMiscVarBean getTopic_misc_var() {
+                return topic_misc_var;
+            }
+
+            public void setTopic_misc_var(TopicMiscVarBean topic_misc_var) {
+                this.topic_misc_var = topic_misc_var;
+            }
+
+            public PostMiscVarBean getPost_misc_var() {
+                return post_misc_var;
+            }
+
+            public void setPost_misc_var(PostMiscVarBean post_misc_var) {
+                this.post_misc_var = post_misc_var;
+            }
+
+            public int getThis_visit_rows() {
+                return this_visit_rows;
+            }
+
+            public void setThis_visit_rows(int this_visit_rows) {
+                this.this_visit_rows = this_visit_rows;
+            }
+
+            public String getView_count() {
+                return view_count;
+            }
+
+            public void setView_count(String view_count) {
+                this.view_count = view_count;
+            }
+
+            public static class TopicMiscVarBean {
+            }
+
+            public static class PostMiscVarBean {
             }
         }
 
