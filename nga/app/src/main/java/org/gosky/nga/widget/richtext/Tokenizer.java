@@ -775,7 +775,7 @@ public class Tokenizer {
             R.drawable.emoticons__0001_50, R.drawable.asonwwolf_smile, R.drawable.asonwwolf_laugh, R.drawable.asonwwolf_upset, R.drawable.asonwwolf_tear,
             R.drawable.asonwwolf_worry, R.drawable.asonwwolf_shock, R.drawable.asonwwolf_amuse);
         */
-        setIconLabels("[s:ac:\\s]");
+        setIconLabels("[s:ac:\\s]", "[s:a2:\\s]", "[s:dt:\\s]", "[s:pst:\\s]", "[s:pg:\\s]");
     }
 
     public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {
@@ -1033,11 +1033,21 @@ public class Tokenizer {
             String iconLabel = iconLabels.get(i);
             pattern = Pattern.compile(iconLabel);
             matcher = pattern.matcher(text);
-            while (matcher.find()){
+            while (matcher.find()) {
                 Log.i(TAG, "icon: " + matcher.group());
                 String replace = matcher.group(1).replace("ac:", "");
                 replace = Pinyin.toPinyin(replace, "").toLowerCase();
-                String s = "emotions/ac/emotion_1_" + replace + ".png";
+                String s = "";
+                if (i == 0)
+                    s = "emotions/ac/emotion_1_" + replace + ".png";
+                if (i == 1)
+                    s = "emotions/a2/a2_" + replace + ".png";
+                if (i == 2)
+                    s = "emotions/zrdm/" + replace + ".png";
+                if (i == 3)
+                    s = "emotions/panst/" + replace + ".png";
+                if (i == 4)
+                    s = "emotions/penguin/pg" + replace + ".png";
                 tokenList.add(new ICON(matcher.start(), matcher.group(), s));
             }
         }

@@ -582,7 +582,7 @@ public class TopicBean {
                 private String path;
                 private String name;
                 private String ext;
-                private int thumb;
+                private String thumb;
 
                 public String getAttachurl() {
                     return attachurl;
@@ -656,11 +656,11 @@ public class TopicBean {
                     this.ext = ext;
                 }
 
-                public int getThumb() {
+                public String getThumb() {
                     return thumb;
                 }
 
-                public void setThumb(int thumb) {
+                public void setThumb(String thumb) {
                     this.thumb = thumb;
                 }
 
