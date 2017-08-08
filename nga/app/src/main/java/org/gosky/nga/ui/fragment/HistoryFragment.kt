@@ -10,6 +10,7 @@ import org.gosky.nga.R
 import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
+import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.HistoryPresenter
 import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.activity.ForumActivity
@@ -24,16 +25,10 @@ import java.util.*
  * @date 2017/6/19
  */
 class HistoryFragment(var list: ArrayList<History>) : MvpFragment<HistoryPresenter>(), HistoryView {
-
-
-    override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
-        DaggerRepoComponent
-                .builder()
-                .appComponent(appComponent)
-                .activityComponent(activityComponent)
-                .build()
-                .inject(this)
+    override fun setupFragmentComponent(repoComponent: RepoComponent?) {
+        repoComponent?.inject(this)
     }
+
 
     override fun rootView(): Int {
         return R.layout.fragment_main

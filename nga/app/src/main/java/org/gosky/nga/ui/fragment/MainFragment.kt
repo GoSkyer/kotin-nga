@@ -10,6 +10,7 @@ import org.gosky.nga.data.entity.BoardBean
 import org.gosky.nga.di.component.ActivityComponent
 import org.gosky.nga.di.component.AppComponent
 import org.gosky.nga.di.component.DaggerRepoComponent
+import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.MainFragmentPresenter
 import org.gosky.nga.ui.activity.ForumActivity
 import org.gosky.nga.ui.activity.SecondBoardActivity
@@ -26,13 +27,8 @@ import java.util.*
  */
 class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean>) : MvpFragment<MainFragmentPresenter>(), MainFragmentView {
 
-    override fun setupFragmentComponent(appComponent: AppComponent, activityComponent: ActivityComponent) {
-        DaggerRepoComponent
-                .builder()
-                .appComponent(appComponent)
-                .activityComponent(activityComponent)
-                .build()
-                .inject(this)
+    override fun setupFragmentComponent(repoComponent: RepoComponent?) {
+        repoComponent?.inject(this)
     }
 
     override fun rootView(): Int {
