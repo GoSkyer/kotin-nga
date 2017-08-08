@@ -12,7 +12,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 
 
 public abstract class BaseFragment extends RxFragment {
-    protected BaseMvpActivity mActivity;
+    protected BaseActivity mActivity;
     protected View mRootView;
     protected final String TAG = this.getClass().getSimpleName();
 
@@ -21,7 +21,7 @@ public abstract class BaseFragment extends RxFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(rootView(), null);
+        mRootView = inflater.inflate(rootView(), container, false);
         Log.i(TAG, "onCreateView: ");
         return mRootView;
     }
@@ -29,7 +29,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mActivity = (BaseMvpActivity) getActivity();
+        mActivity = (BaseActivity) getActivity();
         mContext = getContext();
         Log.i(TAG, "onActivityCreated: ");
         setupView();

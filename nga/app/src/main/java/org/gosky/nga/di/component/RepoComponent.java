@@ -8,6 +8,7 @@ import org.gosky.nga.ui.activity.SecondBoardActivity;
 import org.gosky.nga.ui.activity.TopicActivity;
 import org.gosky.nga.ui.fragment.HistoryFragment;
 import org.gosky.nga.ui.fragment.MainFragment;
+import org.gosky.nga.ui.fragment.TopicFragment;
 import org.jetbrains.annotations.NotNull;
 
 import dagger.Component;
@@ -28,5 +29,7 @@ public interface RepoComponent {
 
     void inject(SecondBoardActivity secondBoardActivity);
 
-    void inject(@NotNull TopicActivity topicActivity);
+    void inject(TopicActivity topicActivity);
+
+    void inject(@NotNull TopicFragment topicFragment);
 }

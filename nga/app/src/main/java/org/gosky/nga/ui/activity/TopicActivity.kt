@@ -1,52 +1,46 @@
 package org.gosky.nga.ui.activity
 
 
-import android.support.v7.widget.LinearLayoutManager
-import kale.adapter.CommonRcvAdapter
-import kale.adapter.item.AdapterItem
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.activity_topic.*
+import org.gosky.base.base.BaseActivity
 import org.gosky.nga.R
-import org.gosky.nga.data.entity.TopicBean
-import org.gosky.nga.di.component.RepoComponent
-import org.gosky.nga.presenter.TopicPresenter
-import org.gosky.nga.ui.base.MvpActivity
-import org.gosky.nga.ui.item.TopicItem
-import org.gosky.nga.view.TopicView
-import java.util.*
+import org.gosky.nga.ui.fragment.TopicFragment
 
 /**
  * @author guozhong
  * @date 2017/7/26
  */
-class TopicActivity : MvpActivity<TopicPresenter>(), TopicView {
+class TopicActivity : BaseActivity() {
 
-    private val list = ArrayList<TopicBean.DataBean.RBean>()
 
-    override fun setupActivityComponent(repoComponent: RepoComponent?) {
-        repoComponent?.inject(this)
-    }
+    private val tid by lazy { intent.extras["tid"].toString() }
 
     override fun rootView(): Int {
         return R.layout.activity_topic
     }
 
     override fun setupView() {
-        rcv_topic.layoutManager = LinearLayoutManager(mContext)
-        rcv_topic.adapter = object : CommonRcvAdapter<TopicBean.DataBean.RBean>(list) {
-            override fun createItem(p0: Any?): AdapterItem<*> {
-                return TopicItem()
-            }
-
-        }
+        val topicAdapter = TopicAdapter(intent.extras["replies"] as Int)
+        vp_topic_activity.adapter = topicAdapter
+        tabLayout_topic_activity.setupWithViewPager(vp_topic_activity)
     }
 
     override fun initData() {
-        mPresenter.getTopic(intent.extras["tid"].toString(), "1")
     }
 
-    override fun showTopics(p0: ArrayList<TopicBean.DataBean.RBean>) {
-        list.addAll(p0);
-        rcv_topic.adapter.notifyDataSetChanged()
+    inner class TopicAdapter(var replies: Int) : FragmentStatePagerAdapter(supportFragmentManager) {
+
+        override fun getItem(position: Int): Fragment {
+            return TopicFragment(tid, position)
+        }
+
+        override fun getCount(): Int = replies / 20 + 1
+
+        override fun getPageTitle(position: Int): CharSequence {
+            return position.toString()
+        }
     }
 
 }

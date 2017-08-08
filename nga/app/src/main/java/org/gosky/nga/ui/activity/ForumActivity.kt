@@ -48,7 +48,7 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
                 super.onItemClick(model, position)
                 router {
                     url = topicActivity
-                    addParams(p = "tid" to model?.tid.toString())
+                    addParams("tid" to model?.tid.toString(), "replies" to model?.replies!!.toInt())
                 }
             }
         }
