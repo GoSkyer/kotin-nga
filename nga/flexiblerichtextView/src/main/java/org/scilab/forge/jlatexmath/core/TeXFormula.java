@@ -970,7 +970,7 @@ public class TeXFormula {
 				bg == null);
 	}
 
-	@SuppressLint("NewApi")
+
 	public void createWEBP(int style, float size, String out, Integer bg,
 			Integer fg) throws IOException {
 		createImage(Bitmap.CompressFormat.WEBP, style, size, out, bg, fg, bg == null);

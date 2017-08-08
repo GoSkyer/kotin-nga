@@ -1,6 +1,5 @@
 package org.gosky.nga;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Process;
@@ -23,6 +22,7 @@ import org.gosky.nga.di.component.AppComponent;
 import org.gosky.nga.di.component.DaggerAppComponent;
 import org.gosky.nga.di.module.CacheModule;
 import org.gosky.nga.di.module.ServiceModule;
+
 import java.util.List;
 
 
@@ -66,7 +66,7 @@ public class App extends BaseApplication {
         };
         Logger.setLogger(this, newLogger);
         CrashReport.initCrashReport(getApplicationContext(), "900060152", false);
-       // boardHolders = new ArrayList<>();
+        // boardHolders = new ArrayList<>();
         //數據庫初始化
         FlowManager.init(this);
         Log.i(TAG, "onCreate: ");
@@ -74,7 +74,8 @@ public class App extends BaseApplication {
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
         RouterTableKt.init();
     }
-    @SuppressLint("NewApi")
+
+
     private boolean shouldInit() {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
@@ -87,6 +88,7 @@ public class App extends BaseApplication {
         }
         return false;
     }
+
     /**
      * 将AppComponent返回出去,供其它地方使用, AppComponent接口中声明的方法返回的实例, 在getAppComponent()拿到对象后都可以直接使用
      *
