@@ -54,7 +54,7 @@ constructor(private val apiManager: CommonApi) {
         return apiManager
                 .getTopic(tid, page)
                 .flatMap {
-                    if (it.data.__T != null) {
+                    if (it.data.__T != null && it.data.__T.quote_from != null) {
                         val quote_from = it.data.__T.quote_from
                         return@flatMap apiManager
                                 .getTopic(quote_from.toString(), page)
