@@ -1,8 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:background="#999"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv_avatar_topic_item"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="5dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_username_topic_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="用户名"/>
+
+            <TextView
+                android:id="@+id/tv_user_profile_topic_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_user_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:background="#999"
+        />
 
     <org.gosky.nga.widget.richtext.FlexibleRichTextView
         android:id="@+id/tv_item_topic"

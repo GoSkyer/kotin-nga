@@ -22,7 +22,7 @@ class TopicPresenter
                 .subscribe({
                     topicBean ->
                     Log.i(TAG, ": " + topicBean.toString())
-                    mvpView.showTopics(topicBean.data.__R.values.toMutableList() as ArrayList<TopicBean.DataBean.RBean>)
+                    mvpView.showTopics(topicBean.data)
                 }, {
                     it.printStackTrace()
                 })

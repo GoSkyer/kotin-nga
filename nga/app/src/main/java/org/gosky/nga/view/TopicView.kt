@@ -2,7 +2,6 @@ package org.gosky.nga.view
 
 import org.gosky.base.mvp.BaseView
 import org.gosky.nga.data.entity.TopicBean
-import java.util.*
 
 /**
  * @author guozhong
@@ -10,6 +9,6 @@ import java.util.*
  */
 interface TopicView : BaseView {
 
-    fun showTopics(p0: ArrayList<TopicBean.DataBean.RBean>);
+    fun showTopics(p0: TopicBean.DataBean);
 
 }
