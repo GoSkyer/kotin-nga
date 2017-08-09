@@ -33,7 +33,7 @@ class TopicActivity : BaseActivity() {
     inner class TopicAdapter(var replies: Int) : FragmentStatePagerAdapter(supportFragmentManager) {
 
         override fun getItem(position: Int): Fragment {
-            return TopicFragment(tid, position)
+            return TopicFragment(tid, position + 1)
         }
 
         override fun getCount(): Int = replies / 20 + 1
