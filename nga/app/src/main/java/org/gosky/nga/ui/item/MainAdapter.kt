@@ -33,7 +33,7 @@ class MainAdapter constructor(val context:  Context) : AdapterItem<BoardBean.Res
     }
 
     override fun handleData(p0: BoardBean.ResultBean.GroupsBean.ForumsBean?, p1: Int) {
-        view.tvNameItemMain.text = p0?.getName()
+        view.tvNameItemMain.text = p0?.name
         p0?.icon?.let { Glide.with(context).load("https://img4.nga.cn/ngabbs/nga_classic/f/app/"+p0.id+".png").error(R.mipmap.default_icon).into(view.ivIconItemMain) }
     }
 
