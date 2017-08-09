@@ -13,9 +13,8 @@ import org.gosky.nga.data.entity.TopicBean
  * @author guozhong
  * @date 2017/7/27
  */
-class TopicItem : AdapterItem<TopicBean.DataBean.RBean> {
+class TopicItem(var __U: Map<String, TopicBean.DataBean.UBean>) : AdapterItem<TopicBean.DataBean.RBean> {
     private lateinit var view: View
-    private lateinit var __U: Map<String, TopicBean.DataBean.UBean>
 
     override fun getLayoutResId() = R.layout.item_topic;
 
@@ -42,9 +41,5 @@ class TopicItem : AdapterItem<TopicBean.DataBean.RBean> {
             view.tv_user_profile_topic_item.text = "威望:$rvrc   发帖:$postnum"
         }
 
-    }
-
-    fun setUserBean(__U: Map<String, TopicBean.DataBean.UBean>) {
-        this.__U = __U
     }
 }

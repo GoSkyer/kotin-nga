@@ -20,7 +20,7 @@ import java.util.*
 class TopicFragment constructor(var tid: String = "", var p: Int = 0) : MvpFragment<TopicPresenter>(), TopicView {
 
     private val list = ArrayList<TopicBean.DataBean.RBean>()
-    private val topicItem = TopicItem()
+    private lateinit var __U: Map<String, TopicBean.DataBean.UBean>
 
     override fun setupFragmentComponent(repoComponent: RepoComponent?) {
         repoComponent?.inject(this)
@@ -33,7 +33,7 @@ class TopicFragment constructor(var tid: String = "", var p: Int = 0) : MvpFragm
         rcv_topic.layoutManager = LinearLayoutManager(mContext)
         rcv_topic.adapter = object : CommonRcvAdapter<TopicBean.DataBean.RBean>(list) {
             override fun createItem(p0: Any?): AdapterItem<*> {
-                return topicItem
+                return TopicItem(__U)
             }
 
         }
@@ -45,7 +45,7 @@ class TopicFragment constructor(var tid: String = "", var p: Int = 0) : MvpFragm
 
     override fun showTopics(p0: TopicBean.DataBean) {
         list.addAll(p0.__R?.values?.toMutableList() as ArrayList<TopicBean.DataBean.RBean>);
-        p0.__U?.let { topicItem.setUserBean(it) }
+        p0.__U?.run { __U = this }
         rcv_topic.adapter.notifyDataSetChanged()
     }
 }
