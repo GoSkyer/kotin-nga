@@ -1,7 +1,5 @@
 package org.gosky.nga.view
 
-import com.kungfu.dbflow.History
-
 import org.gosky.base.mvp.BaseView
 import org.gosky.nga.data.entity.BoardBean
 
@@ -10,5 +8,5 @@ import org.gosky.nga.data.entity.BoardBean
  */
 
 interface MainView : BaseView {
-    fun showBoard(mList: List<BoardBean.ResultBean.GroupsBean>)
+    fun showBoard(mList: MutableList<BoardBean.ResultBean.GroupsBean>)
 }

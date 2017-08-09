@@ -8,6 +8,6 @@ import org.gosky.nga.data.entity.ThreadBean
  */
 
 interface ForumView : BaseView {
-    fun refreshRcv(str: List<ThreadBean>)
-    fun loadMoreRcv(list: List<ThreadBean>)
+    fun refreshRcv(str: MutableList<ThreadBean>)
+    fun loadMoreRcv(list: MutableList<ThreadBean>)
 }
