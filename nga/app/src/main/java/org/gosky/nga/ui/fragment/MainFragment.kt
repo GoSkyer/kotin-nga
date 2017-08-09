@@ -7,9 +7,6 @@ import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.gosky.nga.R
 import org.gosky.nga.data.entity.BoardBean
-import org.gosky.nga.di.component.ActivityComponent
-import org.gosky.nga.di.component.AppComponent
-import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.MainFragmentPresenter
 import org.gosky.nga.ui.activity.ForumActivity
@@ -46,7 +43,7 @@ class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBea
                 super.onItemClick(model, position)
                 model?.apply {
                     if (model.isIs_forumlist) {
-                        startActivity<SecondBoardActivity>("list" to model.forums, "name" to model.name.toString())
+                        startActivity<SecondBoardActivity>("list" to model.forums!!, "name" to model.name.toString())
                     } else {
                         startActivity<ForumActivity>("forumId" to model.id.toString(), "name" to model.name.toString())
                         mPresenter.addHistory(model)

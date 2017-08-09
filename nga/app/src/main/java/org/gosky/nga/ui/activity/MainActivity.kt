@@ -55,8 +55,8 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
         views = ArrayList()
         titles = ArrayList()
         for (item in mList) {
-            views.add(MainFragment(item.forums))
-            titles.add(item.name)
+            views.add(MainFragment(item.forums!!))
+            titles.add(item.name!!)
         }
         views.add(0, HistoryFragment(ArrayList<History>()))
         titles.add(0, "最近访问")

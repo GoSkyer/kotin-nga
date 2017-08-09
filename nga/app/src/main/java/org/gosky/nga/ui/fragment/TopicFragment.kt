@@ -44,8 +44,8 @@ class TopicFragment constructor(var tid: String = "", var p: Int = 0) : MvpFragm
     }
 
     override fun showTopics(p0: TopicBean.DataBean) {
-        list.addAll(p0.__R.values.toMutableList() as ArrayList<TopicBean.DataBean.RBean>);
-        topicItem.setUserBean(p0.__U)
+        list.addAll(p0.__R?.values?.toMutableList() as ArrayList<TopicBean.DataBean.RBean>);
+        p0.__U?.let { topicItem.setUserBean(it) }
         rcv_topic.adapter.notifyDataSetChanged()
     }
 }

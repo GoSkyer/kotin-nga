@@ -22,15 +22,15 @@ constructor(private val threadImpl: ThreadImpl, private val history: HistoryImpl
         threadImpl.getBoard().compose(RxHelper.rxSchedulerHelper<BoardBean>())
                 .map<List<BoardBean.ResultBean.GroupsBean>> { boardBean ->
                     val mList = ArrayList<BoardBean.ResultBean.GroupsBean>()
-                    for (resultBean in boardBean.result) {
-                        mList.addAll(resultBean.groups)
+                    for (resultBean in boardBean.result!!) {
+                        mList.addAll(resultBean.groups!!)
                     }
                     mList
                 }
                 .map<List<BoardBean.ResultBean.GroupsBean>> { list ->
                     val mList = ArrayList<BoardBean.ResultBean.GroupsBean>()
                     for (item in list) {
-                        val sListIterator = item.forums.iterator()
+                        val sListIterator = item.forums!!.iterator()
                         while (sListIterator.hasNext()) {
                             val e = sListIterator.next()
                             if (e.isIs_forumlist) {
