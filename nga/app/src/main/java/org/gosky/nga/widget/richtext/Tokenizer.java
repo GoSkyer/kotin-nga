@@ -46,6 +46,9 @@ public class Tokenizer {
     private static List<ImgPos> imgPosList = new ArrayList<>();
     private static List<QuotePos> quotePosList = new ArrayList<>();
 
+    private static List<String> sizeStartLabels = new ArrayList<>();
+    private static List<String> sizeEndLabels = new ArrayList<>();
+
     private static final String TAG = "Tokenizer";
 
     private static List<String> iconLabels = new ArrayList<>();
@@ -115,6 +118,21 @@ public class Tokenizer {
 
     static class COLOR_END extends TOKEN {
         COLOR_END(int position, String value) {
+            super(position, value.length(), value);
+        }
+    }
+
+    static class SIZE_START extends TOKEN {
+        String color;
+
+        SIZE_START(int position, String value, String color) {
+            super(position, value.length(), value);
+            this.color = color;
+        }
+    }
+
+    static class SIZE_END extends TOKEN {
+        SIZE_END(int position, String value) {
             super(position, value.length(), value);
         }
     }
@@ -265,6 +283,7 @@ public class Tokenizer {
             super(position, value.length(), value);
         }
     }
+
 
     static class QUOTE_START extends TOKEN {
         String quotedUsername;
@@ -507,6 +526,35 @@ public class Tokenizer {
         return ret;
     }
 
+    public static int setSizeStartLabels(String... labels) {
+        int ret = labels.length;
+
+        sizeStartLabels = new ArrayList<>();
+        for (String label : labels) {
+            if (label.contains("\\s")) {
+                sizeStartLabels.add(formatLabel(label)
+                        .replaceAll("\\\\s", "(.+?)"));
+                ret--;
+            }
+            ret--;
+        }
+
+        return ret;
+    }
+
+    public static int setSizeEndLabels(String... labels) {
+        int ret = labels.length;
+
+        sizeEndLabels = new ArrayList<>();
+        for (String label : labels) {
+            sizeEndLabels.add(formatLabel(label));
+            ret--;
+        }
+
+        return ret;
+    }
+
+
     public static int setTitleEndLabels(String... labels) {
         int ret = labels.length;
 
@@ -747,8 +795,8 @@ public class Tokenizer {
         setItalicEndLabels("[/i]");
         setCurtainStartLabels("[curtain]");
         setCurtainEndLabels("[/curtain]");
-        setCenterStartLabels("[center]");
-        setCenterEndLabels("[/center]");
+        setCenterStartLabels("[align=center]");
+        setCenterEndLabels("[/align]");
         setCodeStartLabels("[code]");
         setCodeEndLabels("[/code]");
         setTitleStartLabels("[h]");
@@ -762,20 +810,9 @@ public class Tokenizer {
         setDeleteEndLabels("[/del]");
         setUnderlineStartLabels("[u]");
         setUnderlineEndLabels("[/u]");
-        /*setIcons(R.drawable.emoticons__0050_1, R.drawable.emoticons__0049_2, R.drawable.emoticons__0048_3, R.drawable.emoticons__0047_4,
-            R.drawable.emoticons__0046_5, R.drawable.emoticons__0045_6, R.drawable.emoticons__0044_7, R.drawable.emoticons__0043_8, R.drawable.emoticons__0042_9,
-            R.drawable.emoticons__0041_10, R.drawable.emoticons__0040_11, R.drawable.emoticons__0039_12, R.drawable.emoticons__0038_13, R.drawable.emoticons__0037_14,
-            R.drawable.emoticons__0036_15, R.drawable.emoticons__0035_16, R.drawable.emoticons__0034_17, R.drawable.emoticons__0033_18, R.drawable.emoticons__0032_19,
-            R.drawable.emoticons__0031_20, R.drawable.emoticons__0030_21, R.drawable.emoticons__0029_22, R.drawable.emoticons__0028_23, R.drawable.emoticons__0027_24,
-            R.drawable.emoticons__0026_25, R.drawable.emoticons__0025_26, R.drawable.emoticons__0024_27, R.drawable.emoticons__0023_28, R.drawable.emoticons__0022_29,
-            R.drawable.emoticons__0021_30, R.drawable.emoticons__0020_31, R.drawable.emoticons__0019_32, R.drawable.emoticons__0018_33, R.drawable.emoticons__0017_34,
-            R.drawable.emoticons__0016_35, R.drawable.emoticons__0015_36, R.drawable.emoticons__0014_37, R.drawable.emoticons__0013_38, R.drawable.emoticons__0012_39,
-            R.drawable.emoticons__0011_40, R.drawable.emoticons__0010_41, R.drawable.emoticons__0009_42, R.drawable.emoticons__0008_43, R.drawable.emoticons__0007_44,
-            R.drawable.emoticons__0006_45, R.drawable.emoticons__0005_46, R.drawable.emoticons__0004_47, R.drawable.emoticons__0003_48, R.drawable.emoticons__0002_49,
-            R.drawable.emoticons__0001_50, R.drawable.asonwwolf_smile, R.drawable.asonwwolf_laugh, R.drawable.asonwwolf_upset, R.drawable.asonwwolf_tear,
-            R.drawable.asonwwolf_worry, R.drawable.asonwwolf_shock, R.drawable.asonwwolf_amuse);
-        */
         setIconLabels("[s:ac:\\s]", "[s:a2:\\s]", "[s:dt:\\s]", "[s:pst:\\s]", "[s:pg:\\s]");
+        setSizeStartLabels("[size=\\s]");
+        setSizeEndLabels("[/size]");
     }
 
     public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {
@@ -887,6 +924,14 @@ public class Tokenizer {
                 tokenList.add(new COLOR_END(matcher.start(), matcher.group()));
             }
         }
+        for (String sizeEndLabel : sizeEndLabels) {
+            pattern = Pattern.compile(sizeEndLabel);
+            matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                tokenList.add(new SIZE_END(matcher.start(), matcher.group()));
+            }
+        }
 
         for (String italicStartLabel : italicStartLabels) {
             pattern = Pattern.compile(italicStartLabel);
@@ -995,6 +1040,32 @@ public class Tokenizer {
                 tokenList.add(new CODE_END(matcher.start(), matcher.group()));
             }
         }
+        for (String colorStartLabel : colorStartLabels) {
+            pattern = Pattern.compile(colorStartLabel);
+            matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                tokenList.add(new COLOR_START(matcher.start(), matcher.group(), matcher.group(1)));
+            }
+        }
+        for (String sizeStartLabel : sizeStartLabels) {
+            pattern = Pattern.compile(sizeStartLabel);
+            matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                tokenList.add(new SIZE_START(matcher.start(), matcher.group(), matcher.group(1)));
+            }
+        }
+
+        for (String codeEndLabel : codeEndLabels) {
+            pattern = Pattern.compile(codeEndLabel);
+            matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                tokenList.add(new CODE_END(matcher.start(), matcher.group()));
+            }
+        }
+
 
         for (int i = 0; i < quoteStartLabels.size(); i++) {
             String quoteStartLabel = quoteStartLabels.get(i);

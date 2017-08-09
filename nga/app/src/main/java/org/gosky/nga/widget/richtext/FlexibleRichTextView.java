@@ -215,11 +215,11 @@ public class FlexibleRichTextView extends LinearLayout {
 
     private final Class[] start = {CENTER_START.class, BOLD_START.class, ITALIC_START.class,
             UNDERLINE_START.class, DELETE_START.class, CURTAIN_START.class, TITLE_START.class,
-            COLOR_START.class, URL_START.class};
+            COLOR_START.class, URL_START.class, Tokenizer.SIZE_START.class};
 
     private final Class[] end = {CENTER_END.class, BOLD_END.class, ITALIC_END.class,
             UNDERLINE_END.class, DELETE_END.class, CURTAIN_END.class, TITLE_END.class,
-            COLOR_END.class, URL_END.class};
+            COLOR_END.class, URL_END.class, Tokenizer.SIZE_END.class};
 
     private final String CENTER_OP = "center";
     private final String BOLD_OP = "bold";
@@ -230,8 +230,9 @@ public class FlexibleRichTextView extends LinearLayout {
     private final String TITLE_OP = "title";
     private final String COLOR_OP = "color";
     private final String URL_OP = "url";
+    private final String SIZE_OP = "size";
 
-    private final String[] operation = {CENTER_OP, BOLD_OP, ITALIC_OP, UNDERLINE_OP, DELETE_OP, CURTAIN_OP, TITLE_OP, COLOR_OP, URL_OP};
+    private final String[] operation = {CENTER_OP, BOLD_OP, ITALIC_OP, UNDERLINE_OP, DELETE_OP, CURTAIN_OP, TITLE_OP, COLOR_OP, URL_OP, SIZE_OP};
 
     private <T extends TOKEN> List<Object> until(Class<T> endClass) {
         List<Object> ret = new ArrayList<>();
@@ -257,6 +258,8 @@ public class FlexibleRichTextView extends LinearLayout {
                         operand = ((COLOR_START) thisToken()).color;
                     } else if (thisToken() instanceof URL_START) {
                         operand = ((URL_START) thisToken()).url;
+                    } else if (thisToken() instanceof Tokenizer.SIZE_START) {
+                        operand = ((Tokenizer.SIZE_START) thisToken()).color;
                     }
 
                     tmp = getTokenIndex();
@@ -531,6 +534,16 @@ public class FlexibleRichTextView extends LinearLayout {
                         } catch (IllegalArgumentException e) {
                             // avoid crash caused by illegal color
                         }
+                    }
+                }
+                break;
+            case SIZE_OP:
+                for (Object o : list) {
+                    if (o instanceof TextWithFormula) {
+                        final TextWithFormula textWithFormula = (TextWithFormula) o;
+                        String ss = operand[0].replaceAll("%", "");
+                        Float f = Float.valueOf(ss) / 100;
+                        textWithFormula.setSpan(new RelativeSizeSpan(f), 0, textWithFormula.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     }
                 }
                 break;
