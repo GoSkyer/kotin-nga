@@ -54,15 +54,14 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
     override fun showBoard(mList: MutableList<BoardBean.ResultBean.GroupsBean>) {
         views = ArrayList()
         titles = ArrayList()
+        views.add(HistoryFragment())
+        titles.add("最近访问")
         for (item in mList) {
             views.add(MainFragment(item.forums!!))
             titles.add(item.name!!)
         }
-        views.add(0, HistoryFragment(ArrayList<History>()))
-        titles.add(0, "最近访问")
         vpMain.adapter = viewPagerAdapter()
         tabLayout.setupWithViewPager(vpMain)
-        vpMain.currentItem = 1
         vpMain.addOnPageChangeListener(this)
     }
 

@@ -7,12 +7,8 @@ import kale.adapter.CommonRcvAdapter
 import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.gosky.nga.R
-import org.gosky.nga.di.component.ActivityComponent
-import org.gosky.nga.di.component.AppComponent
-import org.gosky.nga.di.component.DaggerRepoComponent
 import org.gosky.nga.di.component.RepoComponent
 import org.gosky.nga.presenter.HistoryPresenter
-import org.gosky.nga.presenter.MainPresenter
 import org.gosky.nga.ui.activity.ForumActivity
 import org.gosky.nga.ui.base.MvpFragment
 import org.gosky.nga.ui.item.HistoryAdapter
@@ -24,11 +20,11 @@ import java.util.*
  * @author guozhong
  * @date 2017/6/19
  */
-class HistoryFragment(var list: ArrayList<History>) : MvpFragment<HistoryPresenter>(), HistoryView {
+class HistoryFragment() : MvpFragment<HistoryPresenter>(), HistoryView {
+    private val list: ArrayList<History> = arrayListOf()
     override fun setupFragmentComponent(repoComponent: RepoComponent?) {
         repoComponent?.inject(this)
     }
-
 
     override fun rootView(): Int {
         return R.layout.fragment_main
@@ -51,6 +47,7 @@ class HistoryFragment(var list: ArrayList<History>) : MvpFragment<HistoryPresent
         rcv_main_fragment.adapter.notifyDataSetChanged()
     }
 
+
     override fun showHistory(list: List<History>) {
         this.list.clear()
         this.list.addAll(list)
@@ -62,6 +59,8 @@ class HistoryFragment(var list: ArrayList<History>) : MvpFragment<HistoryPresent
     }
 
     override fun initData() {
+        refresh()
+
     }
 
 
