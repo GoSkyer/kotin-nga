@@ -17,7 +17,7 @@ import java.util.*
  * @author guozhong
  * @date 2017/8/8
  */
-class TopicFragment constructor(var tid: String = "", var p: Int = 0) : MvpFragment<TopicPresenter>(), TopicView {
+class TopicFragment constructor(var tid: String = "", var p: Int = 0, var reply: (replies: Int) -> Unit = {}) : MvpFragment<TopicPresenter>(), TopicView {
 
     private val list = ArrayList<TopicBean.DataBean.RBean>()
     private lateinit var __U: Map<String, TopicBean.DataBean.UBean>
@@ -46,6 +46,7 @@ class TopicFragment constructor(var tid: String = "", var p: Int = 0) : MvpFragm
     override fun showTopics(p0: TopicBean.DataBean) {
         list.addAll(p0.__R?.values?.toMutableList() as ArrayList<TopicBean.DataBean.RBean>);
         p0.__U?.run { __U = this }
+        p0.__T?.replies?.let { reply(it) }
         rcv_topic.adapter.notifyDataSetChanged()
     }
 }

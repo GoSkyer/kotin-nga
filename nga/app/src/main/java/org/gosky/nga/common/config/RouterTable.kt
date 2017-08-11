@@ -34,6 +34,10 @@ fun init() {
             value = TopicActivity::class.java
         }
         config {
+            key = "http://bbs.ngacn.cc/read.php"
+            value = TopicActivity::class.java
+        }
+        config {
             key = browsingHistoryActivity
             value = BrowsingHistoryActivity::class.java
         }

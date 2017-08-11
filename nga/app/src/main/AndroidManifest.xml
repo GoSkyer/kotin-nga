@@ -47,6 +47,24 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.SchemeFilterActivity">
+            <intent-filter>
+                <data
+                    android:host="bbs.nga.cn"
+                    android:scheme="http"/>
+                <data
+                    android:host="bbs.ngacn.cc"
+                    android:scheme="http"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ui.activity.ForumActivity"
             android:launchMode="singleTask"

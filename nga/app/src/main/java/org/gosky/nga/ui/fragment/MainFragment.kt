@@ -22,7 +22,7 @@ import java.util.*
  * @author guozhong
  * @date 2017/6/19
  */
-class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean>) : MvpFragment<MainFragmentPresenter>(), MainFragmentView {
+class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBean>? = null) : MvpFragment<MainFragmentPresenter>(), MainFragmentView {
 
     override fun setupFragmentComponent(repoComponent: RepoComponent?) {
         repoComponent?.inject(this)

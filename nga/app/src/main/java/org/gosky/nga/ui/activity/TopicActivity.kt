@@ -22,7 +22,8 @@ class TopicActivity : BaseActivity() {
     }
 
     override fun setupView() {
-        val topicAdapter = TopicAdapter(intent.extras["replies"] as Int)
+        val replies = intent.extras["replies"]
+        val topicAdapter = TopicAdapter(if (replies != null) replies as Int else 1)
         vp_topic_activity.adapter = topicAdapter
         tabLayout_topic_activity.setupWithViewPager(vp_topic_activity)
         setSupportActionBar(toolbar_topic_activity)
@@ -33,10 +34,17 @@ class TopicActivity : BaseActivity() {
     override fun initData() {
     }
 
+
     inner class TopicAdapter(var replies: Int) : FragmentStatePagerAdapter(supportFragmentManager) {
+        val reply: (Int) -> Unit = {
+            if (replies != it) {
+                replies = it
+                notifyDataSetChanged()
+            }
+        }
 
         override fun getItem(position: Int): Fragment {
-            return TopicFragment(tid, position + 1)
+            return TopicFragment(tid, position + 1, reply)
         }
 
         override fun getCount(): Int = replies / 20 + 1
