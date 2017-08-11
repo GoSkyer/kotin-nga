@@ -10,7 +10,6 @@ import com.lcodecore.tkrefreshlayout.footer.BallPulseView;
 import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.thejoyrun.router.Router;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -45,8 +44,6 @@ public class App extends BaseApplication {
                 .serviceModule(new ServiceModule())//需自行创建
                 .cacheModule(new CacheModule())//需自行创建
                 .build();
-
-        Router.init("qeeniao", this, "dynamic_action.cfg");
         MiPushClient.registerPush(this, AppConfig.mipushAppID, AppConfig.mipushAppKey);
         LoggerInterface newLogger = new LoggerInterface() {
             @Override

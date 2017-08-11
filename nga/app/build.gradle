@@ -98,7 +98,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':base')
     compile files('libs/MiPush_SDK_Client_3_4_0.jar')
-    compile 'com.github.GoSkyer.ActivityRouter:router:1.0'
     compile 'co.lujun:androidtagview:1.0.3'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.liulishuo.magicprogresswidget:library:1.0.9'
@@ -109,7 +108,6 @@ dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.0'
     compile 'org.jetbrains.anko:anko-support-v4-commons:0.10.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    kapt 'com.github.GoSkyer.ActivityRouter:router-compiler:1.0'
     kapt 'com.google.dagger:dagger-compiler:2.11'
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'org.sufficientlysecure:html-textview:3.4'
