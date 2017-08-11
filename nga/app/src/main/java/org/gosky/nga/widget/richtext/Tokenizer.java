@@ -326,7 +326,7 @@ public class Tokenizer {
             String s = url;
             if (url.startsWith("./"))
                 s = "http://img.nga.cn/attachments" + url.replace("./", "/");
-            if (!url.endsWith(".medium.jpg") && url.endsWith(".jpg"))
+            if (!url.endsWith(".medium.jpg") && url.endsWith(".jpg") && url.startsWith("http://img.nga.cn/"))
                 s = s + ".medium.jpg";
             Log.i(TAG, "setRealUrl: " + s);
             return s;
