@@ -25,6 +25,9 @@ class TopicActivity : BaseActivity() {
         val topicAdapter = TopicAdapter(intent.extras["replies"] as Int)
         vp_topic_activity.adapter = topicAdapter
         tabLayout_topic_activity.setupWithViewPager(vp_topic_activity)
+        setSupportActionBar(toolbar_topic_activity)
+        supportActionBar?.title = "主题详情"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
     }
 
     override fun initData() {

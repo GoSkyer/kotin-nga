@@ -1,6 +1,7 @@
 package org.gosky.nga.di.component;
 
 import org.gosky.base.di.scope.ActivityScope;
+import org.gosky.nga.ui.activity.BrowsingHistoryActivity;
 import org.gosky.nga.ui.activity.ForumActivity;
 import org.gosky.nga.ui.activity.LoginActivity;
 import org.gosky.nga.ui.activity.MainActivity;
@@ -32,4 +33,6 @@ public interface RepoComponent {
     void inject(TopicActivity topicActivity);
 
     void inject(@NotNull TopicFragment topicFragment);
+
+    void inject(@NotNull BrowsingHistoryActivity browsingHistoryActivity);
 }

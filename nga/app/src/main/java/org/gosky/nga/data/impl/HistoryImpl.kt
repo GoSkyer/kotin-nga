@@ -1,12 +1,14 @@
 package org.gosky.nga.data.impl
 
 import android.util.Log
-import com.kungfu.dbflow.History
-import com.kungfu.dbflow.History_Table
+import com.kungfu.dbflow.OpenRecent
+import com.kungfu.dbflow.OpenRecent_Table
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.kotlinextensions.orderBy
 import com.raizlabs.android.dbflow.kotlinextensions.save
 import com.raizlabs.android.dbflow.kotlinextensions.select
+import com.raizlabs.android.dbflow.rx2.kotlinextensions.rx
+import io.reactivex.Single
 import org.gosky.nga.data.entity.BoardBean
 import java.util.*
 import javax.inject.Inject
@@ -19,7 +21,7 @@ class HistoryImpl @Inject constructor() {
     private val TAG = "HistoryImpl";
 
     fun insertHistory(model: BoardBean.ResultBean.GroupsBean.ForumsBean) {
-        val history = History()
+        val history = OpenRecent()
         history.id = model.id
         history.name = model.name
         history.date = Date()
@@ -27,7 +29,7 @@ class HistoryImpl @Inject constructor() {
         Log.i(TAG, "save success")
     }
 
-    fun queryAll(): List<History> {
-        return select { from(History::class) orderBy History_Table.date.desc() }.queryList()
+    fun queryAll(): Single<MutableList<OpenRecent>> {
+        return select { from(OpenRecent::class) orderBy OpenRecent_Table.date.desc() }.rx().queryList()
     }
 }

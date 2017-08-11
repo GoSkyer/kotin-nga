@@ -9,9 +9,9 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
-import com.kungfu.dbflow.History
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
+import org.gosky.nga.common.config.browsingHistoryActivity
 import org.gosky.nga.common.config.loginActivity
 import org.gosky.nga.common.utils.router
 import org.gosky.nga.data.entity.BoardBean
@@ -66,7 +66,6 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
     }
 
 
-
     override fun initData() {
     }
 
@@ -119,7 +118,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
             // Handle the camera action
             router(loginActivity)
         } else if (id == R.id.nav_gallery) {
-
+            router(browsingHistoryActivity)
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

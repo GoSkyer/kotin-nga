@@ -9,7 +9,7 @@ import java.util.*
  * Created by Admin on 2017/8/2.
  */
 @Table(database = AppDatabase::class)
- class History {
+class OpenRecent {
     @PrimaryKey
     var id: Int? = null
     @Column
@@ -18,7 +18,7 @@ import java.util.*
     var date: Date? = null
 
     override fun toString(): String {
-        return "History(id=$id, name=$name, date=$date)"
+        return "OpenRecent(id=$id, name=$name, date=$date)"
     }
 
 }
