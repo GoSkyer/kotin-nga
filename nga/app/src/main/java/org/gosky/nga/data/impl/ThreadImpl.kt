@@ -68,6 +68,32 @@ constructor(private val apiManager: CommonApi) {
         return apiManager.getBoard();
     }
 
+
+    fun getBookMarks(page: Int): Single<MutableList<ThreadBean>> {
+        return apiManager
+                .getBookmarks(page)
+                .compose(RxHelper.rxSchedulerHelper<JsonObject>())
+                .map {
+                    val asJsonObject = it.getAsJsonObject("data")
+                            .getAsJsonObject("__T")
+                    Log.i(TAG, ": " + asJsonObject.size());
+                    return@map asJsonObject
+                }
+                .map {
+                    Log.i(TAG, ": it " + it.toString());
+                    val fromJson = Gson().fromJson<Map<String, ThreadBean>>(it.toString(), object : TypeToken<Map<String, ThreadBean>>() {}.type)
+                    Log.i(TAG, ": gson" + fromJson);
+                    fromJson
+                }
+                .flatMap {
+                    Log.i(TAG, ": flatMap");
+                    Observable.fromIterable(it.entries)
+                }
+                .map { it.value }
+                .toList()
+    }
+
+
     fun test() {
 //        val type = object : TypeToken<Map<String, ThreadBean>>() {}.type
 //        val fromJson = Gson().fromJson<Map<String, ThreadBean>>(DataConfig.str, type)

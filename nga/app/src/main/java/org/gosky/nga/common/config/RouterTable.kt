@@ -12,6 +12,7 @@ val loginActivity = "LoginActivity"
 val topicActivity = "TopicActivity"
 val secondActivity = "SecondBoardActivity"
 val browsingHistoryActivity = "browsingHistoryActivity"
+val bookMarkActivity = "bookMarkActivity"
 
 
 fun init() {
@@ -44,6 +45,10 @@ fun init() {
         config {
             key = browsingHistoryActivity
             value = BrowsingHistoryActivity::class.java
+        }
+        config {
+            key = bookMarkActivity
+            value = BookMarkActivity::class.java
         }
     }
 

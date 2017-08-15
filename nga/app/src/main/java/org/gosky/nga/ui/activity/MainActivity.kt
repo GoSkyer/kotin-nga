@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
+import org.gosky.nga.common.config.bookMarkActivity
 import org.gosky.nga.common.config.browsingHistoryActivity
 import org.gosky.nga.common.config.loginActivity
 import org.gosky.nga.common.utils.router
@@ -120,7 +121,7 @@ class MainActivity : MvpActivity<MainPresenter>(), MainView, NavigationView.OnNa
         } else if (id == R.id.nav_gallery) {
             router(browsingHistoryActivity)
         } else if (id == R.id.nav_slideshow) {
-
+            router(bookMarkActivity)
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

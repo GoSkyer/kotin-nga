@@ -62,9 +62,19 @@ public interface CommonApi {
     @GET("http://nga.178.com/thread.php?lite=js&noprefix")
     Observable<JsonObject> getThreads(@Query("fid") String fid, @Query("page") String page);
 
+    /**
+     * 获取收藏帖子列表
+     *
+     * @param page
+     * @return
+     */
+    @GET("http://nga.178.com/thread.php?favor=1&lite=js&noprefix")
+    Observable<JsonObject> getBookmarks(@Query("page") Integer page);
+
 
     /**
-     *  获取帖子详情
+     * 获取帖子详情
+     *
      * @param tid
      * @param page
      * @return
@@ -74,7 +84,8 @@ public interface CommonApi {
 
 
     /**
-     *  获取首页模板
+     * 获取首页模板
+     *
      * @return
      */
     @GET("http://bbs.nga.cn/app_api.php?__lib=home&__act=category&")
