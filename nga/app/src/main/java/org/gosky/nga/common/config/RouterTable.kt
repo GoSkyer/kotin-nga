@@ -38,6 +38,10 @@ fun init() {
             value = TopicActivity::class.java
         }
         config {
+            key = "http://bbs.nga.cn/read.php"
+            value = TopicActivity::class.java
+        }
+        config {
             key = browsingHistoryActivity
             value = BrowsingHistoryActivity::class.java
         }
