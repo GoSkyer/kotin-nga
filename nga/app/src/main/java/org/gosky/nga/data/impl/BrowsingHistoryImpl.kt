@@ -21,5 +21,5 @@ class BrowsingHistoryImpl @Inject constructor() {
     }
 
     fun queryAllBrowsingHistory(page: Int)
-            = select { from(BrowsingHistoryEntity::class) orderBy BrowsingHistoryEntity_Table.last.desc() limit 10 offset 10 * (page - 1) }.rx().queryList()
+            = select { from(BrowsingHistoryEntity::class) orderBy BrowsingHistoryEntity_Table.last.desc() limit 40 offset 40 * (page - 1) }.rx().queryList()
 }

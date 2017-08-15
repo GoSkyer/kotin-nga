@@ -25,6 +25,7 @@ class BrowsingHistoryActivity : MvpActivity<BrowsingHistoryPresenter>(), Browsin
 
     val threadList: ArrayList<ThreadBean> = ArrayList()
     val fid: String by lazy { intent.extras["forumId"].toString() }
+    var page = 1
 
     override fun setupActivityComponent(repoComponent: RepoComponent) {
         repoComponent.inject(this)
@@ -58,7 +59,7 @@ class BrowsingHistoryActivity : MvpActivity<BrowsingHistoryPresenter>(), Browsin
             }
 
             loadCallBack {
-                mPresenter.getMoreThread(threadList.size / 40 + 1)
+                mPresenter.getMoreThread(page + 1)
             }
         }
 
@@ -76,6 +77,7 @@ class BrowsingHistoryActivity : MvpActivity<BrowsingHistoryPresenter>(), Browsin
     }
 
     override fun refreshRcv(list: MutableList<out ThreadBean>) {
+        page = 1
         threadList.clear()
         threadList.addAll(list.toList())
         rcv_forum_activity.adapter.notifyDataSetChanged()
@@ -83,6 +85,7 @@ class BrowsingHistoryActivity : MvpActivity<BrowsingHistoryPresenter>(), Browsin
     }
 
     override fun loadMoreRcv(list: MutableList<out ThreadBean>) {
+        page++
         threadList.addAll(list.toList())
         rcv_forum_activity.adapter.notifyDataSetChanged()
         refresh_forum_activity.finishLoadmore()

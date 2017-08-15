@@ -25,6 +25,7 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
 
     val threadList: ArrayList<ThreadBean> = ArrayList()
     val fid: String by lazy { intent.extras["forumId"].toString() }
+    var page = 1;
 
     override fun setupActivityComponent(repoComponent: RepoComponent) {
         repoComponent.inject(this)
@@ -61,7 +62,7 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
             }
 
             loadCallBack {
-                mPresenter.getMoreThread(fid, (threadList.size / 40 + 1).toString())
+                mPresenter.getMoreThread(fid, (page + 1).toString())
             }
         }
 
@@ -79,6 +80,7 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
     }
 
     override fun refreshRcv(list: MutableList<ThreadBean>) {
+        page = 1
         threadList.clear()
         threadList.addAll(list.toList())
         rcv_forum_activity.adapter.notifyDataSetChanged()
@@ -86,6 +88,7 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
     }
 
     override fun loadMoreRcv(list: MutableList<ThreadBean>) {
+        page++
         threadList.addAll(list.toList())
         rcv_forum_activity.adapter.notifyDataSetChanged()
         refresh_forum_activity.finishLoadmore()
