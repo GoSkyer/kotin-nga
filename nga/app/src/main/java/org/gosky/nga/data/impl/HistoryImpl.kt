@@ -18,7 +18,7 @@ import javax.inject.Inject
  */
 
 class HistoryImpl @Inject constructor() {
-    private val TAG = "HistoryImpl";
+    private val TAG = "HistoryImpl"
 
     fun insertHistory(model: BoardBean.ResultBean.GroupsBean.ForumsBean) {
         val history = OpenRecent()

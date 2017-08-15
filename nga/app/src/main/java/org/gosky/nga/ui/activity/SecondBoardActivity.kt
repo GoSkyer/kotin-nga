@@ -46,7 +46,7 @@ class SecondBoardActivity : MvpActivity<SecondBoardPresenter>(),SecondBoardView 
 
             override fun onItemClick(model: BoardBean.ResultBean.GroupsBean.ForumsBean?, position: Int) {
                 super.onItemClick(model, position)
-                if(model?.isIs_forumlist!!){
+                if(model?.is_forumlist!!){
                     startActivity<SecondBoardActivity>("name" to model?.name.toString())
                 }else{
                     startActivity<ForumActivity>("forumId" to model?.id.toString(),"name" to model?.name.toString())

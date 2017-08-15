@@ -30,10 +30,10 @@ constructor(private val threadImpl: ThreadImpl, private val history: HistoryImpl
                 .map<List<BoardBean.ResultBean.GroupsBean>> { list ->
                     val mList = ArrayList<BoardBean.ResultBean.GroupsBean>()
                     for (item in list) {
-                        val sListIterator = item.forums!!.iterator()
+                        var sListIterator = item.forums!!.iterator()
                         while (sListIterator.hasNext()) {
                             val e = sListIterator.next()
-                            if (e.isIs_forumlist) {
+                            if (e.is_forumlist) {
                                 val groupBean = BoardBean.ResultBean.GroupsBean()
                                 groupBean.name = e.name
                                 groupBean.forums = e.forums

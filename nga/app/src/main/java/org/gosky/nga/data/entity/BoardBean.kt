@@ -59,7 +59,7 @@ class BoardBean : Serializable {
                             ", name='" + name + '\'' +
                             ", info='" + info + '\'' +
                             ", icon='" + icon + '\'' +
-                            ", is_forumlist=" + isIs_forumlist +
+                            ", is_forumlist=" + is_forumlist +
                             ", top_title='" + top_title + '\'' +
                             ", top_opentype=" + top_opentype +
                             ", top_opendata='" + top_opendata + '\'' +
@@ -71,7 +71,7 @@ class BoardBean : Serializable {
                 var name: String? = null
                 var info: String? = null
                 var icon: String? = null
-                var isIs_forumlist: Boolean = false
+                var is_forumlist: Boolean = false
                 var top_title: String? = null
                 var top_opentype: Int = 0
                 var top_opendata: String? = null

@@ -42,7 +42,7 @@ class MainFragment(var list: ArrayList<BoardBean.ResultBean.GroupsBean.ForumsBea
             override fun onItemClick(model: BoardBean.ResultBean.GroupsBean.ForumsBean?, position: Int) {
                 super.onItemClick(model, position)
                 model?.apply {
-                    if (model.isIs_forumlist) {
+                    if (model.is_forumlist) {
                         startActivity<SecondBoardActivity>("list" to model.forums!!, "name" to model.name.toString())
                     } else {
                         startActivity<ForumActivity>("forumId" to model.id.toString(), "name" to model.name.toString())
