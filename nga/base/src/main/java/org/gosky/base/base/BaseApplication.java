@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 
 import com.cocosw.favor.FavorAdapter;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.gosky.base.di.module.AppModule;
 import org.gosky.base.di.module.ClientModule;
@@ -39,9 +38,6 @@ public abstract class BaseApplication extends MultiDexApplication {
         FavorAdapter favorAdapter = new FavorAdapter.Builder(this).build();
         if (Config.Debug) {//Timber日志打印
             Timber.plant(new Timber.DebugTree());
-        }
-        if (Config.useCanary) {//leakCanary内存泄露检查
-            LeakCanary.install(this);
         }
         Once.initialise(this);
     }

@@ -9,6 +9,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.BallPulseView;
 import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
@@ -70,6 +71,7 @@ public class App extends BaseApplication {
         TwinklingRefreshLayout.setDefaultHeader(ProgressLayout.class.getName());
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
         RouterTableKt.init();
+        LeakCanary.install(this);
     }
 
 

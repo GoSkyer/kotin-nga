@@ -81,9 +81,6 @@ dependencies {
     compile "jp.wasabeef:glide-transformations:2.0.1"
     compile "com.jonathanfinerty.once:once:1.2.1"
     compile "com.mobsandgeeks:android-saripaar:2.0.3"
-    debugCompile "com.squareup.leakcanary:leakcanary-android:1.4-beta2"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2"
-
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
 }
