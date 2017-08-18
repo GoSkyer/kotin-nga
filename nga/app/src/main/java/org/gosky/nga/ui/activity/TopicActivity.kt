@@ -26,7 +26,7 @@ class TopicActivity : BaseActivity() {
     override fun setupView() {
         val replies = intent.extras["replies"]
         setSupportActionBar(toolbar_topic_activity)
-        supportActionBar?.title = "主题详情"
+        supportActionBar?.title = "帖子详情"
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         val topicAdapter = TopicAdapter(if (replies != null) replies as Int else 1)
         vp_topic_activity.adapter = topicAdapter

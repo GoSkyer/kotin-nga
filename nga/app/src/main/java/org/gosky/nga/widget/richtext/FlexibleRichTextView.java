@@ -13,11 +13,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.AlignmentSpan;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.BulletSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
@@ -36,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -44,7 +48,6 @@ import org.gosky.nga.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -176,6 +179,8 @@ public class FlexibleRichTextView extends LinearLayout {
                 myAddView((HorizontalScrollView) o);
             } else if (o instanceof QuoteView) {
                 myAddView((QuoteView) o);
+            } else if (o instanceof LinearLayout) {
+                myAddView((LinearLayout) o);
             }
         }
     }
@@ -188,7 +193,7 @@ public class FlexibleRichTextView extends LinearLayout {
         text = text.replaceAll("\u00AD", "");
         //</br> 替换为\n
         text = text.replace("<br/>", "\n");
-
+        text = BBCodeMaps.bbcodeListParse(text);
         mAttachmentList = attachmentList;
         mTokenList = tokenizer(text, mAttachmentList);
 
@@ -215,11 +220,11 @@ public class FlexibleRichTextView extends LinearLayout {
 
     private final Class[] start = {CENTER_START.class, BOLD_START.class, ITALIC_START.class,
             UNDERLINE_START.class, DELETE_START.class, CURTAIN_START.class, TITLE_START.class,
-            COLOR_START.class, URL_START.class, Tokenizer.SIZE_START.class};
+            COLOR_START.class, URL_START.class, Tokenizer.SIZE_START.class, Tokenizer.LIST_START.class};
 
     private final Class[] end = {CENTER_END.class, BOLD_END.class, ITALIC_END.class,
             UNDERLINE_END.class, DELETE_END.class, CURTAIN_END.class, TITLE_END.class,
-            COLOR_END.class, URL_END.class, Tokenizer.SIZE_END.class};
+            COLOR_END.class, URL_END.class, Tokenizer.SIZE_END.class, Tokenizer.LIST_END.class};
 
     private final String CENTER_OP = "center";
     private final String BOLD_OP = "bold";
@@ -231,8 +236,9 @@ public class FlexibleRichTextView extends LinearLayout {
     private final String COLOR_OP = "color";
     private final String URL_OP = "url";
     private final String SIZE_OP = "size";
+    private final String LIST_OP = "list";
 
-    private final String[] operation = {CENTER_OP, BOLD_OP, ITALIC_OP, UNDERLINE_OP, DELETE_OP, CURTAIN_OP, TITLE_OP, COLOR_OP, URL_OP, SIZE_OP};
+    private final String[] operation = {CENTER_OP, BOLD_OP, ITALIC_OP, UNDERLINE_OP, DELETE_OP, CURTAIN_OP, TITLE_OP, COLOR_OP, URL_OP, SIZE_OP, LIST_OP};
 
     private <T extends TOKEN> List<Object> until(Class<T> endClass) {
         List<Object> ret = new ArrayList<>();
@@ -272,6 +278,7 @@ public class FlexibleRichTextView extends LinearLayout {
                         setTokenIndex(tmp);
                         append(ret, new TextWithFormula(thisToken().value));
                     }
+
                     flag = true;
                 }
             }
@@ -356,7 +363,14 @@ public class FlexibleRichTextView extends LinearLayout {
                     View table = table(thisToken().value);
                     append(ret, table);
 
-                } else if (thisToken() instanceof ATTACHMENT) {
+                }
+//                else if (thisToken() instanceof Tokenizer.LIST) {
+//
+//                    View list = list(thisToken().value);
+//                    append(ret, list);
+//
+//                }
+                else if (thisToken() instanceof ATTACHMENT) {
 
                     final ATTACHMENT thisToken = (ATTACHMENT) thisToken();
 
@@ -547,6 +561,24 @@ public class FlexibleRichTextView extends LinearLayout {
                     }
                 }
                 break;
+            case LIST_OP:
+                for (Object o : list) {
+                    if (o instanceof TextWithFormula) {
+                        final TextWithFormula textWithFormula = (TextWithFormula) o;
+
+//                        List<String> items = getListCellsContent(textWithFormula.toString());
+//                        for (String item : items) {
+//                            TextView textView = new TextView(this.getContext());
+//                            Spannable msp = new SpannableString(item);
+//                            msp.setSpan(new BulletSpan(20), 0, 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                            textView.setText(msp);
+//                            layout.addView(textView);
+//                        }
+
+                        textWithFormula.setSpan(new BulletSpan(20), 0, 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                }
+                break;
             case URL_OP:
                 for (Object o : list) {
                     if (o instanceof TextWithFormula) {
@@ -564,10 +596,6 @@ public class FlexibleRichTextView extends LinearLayout {
                 }
         }
         return list;
-    }
-
-    private List<Object> operate(List<Object> list, String operation) {
-        return operate(list, operation, "");
     }
 
     private <T> void concat(List<Object> list1, List<T> list2) {
@@ -614,103 +642,121 @@ public class FlexibleRichTextView extends LinearLayout {
         this.mTokenIndex = tokenIndex;
     }
 
+    private List<String> getCellsContent(String text) {
+        Pattern pattern = Pattern.compile("\\[td\\](.+?)\\[/td\\]");
+        Matcher matcher = pattern.matcher(text);
+
+        List<String> cells = new ArrayList<>();
+        while (matcher.find()) {
+            if (!TextUtils.isEmpty(matcher.group(1))) {
+                String cell = matcher.group(1);
+                cells.add(cell);
+            }
+        }
+        return cells;
+    }
+
     private View table(CharSequence str) {
-        final String SPECIAL_CHAR = "\uF487";
-        Pattern pattern = Pattern.compile("(?:\\n|^)( *\\|.+\\| *\\n)??( *\\|(?: *:?----*:? *\\|)+ *\\n)((?: *\\|.+\\| *(?:\\n|$))+)");
+        Pattern pattern = Pattern.compile("\\[th\\](.+?)\\[/th\\]");
         Matcher matcher = pattern.matcher(str);
-        int[] margins;
-        final int LEFT = 0, RIGHT = 1, CENTER = 2;
 
+        List<String> headers = null;
         if (matcher.find()) {
-
-            List<String> headers = null;
             if (!TextUtils.isEmpty(matcher.group(1))) {
                 String wholeHeader = matcher.group(1);
 
-                headers = new ArrayList<>(Arrays.asList(wholeHeader.split("\\|")));
-                format(headers);
+                headers = getCellsContent(wholeHeader);
             }
-
-            List<String> partitions = new ArrayList<>(Arrays.asList(matcher.group(2).split("\\|")));
-            format(partitions);
-            final int columnNum = partitions.size();
-            margins = new int[columnNum];
-
-            for (int i = 0; i < partitions.size(); i++) {
-                String partition = partitions.get(i);
-                if (partition.startsWith(":") && partition.endsWith(":")) {
-                    margins[i] = CENTER;
-                } else if (partition.startsWith(":")) {
-                    margins[i] = LEFT;
-                } else if (partition.endsWith(":")) {
-                    margins[i] = RIGHT;
-                } else {
-                    margins[i] = CENTER;
-                }
-            }
-
-            String[] rows = matcher.group(3).replace("\\|", SPECIAL_CHAR).split("\n");
-            final List<List<String>> content = new ArrayList<>();
-            for (String row : rows) {
-                content.add(format(new ArrayList<>(Arrays.asList(row.split("\\|")))));
-            }
-
-            final List<String[]> whole = new ArrayList<>();
-            if (headers != null) {
-                whole.add(headers.toArray(new String[columnNum]));
-            }
-            for (List<String> strings : content) {
-                whole.add(strings.toArray(new String[columnNum]));
-            }
-
-            // render table
-            HorizontalScrollView scrollView = new HorizontalScrollView(getContext());
-            TableLayout tableLayout = new TableLayout(mContext);
-
-            tableLayout.addView(getHorizontalDivider());
-            for (int i = 0; i < whole.size(); i++) {
-                String[] row = whole.get(i);
-                TableRow tableRow = new TableRow(mContext);
-                final TableLayout.LayoutParams params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                tableRow.setLayoutParams(params);
-
-                tableRow.addView(getVerticalDivider());
-                for (int j = 0; j < row.length; j++) {
-                    String cell = row[j];
-                    if (cell != null) {
-                        cell = cell.replace(SPECIAL_CHAR, "|");
-                    }
-                    FlexibleRichTextView flexibleRichTextView = FlexibleRichTextView.newInstance(getContext(), cell, mAttachmentList, mOnViewClickListener, false);
-                    TableRow.LayoutParams pcvParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-                    switch (margins[j]) {
-                        case CENTER:
-                            pcvParams.gravity = Gravity.CENTER;
-                            break;
-                        case LEFT:
-                            pcvParams.gravity = Gravity.START;
-                            break;
-                        case RIGHT:
-                            pcvParams.gravity = Gravity.END;
-                            break;
-                    }
-                    flexibleRichTextView.setPadding(10, 10, 10, 10);
-                    flexibleRichTextView.setLayoutParams(pcvParams);
-                    tableRow.addView(flexibleRichTextView);
-                    tableRow.addView(getVerticalDivider());
-                }
-                tableLayout.addView(tableRow);
-                tableLayout.addView(getHorizontalDivider());
-            }
-
-            scrollView.addView(tableLayout);
-
-            return scrollView;
         }
 
-        return null;
+        pattern = Pattern.compile("\\[tr\\](.+?)\\[/tr\\]");
+        matcher = pattern.matcher(str);
 
+        final List<List<String>> content = new ArrayList<>();
+        while (matcher.find()) {
+            if (!TextUtils.isEmpty(matcher.group(1))) {
+                String whole = matcher.group(1);
+                content.add(getCellsContent(whole));
+            }
+        }
+
+        final List<String[]> whole = new ArrayList<>();
+        if (headers != null) {
+            whole.add(headers.toArray(new String[headers.size()]));
+        }
+        for (List<String> strings : content) {
+            whole.add(strings.toArray(new String[strings.size()]));
+        }
+
+        // render table
+        HorizontalScrollView scrollView = new HorizontalScrollView(getContext());
+        TableLayout tableLayout = new TableLayout(mContext);
+
+        tableLayout.addView(getHorizontalDivider());
+        for (int i = 0; i < whole.size(); i++) {
+            String[] row = whole.get(i);
+            TableRow tableRow = new TableRow(mContext);
+            final TableLayout.LayoutParams params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            tableRow.setLayoutParams(params);
+
+            tableRow.addView(getVerticalDivider());
+            for (int j = 0; j < row.length; j++) {
+                String cell = row[j];
+                FlexibleRichTextView flexibleRichTextView = FlexibleRichTextView.newInstance(getContext(), cell, mAttachmentList, mOnViewClickListener, false);
+                TableRow.LayoutParams pcvParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+                pcvParams.gravity = Gravity.CENTER;
+                /*switch (margins[j]) {
+                    case CENTER:
+                        pcvParams.gravity = Gravity.CENTER;
+                        break;
+                    case LEFT:
+                        pcvParams.gravity = Gravity.START;
+                        break;
+                    case RIGHT:
+                        pcvParams.gravity = Gravity.END;
+                        break;
+                }*/
+                flexibleRichTextView.setPadding(10, 10, 10, 10);
+                flexibleRichTextView.setLayoutParams(pcvParams);
+                tableRow.addView(flexibleRichTextView);
+                tableRow.addView(getVerticalDivider());
+            }
+            tableLayout.addView(tableRow);
+            tableLayout.addView(getHorizontalDivider());
+        }
+
+        scrollView.addView(tableLayout);
+
+        return scrollView;
     }
 
+    private List<String> getListCellsContent(String text) {
+        Pattern pattern = Pattern.compile("\\[li\\](.+?)\\[/li\\]");
+        Matcher matcher = pattern.matcher(text);
+
+        List<String> cells = new ArrayList<>();
+        while (matcher.find()) {
+            if (!TextUtils.isEmpty(matcher.group(1))) {
+                String cell = matcher.group(1);
+                cells.add(cell);
+            }
+        }
+        return cells;
+    }
+
+    private View list(CharSequence str) {
+        LinearLayout layout = new LinearLayout(this.getContext());
+        layout.setOrientation(VERTICAL);
+        List<String> items = getListCellsContent(str.toString());
+        for (String item : items) {
+            TextView textView = new TextView(this.getContext());
+            Spannable msp = new SpannableString(item);
+            msp.setSpan(new BulletSpan(20), 0, 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(msp);
+            layout.addView(textView);
+        }
+        return layout;
+    }
 
     private List<String> format(List<String> strings) {
         for (int i = strings.size() - 1; i >= 0; i--) {

@@ -49,6 +49,9 @@ public class Tokenizer {
     private static List<String> sizeStartLabels = new ArrayList<>();
     private static List<String> sizeEndLabels = new ArrayList<>();
 
+    private static List<String> listStartLabels = new ArrayList<>();
+    private static List<String> listEndLabels = new ArrayList<>();
+
     private static final String TAG = "Tokenizer";
 
     private static List<String> iconLabels = new ArrayList<>();
@@ -214,6 +217,18 @@ public class Tokenizer {
         }
     }
 
+    static class LIST_START extends TOKEN {
+        LIST_START(int position, String content) {
+            super(position, content.length(), content);
+        }
+    }
+
+    static class LIST_END extends TOKEN {
+        LIST_END(int position, String value) {
+            super(position, value.length(), value);
+        }
+    }
+
     static class CENTER_START extends TOKEN {
         CENTER_START(int position, String value) {
             super(position, value.length(), value);
@@ -339,6 +354,7 @@ public class Tokenizer {
         }
     }
 
+
     static class END extends TOKEN {
         END(int position) {
             super(position, 0, "");
@@ -382,8 +398,9 @@ public class Tokenizer {
     private static final Pattern[] PATTERNS = {FORMULA_REG1, FORMULA_REG2, FORMULA_REG3, FORMULA_REG4};
 
     private static final Pattern IMG_REG = Pattern.compile("(?i)\\[img(=\\d+)?](.*?)\\[/img]");
+    private static final Pattern TABLE_REG = Pattern.compile("\\[table\\](.+?)\\[/table\\]");
+    private static final Pattern LIST_REG = Pattern.compile("\\[list\\]([\\s\\S]+?)\\[/list\\]");
 
-    private static final Pattern TABLE_REG = Pattern.compile("(?:\\n|^)( *\\|.+\\| *\\n)??( *\\|(?: *:?----*:? *\\|)+ *\\n)((?: *\\|.+\\| *(?:\\n|$))+)");
 
     public static int setUrlStartLabel(String... labels) {
         int ret = labels.length;
@@ -554,6 +571,27 @@ public class Tokenizer {
         return ret;
     }
 
+    public static int setListStartLabels(String... labels) {
+        int ret = labels.length;
+        listStartLabels = new ArrayList<>();
+        for (String label : labels) {
+            listStartLabels.add(formatLabel(label));
+            ret--;
+        }
+        return ret;
+    }
+
+    public static int setListEndLabels(String... labels) {
+        int ret = labels.length;
+
+        listEndLabels = new ArrayList<>();
+        for (String label : labels) {
+            listEndLabels.add(formatLabel(label));
+            ret--;
+        }
+
+        return ret;
+    }
 
     public static int setTitleEndLabels(String... labels) {
         int ret = labels.length;
@@ -813,6 +851,8 @@ public class Tokenizer {
         setIconLabels("[s:ac:\\s]", "[s:a2:\\s]", "[s:dt:\\s]", "[s:pst:\\s]", "[s:pg:\\s]");
         setSizeStartLabels("[size=\\s]");
         setSizeEndLabels("[/size]");
+        setListStartLabels("[li]");
+        setListEndLabels("[/li]");
     }
 
     public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {
@@ -1056,6 +1096,24 @@ public class Tokenizer {
                 tokenList.add(new SIZE_START(matcher.start(), matcher.group(), matcher.group(1)));
             }
         }
+        for (String listStartLabel : listStartLabels) {
+            pattern = Pattern.compile(listStartLabel);
+            matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                tokenList.add(new LIST_START(matcher.start(), matcher.group()));
+            }
+        }
+
+        for (String listEndLabel : listEndLabels) {
+            pattern = Pattern.compile(listEndLabel);
+            matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                tokenList.add(new LIST_END(matcher.start(), matcher.group()));
+            }
+        }
+
 
         for (String codeEndLabel : codeEndLabels) {
             pattern = Pattern.compile(codeEndLabel);
@@ -1096,9 +1154,6 @@ public class Tokenizer {
         }
 
         String str = text.toString();
-
-        //</br> 替换为\n
-        str = str.replace("<br/>", "\n");
 
         for (int i = 0; i < iconLabels.size(); i++) {
             String iconLabel = iconLabels.get(i);
@@ -1148,6 +1203,13 @@ public class Tokenizer {
         while (matcher.find()) {
             tokenList.add(new TABLE(matcher.start(), matcher.group()));
         }
+
+//        pattern = LIST_REG;
+//        matcher = LIST_REG.matcher(text);
+//
+//        while (matcher.find()) {
+//            tokenList.add(new LIST(matcher.start(), matcher.group()));
+//        }
 
 
         final int[] indexInRegex = {1, 1, 1, 0, 1};

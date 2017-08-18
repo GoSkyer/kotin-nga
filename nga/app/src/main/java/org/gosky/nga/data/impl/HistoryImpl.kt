@@ -32,4 +32,5 @@ class HistoryImpl @Inject constructor() {
     fun queryAll(): Single<MutableList<OpenRecent>> {
         return select { from(OpenRecent::class) orderBy OpenRecent_Table.date.desc() }.rx().queryList()
     }
+
 }
