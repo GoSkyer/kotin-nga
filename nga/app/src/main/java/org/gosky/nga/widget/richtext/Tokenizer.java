@@ -398,7 +398,7 @@ public class Tokenizer {
     private static final Pattern[] PATTERNS = {FORMULA_REG1, FORMULA_REG2, FORMULA_REG3, FORMULA_REG4};
 
     private static final Pattern IMG_REG = Pattern.compile("(?i)\\[img(=\\d+)?](.*?)\\[/img]");
-    private static final Pattern TABLE_REG = Pattern.compile("\\[table\\](.+?)\\[/table\\]");
+    private static final Pattern TABLE_REG = Pattern.compile("\\[table\\]([\\s\\S]+?)\\[/table\\]");
     private static final Pattern LIST_REG = Pattern.compile("\\[list\\]([\\s\\S]+?)\\[/list\\]");
 
 
@@ -837,8 +837,8 @@ public class Tokenizer {
         setCenterEndLabels("[/align]");
         setCodeStartLabels("[code]");
         setCodeEndLabels("[/code]");
-        setTitleStartLabels("[h]");
-        setTitleEndLabels("[/h]");
+        setTitleStartLabels("===");
+        setTitleEndLabels("===\n");
         setColorStartLabel("[c=\\s]", "[color=\\s]");
         setColorEndLabels("[/c]", "[/color]");
         setQuoteStartLabels("[quote]", "[quote=\\p:@\\m]");
@@ -851,8 +851,8 @@ public class Tokenizer {
         setIconLabels("[s:ac:\\s]", "[s:a2:\\s]", "[s:dt:\\s]", "[s:pst:\\s]", "[s:pg:\\s]");
         setSizeStartLabels("[size=\\s]");
         setSizeEndLabels("[/size]");
-        setListStartLabels("[li]");
-        setListEndLabels("[/li]");
+        setListStartLabels("[list]");
+        setListEndLabels("[/list]");
     }
 
     public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {

@@ -193,7 +193,7 @@ public class FlexibleRichTextView extends LinearLayout {
         text = text.replaceAll("\u00AD", "");
         //</br> 替换为\n
         text = text.replace("<br/>", "\n");
-        text = BBCodeMaps.bbcodeListParse(text);
+//        text = BBCodeMaps.bbcodeListParse(text);
         mAttachmentList = attachmentList;
         mTokenList = tokenizer(text, mAttachmentList);
 
@@ -534,6 +534,7 @@ public class FlexibleRichTextView extends LinearLayout {
                 for (Object o : list) {
                     if (o instanceof TextWithFormula) {
                         final TextWithFormula textWithFormula = (TextWithFormula) o;
+                        textWithFormula.append("\n");
                         textWithFormula.setSpan(new RelativeSizeSpan(1.3f), 0, textWithFormula.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     }
                 }
@@ -574,8 +575,14 @@ public class FlexibleRichTextView extends LinearLayout {
 //                            textView.setText(msp);
 //                            layout.addView(textView);
 //                        }
-
-                        textWithFormula.setSpan(new BulletSpan(20), 0, 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        int i = 0;
+                        while (i < textWithFormula.toString().length() && i >= 0) {
+                            i = textWithFormula.toString().indexOf("[*]", i + 1);
+                            if (i >= 0) {
+                                textWithFormula.replace(i, i + 3, " ");
+                                textWithFormula.setSpan(new BulletSpan(20), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+                        }
                     }
                 }
                 break;
@@ -657,6 +664,7 @@ public class FlexibleRichTextView extends LinearLayout {
     }
 
     private View table(CharSequence str) {
+        str = str.toString().replace("\n","");
         Pattern pattern = Pattern.compile("\\[th\\](.+?)\\[/th\\]");
         Matcher matcher = pattern.matcher(str);
 
