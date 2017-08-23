@@ -1,5 +1,6 @@
 package org.gosky.nga.ui.item
 
+import android.graphics.Color
 import android.view.View
 import com.bumptech.glide.Glide
 import jp.wasabeef.glide.transformations.CropCircleTransformation
@@ -32,6 +33,12 @@ class TopicItem(var __U: Map<String, TopicBean.DataBean.UBean>) : AdapterItem<To
     }
 
     override fun handleData(p0: TopicBean.DataBean.RBean?, p1: Int) {
+        if (p1 % 2 == 0) {
+            view.setBackgroundColor(Color.parseColor("#fff9e4"))
+        } else {
+            view.setBackgroundColor(Color.parseColor("#fdf5d4"))
+        }
+
         p0?.content?.let {
             view.tv_item_topic.setText(it)
         }
