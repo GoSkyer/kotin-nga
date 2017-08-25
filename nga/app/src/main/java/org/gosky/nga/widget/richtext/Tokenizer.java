@@ -89,8 +89,7 @@ public class Tokenizer {
     private static List<String> listStartLabels = Arrays.asList("(?i)\\[list]");
     private static List<String> listEndLabels = Arrays.asList("(?i)\\[/list]");
 
-    private static List<String> iconLabels = new ArrayList<>();
-    private static List<Integer> icons = new ArrayList<>();
+    private static List<String> iconLabels = Arrays.asList("(?i)\\[s:ac:(.+?)]", "(?i)\\[s:a2:(.+?)]", "(?i)\\[s:dt:(.+?)]", " (?i)\\[s:pst:(.+?)]", "(?i)\\[s:pg:(.+?)]");
 
     static {
         Log.i(TAG, "Tokenizer: init");
@@ -125,6 +124,7 @@ public class Tokenizer {
         Log.i(TAG, "static initializer: " + sizeEndLabels.toString());
         Log.i(TAG, "static initializer: " + listStartLabels.toString());
         Log.i(TAG, "static initializer: " + listEndLabels.toString());
+        Log.i(TAG, "static initializer: " + iconLabels.toString());
     }
 
 
@@ -266,21 +266,6 @@ public class Tokenizer {
         return ret;
     }
 
-    private static int setIconLabels(String... iconStart) {
-        int ret = iconStart.length;
-
-        iconLabels = new ArrayList<>();
-        for (String s : iconStart) {
-            if (s.contains("\\s")) {
-                iconLabels.add(formatLabel(s)
-                        .replaceAll("\\\\s", "(.+?)"));
-                ret--;
-            }
-            ret--;
-        }
-        return ret;
-    }
-
     private static String formatLabel(String label) {
         return "(?i)" + label.replaceAll("\\[", "\\\\[").replaceAll("\\(", "\\\\(");
     }
@@ -290,7 +275,6 @@ public class Tokenizer {
         setQuoteStartLabels("[quote]", "[quote=\\p:@\\m]");
         setQuoteEndLabels("[/quote]");
         setImageLabels("[img]\\u[/img]", "[img=\\s]\\u[/img]");
-        setIconLabels("[s:ac:\\s]", "[s:a2:\\s]", "[s:dt:\\s]", "[s:pst:\\s]", "[s:pg:\\s]");
     }
 
 //    private void addTokenList(List<TOKEN> tokens, CharSequence text, List<String> labels, TOKEN token) {
