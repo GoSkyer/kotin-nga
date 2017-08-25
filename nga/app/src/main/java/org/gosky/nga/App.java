@@ -41,7 +41,6 @@ public class App extends BaseApplication {
                 .builder()
                 .appModule(getAppModule())//baseApplication提供
                 .clientModule(getClientModule())//baseApplication提供
-                .imageModule(getImageModule())//baseApplication提供
                 .serviceModule(new ServiceModule())//需自行创建
                 .cacheModule(new CacheModule())//需自行创建
                 .build();

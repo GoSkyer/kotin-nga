@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 
-import com.cocosw.favor.FavorAdapter;
-
 import org.gosky.base.di.module.AppModule;
 import org.gosky.base.di.module.ClientModule;
-import org.gosky.base.di.module.ImageModule;
 import org.gosky.base.http.BaseApi;
 
 import java.util.LinkedList;
@@ -21,7 +18,6 @@ public abstract class BaseApplication extends MultiDexApplication {
     public LinkedList<BaseActivity> mActivityList;
     private ClientModule mClientModule;
     private AppModule mAppModule;
-    private ImageModule mImagerModule;
     protected final String TAG = this.getClass().getSimpleName();
 
 
@@ -34,8 +30,6 @@ public abstract class BaseApplication extends MultiDexApplication {
                 .baseurl(BaseApi.APP_DOMAIN)
                 .build();
         this.mAppModule = new AppModule(this);//提供application
-        this.mImagerModule = new ImageModule();//图片加载框架默认使用glide
-        FavorAdapter favorAdapter = new FavorAdapter.Builder(this).build();
         if (Config.Debug) {//Timber日志打印
             Timber.plant(new Timber.DebugTree());
         }
@@ -63,9 +57,6 @@ public abstract class BaseApplication extends MultiDexApplication {
         return mAppModule;
     }
 
-    public ImageModule getImageModule() {
-        return mImagerModule;
-    }
 
     /**
      * 返回上下文
