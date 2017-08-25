@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import org.gosky.nga.R;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class QuoteView extends LinearLayout {
     int mTextViewHeight = -1;
     final int HEIGHT_THRESHOLD = 10;
 
-    List<Tokenizer.TOKEN> mTokens;
+    List<Token.TOKEN> mTokens;
 
     private static final String TAG = "QuoteView";
 
@@ -127,7 +128,7 @@ public class QuoteView extends LinearLayout {
         });
     }
 
-    public void setTokens(final List<Tokenizer.TOKEN> tokens) {
+    public void setTokens(final List<Token.TOKEN> tokens) {
         post(new Runnable() {
             @Override
             public void run() {
@@ -142,7 +143,7 @@ public class QuoteView extends LinearLayout {
                         }
                     }
                 });
-                mTextView.setText(Tokenizer.TOKEN.getString(tokens));
+                mTextView.setText(Token.TOKEN.getString(tokens));
                 mTextView.setMaxLines(3);
                 mTextView.setEllipsize(TextUtils.TruncateAt.END);
                 mTextView.post(new Runnable() {

@@ -44,6 +44,40 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.gosky.nga.R;
+import org.gosky.nga.widget.richtext.Token.ATTACHMENT;
+import org.gosky.nga.widget.richtext.Token.BOLD_END;
+import org.gosky.nga.widget.richtext.Token.BOLD_START;
+import org.gosky.nga.widget.richtext.Token.CENTER_END;
+import org.gosky.nga.widget.richtext.Token.CENTER_START;
+import org.gosky.nga.widget.richtext.Token.CODE_END;
+import org.gosky.nga.widget.richtext.Token.CODE_START;
+import org.gosky.nga.widget.richtext.Token.COLOR_END;
+import org.gosky.nga.widget.richtext.Token.COLOR_START;
+import org.gosky.nga.widget.richtext.Token.CURTAIN_END;
+import org.gosky.nga.widget.richtext.Token.CURTAIN_START;
+import org.gosky.nga.widget.richtext.Token.DELETE_END;
+import org.gosky.nga.widget.richtext.Token.DELETE_START;
+import org.gosky.nga.widget.richtext.Token.END;
+import org.gosky.nga.widget.richtext.Token.FORMULA;
+import org.gosky.nga.widget.richtext.Token.ICON;
+import org.gosky.nga.widget.richtext.Token.IMAGE;
+import org.gosky.nga.widget.richtext.Token.ITALIC_END;
+import org.gosky.nga.widget.richtext.Token.ITALIC_START;
+import org.gosky.nga.widget.richtext.Token.LIST_END;
+import org.gosky.nga.widget.richtext.Token.LIST_START;
+import org.gosky.nga.widget.richtext.Token.PLAIN;
+import org.gosky.nga.widget.richtext.Token.QUOTE_END;
+import org.gosky.nga.widget.richtext.Token.QUOTE_START;
+import org.gosky.nga.widget.richtext.Token.SIZE_END;
+import org.gosky.nga.widget.richtext.Token.SIZE_START;
+import org.gosky.nga.widget.richtext.Token.TABLE;
+import org.gosky.nga.widget.richtext.Token.TITLE_END;
+import org.gosky.nga.widget.richtext.Token.TITLE_START;
+import org.gosky.nga.widget.richtext.Token.TOKEN;
+import org.gosky.nga.widget.richtext.Token.UNDERLINE_END;
+import org.gosky.nga.widget.richtext.Token.UNDERLINE_START;
+import org.gosky.nga.widget.richtext.Token.URL_END;
+import org.gosky.nga.widget.richtext.Token.URL_START;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,36 +89,6 @@ import java.util.regex.Pattern;
 
 import io.github.kbiakov.codeview.CodeView;
 
-import static org.gosky.nga.widget.richtext.Tokenizer.ATTACHMENT;
-import static org.gosky.nga.widget.richtext.Tokenizer.BOLD_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.BOLD_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.CENTER_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.CENTER_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.CODE_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.CODE_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.COLOR_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.COLOR_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.CURTAIN_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.CURTAIN_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.DELETE_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.DELETE_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.END;
-import static org.gosky.nga.widget.richtext.Tokenizer.FORMULA;
-import static org.gosky.nga.widget.richtext.Tokenizer.ICON;
-import static org.gosky.nga.widget.richtext.Tokenizer.IMAGE;
-import static org.gosky.nga.widget.richtext.Tokenizer.ITALIC_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.ITALIC_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.PLAIN;
-import static org.gosky.nga.widget.richtext.Tokenizer.QUOTE_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.QUOTE_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.TABLE;
-import static org.gosky.nga.widget.richtext.Tokenizer.TITLE_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.TITLE_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.TOKEN;
-import static org.gosky.nga.widget.richtext.Tokenizer.UNDERLINE_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.UNDERLINE_START;
-import static org.gosky.nga.widget.richtext.Tokenizer.URL_END;
-import static org.gosky.nga.widget.richtext.Tokenizer.URL_START;
 import static org.gosky.nga.widget.richtext.Tokenizer.tokenizer;
 
 /**
@@ -100,7 +104,7 @@ public class FlexibleRichTextView extends LinearLayout {
     private List<Attachment> mAttachmentList;
     private OnViewClickListener mOnViewClickListener;
 
-    private List<Tokenizer.TOKEN> mTokenList;
+    private List<TOKEN> mTokenList;
     private int mTokenIndex;
 
     private boolean mCenter;
@@ -220,11 +224,11 @@ public class FlexibleRichTextView extends LinearLayout {
 
     private final Class[] start = {CENTER_START.class, BOLD_START.class, ITALIC_START.class,
             UNDERLINE_START.class, DELETE_START.class, CURTAIN_START.class, TITLE_START.class,
-            COLOR_START.class, URL_START.class, Tokenizer.SIZE_START.class, Tokenizer.LIST_START.class};
+            COLOR_START.class, URL_START.class, SIZE_START.class, LIST_START.class};
 
     private final Class[] end = {CENTER_END.class, BOLD_END.class, ITALIC_END.class,
             UNDERLINE_END.class, DELETE_END.class, CURTAIN_END.class, TITLE_END.class,
-            COLOR_END.class, URL_END.class, Tokenizer.SIZE_END.class, Tokenizer.LIST_END.class};
+            COLOR_END.class, URL_END.class, SIZE_END.class, LIST_END.class};
 
     private final String CENTER_OP = "center";
     private final String BOLD_OP = "bold";
@@ -264,8 +268,8 @@ public class FlexibleRichTextView extends LinearLayout {
                         operand = ((COLOR_START) thisToken()).color;
                     } else if (thisToken() instanceof URL_START) {
                         operand = ((URL_START) thisToken()).url;
-                    } else if (thisToken() instanceof Tokenizer.SIZE_START) {
-                        operand = ((Tokenizer.SIZE_START) thisToken()).color;
+                    } else if (thisToken() instanceof SIZE_START) {
+                        operand = ((SIZE_START) thisToken()).color;
                     }
 
                     tmp = getTokenIndex();

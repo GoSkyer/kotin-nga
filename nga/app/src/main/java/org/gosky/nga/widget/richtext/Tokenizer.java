@@ -4,9 +4,43 @@ import android.util.Log;
 
 import com.github.promeg.pinyinhelper.Pinyin;
 
-import org.jetbrains.annotations.NotNull;
+import org.gosky.nga.widget.richtext.Token.ATTACHMENT;
+import org.gosky.nga.widget.richtext.Token.BOLD_END;
+import org.gosky.nga.widget.richtext.Token.BOLD_START;
+import org.gosky.nga.widget.richtext.Token.CENTER_END;
+import org.gosky.nga.widget.richtext.Token.CENTER_START;
+import org.gosky.nga.widget.richtext.Token.CODE_END;
+import org.gosky.nga.widget.richtext.Token.CODE_START;
+import org.gosky.nga.widget.richtext.Token.COLOR_END;
+import org.gosky.nga.widget.richtext.Token.COLOR_START;
+import org.gosky.nga.widget.richtext.Token.CURTAIN_END;
+import org.gosky.nga.widget.richtext.Token.CURTAIN_START;
+import org.gosky.nga.widget.richtext.Token.DELETE_END;
+import org.gosky.nga.widget.richtext.Token.DELETE_START;
+import org.gosky.nga.widget.richtext.Token.END;
+import org.gosky.nga.widget.richtext.Token.FORMULA;
+import org.gosky.nga.widget.richtext.Token.ICON;
+import org.gosky.nga.widget.richtext.Token.IMAGE;
+import org.gosky.nga.widget.richtext.Token.ITALIC_END;
+import org.gosky.nga.widget.richtext.Token.ITALIC_START;
+import org.gosky.nga.widget.richtext.Token.LIST_END;
+import org.gosky.nga.widget.richtext.Token.LIST_START;
+import org.gosky.nga.widget.richtext.Token.PLAIN;
+import org.gosky.nga.widget.richtext.Token.QUOTE_END;
+import org.gosky.nga.widget.richtext.Token.QUOTE_START;
+import org.gosky.nga.widget.richtext.Token.SIZE_END;
+import org.gosky.nga.widget.richtext.Token.SIZE_START;
+import org.gosky.nga.widget.richtext.Token.TABLE;
+import org.gosky.nga.widget.richtext.Token.TITLE_END;
+import org.gosky.nga.widget.richtext.Token.TITLE_START;
+import org.gosky.nga.widget.richtext.Token.TOKEN;
+import org.gosky.nga.widget.richtext.Token.UNDERLINE_END;
+import org.gosky.nga.widget.richtext.Token.UNDERLINE_START;
+import org.gosky.nga.widget.richtext.Token.URL_END;
+import org.gosky.nga.widget.richtext.Token.URL_START;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,347 +52,79 @@ import java.util.regex.Pattern;
  */
 
 public class Tokenizer {
-    private static List<String> colorStartLabels = new ArrayList<>();
-    private static List<String> colorEndLabels = new ArrayList<>();
-    private static List<String> urlStartLabels = new ArrayList<>();
-    private static List<String> urlEndLabels = new ArrayList<>();
-    private static List<String> curtainStartLabels = new ArrayList<>();
-    private static List<String> curtainEndLabels = new ArrayList<>();
-    private static List<String> underlineStartLabels = new ArrayList<>();
-    private static List<String> underlineEndLabels = new ArrayList<>();
-    private static List<String> boldStartLabels = new ArrayList<>();
-    private static List<String> boldEndLabels = new ArrayList<>();
-    private static List<String> italicStartLabels = new ArrayList<>();
-    private static List<String> italicEndLabels = new ArrayList<>();
-    private static List<String> deleteStartLabels = new ArrayList<>();
-    private static List<String> deleteEndLabels = new ArrayList<>();
-    private static List<String> centerStartLabels = new ArrayList<>();
-    private static List<String> centerEndLabels = new ArrayList<>();
-    private static List<String> titleStartLabels = new ArrayList<>();
-    private static List<String> titleEndLabels = new ArrayList<>();
-    private static List<String> attachmentLabels = new ArrayList<>();
+
+    private static final String TAG = "Tokenizer";
+
+    private static List<String> colorEndLabels = Arrays.asList("(?i)\\[/c]", "(?i)\\[/color]");
+    private static List<String> colorStartLabels = Arrays.asList("(?i)\\[c=(.+?)]", "(?i)\\[color=(.+?)]");
+    private static List<String> urlStartLabels = Arrays.asList("(?i)\\[url=(.+?)]", "(?i)\\[url]");
+    private static List<String> urlEndLabels = Arrays.asList("(?i)\\[/url]");
+    private static List<String> curtainStartLabels = Arrays.asList("(?i)\\[curtain]");
+    private static List<String> curtainEndLabels = Arrays.asList("(?i)\\[/curtain]");
+    private static List<String> underlineStartLabels = Arrays.asList("(?i)\\[u]");
+    private static List<String> underlineEndLabels = Arrays.asList("(?i)\\[/u]");
+    private static List<String> boldStartLabels = Arrays.asList("(?i)\\[b]");
+    private static List<String> boldEndLabels = Arrays.asList("(?i)\\[/b]");
+    private static List<String> italicStartLabels = Arrays.asList("(?i)\\[i]");
+    private static List<String> italicEndLabels = Arrays.asList("(?i)\\[/i]");
+    private static List<String> deleteStartLabels = Arrays.asList("(?i)\\[del]");
+    private static List<String> deleteEndLabels = Arrays.asList("(?i)\\[/del]");
+    private static List<String> centerStartLabels = Arrays.asList("(?i)\\[align=center]");
+    private static List<String> centerEndLabels = Arrays.asList("(?i)\\[/align]");
+    private static List<String> titleStartLabels = Arrays.asList("(?i)===");
+    private static List<String> titleEndLabels = Arrays.asList("(?i)===\n");
+    private static List<String> attachmentLabels = Arrays.asList("(?i)\\[attachment:(.+?)]");
     private static List<String> imageLabels = new ArrayList<>();
-    private static List<String> codeStartLabels = new ArrayList<>();
-    private static List<String> codeEndLabels = new ArrayList<>();
+    private static List<String> codeStartLabels = Arrays.asList("(?i)\\[code]");
+    private static List<String> codeEndLabels = Arrays.asList("(?i)\\[/code]");
     private static List<String> quoteStartLabels = new ArrayList<>();
     private static List<String> quoteEndLabels = new ArrayList<>();
 
     private static List<ImgPos> imgPosList = new ArrayList<>();
     private static List<QuotePos> quotePosList = new ArrayList<>();
 
-    private static List<String> sizeStartLabels = new ArrayList<>();
-    private static List<String> sizeEndLabels = new ArrayList<>();
+    private static List<String> sizeStartLabels = Arrays.asList("(?i)\\[size=(.+?)]");
+    private static List<String> sizeEndLabels = Arrays.asList("(?i)\\[/size]");
 
-    private static List<String> listStartLabels = new ArrayList<>();
-    private static List<String> listEndLabels = new ArrayList<>();
-
-    private static final String TAG = "Tokenizer";
+    private static List<String> listStartLabels = Arrays.asList("(?i)\\[list]");
+    private static List<String> listEndLabels = Arrays.asList("(?i)\\[/list]");
 
     private static List<String> iconLabels = new ArrayList<>();
     private static List<Integer> icons = new ArrayList<>();
 
     static {
+        Log.i(TAG, "Tokenizer: init");
         initLabels();
-    }
-
-    static abstract class TOKEN implements Comparable<TOKEN> {
-        int position;
-        int length;
-        CharSequence value;
-
-        public TOKEN(int position, int length, CharSequence value) {
-            this.position = position;
-            this.length = length;
-            this.value = value;
-        }
-
-        public static String getString(List<TOKEN> tokens) {
-            StringBuilder builder = new StringBuilder();
-            for (TOKEN token : tokens) {
-                builder.append(token.value);
-            }
-            return builder.toString();
-        }
-
-        @Override
-        public int compareTo(@NotNull TOKEN token) {
-            if (position < token.position) {
-                return -1;
-            }
-            if (position == token.position) {
-                /**
-                 * tokenA < tokenB when tokenA.position == tokenB.position and
-                 * tokenA.length > tokenB.length,
-                 * used to remove overlapping tokens
-                 */
-                if (length < token.length) {
-                    return 1;
-                } else if (length > token.length) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            } else {
-                return 1;
-            }
-        }
-    }
-
-    static class PLAIN extends TOKEN {
-        PLAIN(int position, CharSequence value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class COLOR_START extends TOKEN {
-        String color;
-
-        COLOR_START(int position, String value, String color) {
-            super(position, value.length(), value);
-            this.color = color;
-        }
-    }
-
-    static class COLOR_END extends TOKEN {
-        COLOR_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class SIZE_START extends TOKEN {
-        String color;
-
-        SIZE_START(int position, String value, String color) {
-            super(position, value.length(), value);
-            this.color = color;
-        }
-    }
-
-    static class SIZE_END extends TOKEN {
-        SIZE_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class URL_START extends TOKEN {
-        String url;
-
-        URL_START(int position, String url, String value) {
-            super(position, value.length(), value);
-            this.url = url;
-        }
-    }
-
-    static class URL_END extends TOKEN {
-        URL_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class CURTAIN_START extends TOKEN {
-        CURTAIN_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class CURTAIN_END extends TOKEN {
-        CURTAIN_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-
-    }
-
-    static class BOLD_START extends TOKEN {
-        BOLD_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class BOLD_END extends TOKEN {
-
-        BOLD_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class ITALIC_START extends TOKEN {
-        ITALIC_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class ITALIC_END extends TOKEN {
-        ITALIC_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class UNDERLINE_START extends TOKEN {
-        UNDERLINE_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class UNDERLINE_END extends TOKEN {
-        UNDERLINE_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class DELETE_START extends TOKEN {
-        DELETE_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class DELETE_END extends TOKEN {
-        DELETE_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class LIST_START extends TOKEN {
-        LIST_START(int position, String content) {
-            super(position, content.length(), content);
-        }
-    }
-
-    static class LIST_END extends TOKEN {
-        LIST_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class CENTER_START extends TOKEN {
-        CENTER_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class CENTER_END extends TOKEN {
-        CENTER_END(int position, String value) {
-            super(position, value.length(), value);
-
-        }
-    }
-
-    static class TITLE_START extends TOKEN {
-        TITLE_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class TITLE_END extends TOKEN {
-        TITLE_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class ATTACHMENT extends TOKEN {
-        Attachment attachment;
-
-        ATTACHMENT(int position, Attachment attachment, String value) {
-            super(position, value.length(), value);
-            this.attachment = attachment;
-        }
-    }
-
-    static class ICON extends TOKEN {
-        String iconPath;
-
-        ICON(int position, String iconStr, String iconPath) {
-            super(position, iconStr.length(), iconStr);
-            this.iconPath = iconPath;
-        }
-    }
-
-    static class FORMULA extends TOKEN {
-        String content;
-        int contentStart;
-
-        FORMULA(int position, String content, int contentStart, String value) {
-            /*
-             * remove all newline character to avoid the ImageSpan shows multiple times when
-             * formula content stretches over multiple lines.
-             */
-            super(position, value.length(), value.replaceAll("[\n\r]", ""));
-            this.content = content.replaceAll("[\n\r]", "");
-            this.contentStart = contentStart;
-        }
-    }
-
-    static class CODE_START extends TOKEN {
-        CODE_START(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class CODE_END extends TOKEN {
-        CODE_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-
-    static class QUOTE_START extends TOKEN {
-        String quotedUsername;
-        String postId;
-
-        QUOTE_START(int position, String value, String quotedUsername, String postId) {
-            super(position, value.length(), value);
-            this.quotedUsername = quotedUsername;
-            this.postId = postId;
-        }
-    }
-
-    static class QUOTE_END extends TOKEN {
-        QUOTE_END(int position, String value) {
-            super(position, value.length(), value);
-        }
-    }
-
-    static class IMAGE extends TOKEN {
-        String url;
-        int width, height;
-
-        IMAGE(int position, String url, String value) {
-            this(position, url, value, -1);
-        }
-
-        IMAGE(int position, String url, String value, int size) {
-            this(position, url, value, -1, -1);
-        }
-
-        IMAGE(int position, String url, String value, int width, int height) {
-            super(position, value.length(), value);
-
-            this.url = setRealUrl(url);
-            this.width = width;
-            this.height = height;
-        }
-
-        private String setRealUrl(String url) {
-            String s = url;
-            if (url.startsWith("./"))
-                s = "http://img.nga.cn/attachments" + url.replace("./", "/");
-            if (!url.endsWith(".medium.jpg") && url.endsWith(".jpg") && url.startsWith("http://img.nga.cn/"))
-                s = s + ".medium.jpg";
-            Log.i(TAG, "setRealUrl: " + s);
-            return s;
-        }
-    }
-
-    static class TABLE extends TOKEN {
-        TABLE(int position, String content) {
-            super(position, content.length(), content);
-        }
-    }
-
-
-    static class END extends TOKEN {
-        END(int position) {
-            super(position, 0, "");
-        }
+        Log.i(TAG, "static initializer: " + colorEndLabels.toString());
+        Log.i(TAG, "static initializer: " + colorStartLabels.toString());
+        Log.i(TAG, "static initializer: " + urlStartLabels.toString());
+        Log.i(TAG, "static initializer: " + urlEndLabels.toString());
+        Log.i(TAG, "static initializer: " + curtainStartLabels.toString());
+        Log.i(TAG, "static initializer: " + curtainEndLabels.toString());
+        Log.i(TAG, "static initializer: " + underlineStartLabels.toString());
+        Log.i(TAG, "static initializer: " + underlineEndLabels.toString());
+        Log.i(TAG, "static initializer: " + boldStartLabels.toString());
+        Log.i(TAG, "static initializer: " + boldEndLabels.toString());
+        Log.i(TAG, "static initializer: " + italicStartLabels.toString());
+        Log.i(TAG, "static initializer: " + italicEndLabels.toString());
+        Log.i(TAG, "static initializer: " + deleteStartLabels.toString());
+        Log.i(TAG, "static initializer: " + deleteEndLabels.toString());
+        Log.i(TAG, "static initializer: " + centerStartLabels.toString());
+        Log.i(TAG, "static initializer: " + centerEndLabels.toString());
+        Log.i(TAG, "static initializer: " + titleStartLabels.toString());
+        Log.i(TAG, "static initializer: " + titleEndLabels.toString());
+        Log.i(TAG, "static initializer: " + attachmentLabels.toString());
+        Log.i(TAG, "static initializer: " + imageLabels.toString());
+        Log.i(TAG, "static initializer: " + codeStartLabels.toString());
+        Log.i(TAG, "static initializer: " + codeEndLabels.toString());
+        Log.i(TAG, "static initializer: " + quoteStartLabels.toString());
+        Log.i(TAG, "static initializer: " + quoteEndLabels.toString());
+        Log.i(TAG, "static initializer: " + imgPosList.toString());
+        Log.i(TAG, "static initializer: " + quotePosList.toString());
+        Log.i(TAG, "static initializer: " + sizeStartLabels.toString());
+        Log.i(TAG, "static initializer: " + sizeEndLabels.toString());
+        Log.i(TAG, "static initializer: " + listStartLabels.toString());
+        Log.i(TAG, "static initializer: " + listEndLabels.toString());
     }
 
 
@@ -402,22 +168,7 @@ public class Tokenizer {
     private static final Pattern LIST_REG = Pattern.compile("\\[list\\]([\\s\\S]+?)\\[/list\\]");
 
 
-    public static int setUrlStartLabel(String... labels) {
-        int ret = labels.length;
-
-        urlStartLabels = new ArrayList<>();
-        for (String label : labels) {
-//            if (label.contains("\\s")) {
-            urlStartLabels.add(formatLabel(label)
-                    .replaceAll("\\\\s", "(.+?)"));
-            ret--;
-//            }
-        }
-
-        return ret;
-    }
-
-    public static int setColorStartLabel(String... labels) {
+    private static int setColorStartLabel(String... labels) {
         int ret = labels.length;
 
         colorStartLabels = new ArrayList<>();
@@ -432,44 +183,8 @@ public class Tokenizer {
         return ret;
     }
 
-    public static int setCurtainStartLabels(String... labels) {
-        int ret = labels.length;
 
-        curtainStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            curtainStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setBoldStartLabels(String... labels) {
-        int ret = labels.length;
-
-        boldStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            boldStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setCodeStartLabels(String... labels) {
-        int ret = labels.length;
-
-        codeStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            codeStartLabels.add(formatLabel(label));
-
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setQuoteStartLabels(String... labels) {
+    private static int setQuoteStartLabels(String... labels) {
         int ret = labels.length;
 
         quoteStartLabels = new ArrayList<>();
@@ -495,153 +210,7 @@ public class Tokenizer {
         return ret;
     }
 
-    public static int setItalicStartLabels(String... labels) {
-        int ret = labels.length;
-
-        italicStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            italicStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setCenterStartLabels(String... labels) {
-        int ret = labels.length;
-
-        centerStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            centerStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setDeleteStartLabels(String... labels) {
-        int ret = labels.length;
-
-        deleteStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            deleteStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setTitleStartLabels(String... labels) {
-        int ret = labels.length;
-
-        titleStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            titleStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setSizeStartLabels(String... labels) {
-        int ret = labels.length;
-
-        sizeStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            if (label.contains("\\s")) {
-                sizeStartLabels.add(formatLabel(label)
-                        .replaceAll("\\\\s", "(.+?)"));
-                ret--;
-            }
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setSizeEndLabels(String... labels) {
-        int ret = labels.length;
-
-        sizeEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            sizeEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setListStartLabels(String... labels) {
-        int ret = labels.length;
-        listStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            listStartLabels.add(formatLabel(label));
-            ret--;
-        }
-        return ret;
-    }
-
-    public static int setListEndLabels(String... labels) {
-        int ret = labels.length;
-
-        listEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            listEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setTitleEndLabels(String... labels) {
-        int ret = labels.length;
-
-        titleEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            titleEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setColorEndLabels(String... labels) {
-        int ret = labels.length;
-
-        colorEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            colorEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setCurtainEndLabels(String... labels) {
-        int ret = labels.length;
-
-        curtainEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            curtainEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setCodeEndLabels(String... labels) {
-        int ret = labels.length;
-
-        codeEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            codeEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setQuoteEndLabels(String... labels) {
+    private static int setQuoteEndLabels(String... labels) {
         int ret = labels.length;
 
         quoteEndLabels = new ArrayList<>();
@@ -653,107 +222,7 @@ public class Tokenizer {
         return ret;
     }
 
-    public static int setCenterEndLabels(String... labels) {
-        int ret = labels.length;
-
-        centerEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            centerEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setBoldEndLabels(String... labels) {
-        int ret = labels.length;
-
-        boldEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            boldEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setItalicEndLabels(String... labels) {
-        int ret = labels.length;
-
-        italicEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            italicEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setUrlEndLabels(String... labels) {
-        int ret = labels.length;
-
-        urlEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            urlEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setDeleteEndLabels(String... labels) {
-        int ret = labels.length;
-
-        deleteEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            deleteEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setAttachmentLabels(String... labels) {
-        int ret = labels.length;
-
-        attachmentLabels = new ArrayList<>();
-
-        for (String label : labels) {
-            if (label.contains("\\s")) {
-                attachmentLabels.add(formatLabel(label)
-                        .replaceAll("\\\\s", "(.+?)"));
-                ret--;
-            }
-        }
-
-        return ret;
-    }
-
-    public static int setUnderlineStartLabels(String... labels) {
-        int ret = labels.length;
-
-        underlineStartLabels = new ArrayList<>();
-        for (String label : labels) {
-            underlineStartLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setUnderlineEndLabels(String... labels) {
-        int ret = labels.length;
-
-        underlineEndLabels = new ArrayList<>();
-        for (String label : labels) {
-            underlineEndLabels.add(formatLabel(label));
-            ret--;
-        }
-
-        return ret;
-    }
-
-    public static int setImageLabels(String... labels) {
+    private static int setImageLabels(String... labels) {
         int ret = labels.length;
 
         imageLabels = new ArrayList<>();
@@ -797,7 +266,7 @@ public class Tokenizer {
         return ret;
     }
 
-    public static int setIconLabels(String... iconStart) {
+    private static int setIconLabels(String... iconStart) {
         int ret = iconStart.length;
 
         iconLabels = new ArrayList<>();
@@ -812,48 +281,28 @@ public class Tokenizer {
         return ret;
     }
 
-
-    public static void setIcons(Integer... icons) {
-        Tokenizer.icons = new ArrayList<>();
-        Collections.addAll(Tokenizer.icons, icons);
-    }
-
-
     private static String formatLabel(String label) {
         return "(?i)" + label.replaceAll("\\[", "\\\\[").replaceAll("\\(", "\\\\(");
     }
 
     private static void initLabels() {
-        setUrlStartLabel("[url=\\s]", "[url]");
-        setUrlEndLabels("[/url]");
-        setAttachmentLabels("[attachment:\\s]");
-        setBoldStartLabels("[b]");
-        setBoldEndLabels("[/b]");
-        setItalicStartLabels("[i]");
-        setItalicEndLabels("[/i]");
-        setCurtainStartLabels("[curtain]");
-        setCurtainEndLabels("[/curtain]");
-        setCenterStartLabels("[align=center]");
-        setCenterEndLabels("[/align]");
-        setCodeStartLabels("[code]");
-        setCodeEndLabels("[/code]");
-        setTitleStartLabels("===");
-        setTitleEndLabels("===\n");
         setColorStartLabel("[c=\\s]", "[color=\\s]");
-        setColorEndLabels("[/c]", "[/color]");
         setQuoteStartLabels("[quote]", "[quote=\\p:@\\m]");
         setQuoteEndLabels("[/quote]");
         setImageLabels("[img]\\u[/img]", "[img=\\s]\\u[/img]");
-        setDeleteStartLabels("[del]");
-        setDeleteEndLabels("[/del]");
-        setUnderlineStartLabels("[u]");
-        setUnderlineEndLabels("[/u]");
         setIconLabels("[s:ac:\\s]", "[s:a2:\\s]", "[s:dt:\\s]", "[s:pst:\\s]", "[s:pg:\\s]");
-        setSizeStartLabels("[size=\\s]");
-        setSizeEndLabels("[/size]");
-        setListStartLabels("[list]");
-        setListEndLabels("[/list]");
     }
+
+//    private void addTokenList(List<TOKEN> tokens, CharSequence text, List<String> labels, TOKEN token) {
+//
+//        for (String colorStartLabel : labels) {
+//            Pattern pattern = Pattern.compile(colorStartLabel);
+//            Matcher matcher = pattern.matcher(text);
+//            while (matcher.find()) {
+//                tokens.add(new COLOR_START(matcher.start(), matcher.group(), matcher.group(1)));
+//            }
+//        }
+//    }
 
     public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {
 
@@ -1014,6 +463,7 @@ public class Tokenizer {
             matcher = pattern.matcher(text);
 
             while (matcher.find()) {
+                Log.i(TAG, "deleteStartLabel: group: " + matcher.group() + "\nstart" + matcher.start());
                 tokenList.add(new DELETE_START(matcher.start(), matcher.group()));
             }
         }
@@ -1113,17 +563,6 @@ public class Tokenizer {
                 tokenList.add(new LIST_END(matcher.start(), matcher.group()));
             }
         }
-
-
-        for (String codeEndLabel : codeEndLabels) {
-            pattern = Pattern.compile(codeEndLabel);
-            matcher = pattern.matcher(text);
-
-            while (matcher.find()) {
-                tokenList.add(new CODE_END(matcher.start(), matcher.group()));
-            }
-        }
-
 
         for (int i = 0; i < quoteStartLabels.size(); i++) {
             String quoteStartLabel = quoteStartLabels.get(i);
