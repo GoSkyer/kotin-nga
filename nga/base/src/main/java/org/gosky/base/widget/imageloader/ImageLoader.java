@@ -1,7 +1,5 @@
 package org.gosky.base.widget.imageloader;
 
-import android.content.Context;
-
 /**
  * Created by jess on 8/5/16 15:57
  * contact with jess.yan.effort@gmail.com
@@ -12,20 +10,6 @@ public class ImageLoader {
 
     public ImageLoader(BaseImageLoaderStrategy strategy) {
         setLoadImgStrategy(strategy);
-    }
-
-//    public static ImageLoader getInstance() {
-//        if (mImageLoader == null) {
-//            synchronized (ImageLoader.class) {
-//                if (mImageLoader == null)
-//                    mImageLoader = new ImageLoader();
-//            }
-//        }
-//        return mImageLoader;
-//    }
-
-    public <T extends ImageConfig> void loadImage(Context context, T config) {
-        this.mStrategy.loadImage(context, config);
     }
 
 
