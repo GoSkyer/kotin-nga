@@ -12,8 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -693,20 +691,6 @@ public class FlexibleRichTextView extends LinearLayout {
             }
         }
         return cells;
-    }
-
-    private View list(CharSequence str) {
-        LinearLayout layout = new LinearLayout(this.getContext());
-        layout.setOrientation(VERTICAL);
-        List<String> items = getListCellsContent(str.toString());
-        for (String item : items) {
-            TextView textView = new TextView(this.getContext());
-            Spannable msp = new SpannableString(item);
-            msp.setSpan(new BulletSpan(20), 0, 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            textView.setText(msp);
-            layout.addView(textView);
-        }
-        return layout;
     }
 
     private List<String> format(List<String> strings) {
