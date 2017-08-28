@@ -17,7 +17,6 @@ import org.gosky.nga.widget.richtext.Token.CURTAIN_START;
 import org.gosky.nga.widget.richtext.Token.DELETE_END;
 import org.gosky.nga.widget.richtext.Token.DELETE_START;
 import org.gosky.nga.widget.richtext.Token.END;
-import org.gosky.nga.widget.richtext.Token.FORMULA;
 import org.gosky.nga.widget.richtext.Token.ICON;
 import org.gosky.nga.widget.richtext.Token.IMAGE;
 import org.gosky.nga.widget.richtext.Token.ITALIC_END;
@@ -151,13 +150,6 @@ public class Tokenizer {
             this.memberPos = memberPos;
         }
     }
-
-    private static final Pattern FORMULA_REG1 = Pattern.compile("(?i)\\$\\$?((.|\\n)+?)\\$\\$?");
-    private static final Pattern FORMULA_REG2 = Pattern.compile("(?i)\\\\[(\\[]((.|\\n)*?)\\\\[\\])]");
-    private static final Pattern FORMULA_REG3 = Pattern.compile("(?i)\\[tex]((.|\\n)*?)\\[/tex]");
-    private static final Pattern FORMULA_REG4 = Pattern.compile("(?i)\\\\begin\\{.*?\\}(.|\\n)*?\\\\end\\{.*?\\}");
-    // private static final Pattern FORMULA_REG5 = Pattern.compile("(?i)\\$\\$(.+?)\\$\\$");
-    private static final Pattern[] PATTERNS = {FORMULA_REG1, FORMULA_REG2, FORMULA_REG3, FORMULA_REG4};
 
     private static final Pattern IMG_REG = Pattern.compile("(?i)\\[img(=\\d+)?](.*?)\\[/img]");
     private static final Pattern TABLE_REG = Pattern.compile("\\[table\\]([\\s\\S]+?)\\[/table\\]");
@@ -562,37 +554,6 @@ public class Tokenizer {
             tokenList.add(new TABLE(matcher.start(), matcher.group()));
         }
 
-//        pattern = LIST_REG;
-//        matcher = LIST_REG.matcher(text);
-//
-//        while (matcher.find()) {
-//            tokenList.add(new LIST(matcher.start(), matcher.group()));
-//        }
-
-
-        final int[] indexInRegex = {1, 1, 1, 0, 1};
-        Matcher[] matchers = new Matcher[PATTERNS.length];
-        for (int i = 0; i < PATTERNS.length; i++) {
-            matchers[i] = PATTERNS[i].matcher(text);
-        }
-
-        for (int i = 0; i < matchers.length; i++) {
-            matcher = matchers[i];
-            int index = indexInRegex[i];
-
-            String content, value;
-            int contentStart;
-
-            while (matcher.find()) {
-                start = matcher.start();
-                content = matcher.group(index);
-                value = matcher.group();
-
-                contentStart = matcher.start(index);
-
-                tokenList.add(new FORMULA(start, content, contentStart - start, value));
-            }
-        }
 
         Collections.sort(tokenList);
 
