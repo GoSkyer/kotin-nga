@@ -74,13 +74,12 @@ public class Tokenizer {
     private static List<String> titleStartLabels = Arrays.asList("(?i)===");
     private static List<String> titleEndLabels = Arrays.asList("(?i)===\n");
     private static List<String> attachmentLabels = Arrays.asList("(?i)\\[attachment:(.+?)]");
-    private static List<String> imageLabels = new ArrayList<>();
+    private static List<String> imageLabels = Arrays.asList("(?i)\\[img](.+?)\\[/img]");
     private static List<String> codeStartLabels = Arrays.asList("(?i)\\[code]");
     private static List<String> codeEndLabels = Arrays.asList("(?i)\\[/code]");
     private static List<String> quoteStartLabels = new ArrayList<>();
     private static List<String> quoteEndLabels = new ArrayList<>();
 
-    private static List<ImgPos> imgPosList = new ArrayList<>();
     private static List<QuotePos> quotePosList = new ArrayList<>();
 
     private static List<String> sizeStartLabels = Arrays.asList("(?i)\\[size=(.+?)]");
@@ -118,7 +117,6 @@ public class Tokenizer {
         Log.i(TAG, "static initializer: " + codeEndLabels.toString());
         Log.i(TAG, "static initializer: " + quoteStartLabels.toString());
         Log.i(TAG, "static initializer: " + quoteEndLabels.toString());
-        Log.i(TAG, "static initializer: " + imgPosList.toString());
         Log.i(TAG, "static initializer: " + quotePosList.toString());
         Log.i(TAG, "static initializer: " + sizeStartLabels.toString());
         Log.i(TAG, "static initializer: " + sizeEndLabels.toString());
@@ -222,49 +220,6 @@ public class Tokenizer {
         return ret;
     }
 
-    private static int setImageLabels(String... labels) {
-        int ret = labels.length;
-
-        imageLabels = new ArrayList<>();
-        imgPosList = new ArrayList<>();
-
-        for (String label : labels) {
-            boolean hasUrl = false;
-            byte tmp = 1, widthPos = -1, heightPos = -1, urlPos = -1, sizePos = -1;
-
-            for (int j = 0; j < label.length() - 1; j++) {
-                if (label.substring(j).startsWith("\\w")) {
-                    widthPos = tmp++;
-                } else if (label.substring(j).startsWith("\\h")) {
-                    heightPos = tmp++;
-                } else if (label.substring(j).startsWith("\\s")) {
-                    sizePos = tmp++;
-                } else if (label.substring(j).startsWith("\\u")) {
-                    urlPos = tmp++;
-                    hasUrl = true;
-                }
-            }
-
-            if (!hasUrl) {
-                continue;
-            }
-
-            imageLabels.add(formatLabel(label)
-                    .replaceAll("\\\\w", "(\\\\d+?)")
-                    .replaceAll("\\\\h", "(\\\\d+?)")
-                    .replaceAll("\\\\s", "(\\\\d+?)")
-                    .replaceAll("\\\\u", "(.+?)"));
-            if (sizePos == -1) {
-                imgPosList.add(new ImgPos(widthPos, heightPos, urlPos));
-            } else {
-                imgPosList.add(new ImgPos(sizePos, urlPos));
-            }
-
-            ret--;
-        }
-
-        return ret;
-    }
 
     private static String formatLabel(String label) {
         return "(?i)" + label.replaceAll("\\[", "\\\\[").replaceAll("\\(", "\\\\(");
@@ -274,7 +229,6 @@ public class Tokenizer {
         setColorStartLabel("[c=\\s]", "[color=\\s]");
         setQuoteStartLabels("[quote]", "[quote=\\p:@\\m]");
         setQuoteEndLabels("[/quote]");
-        setImageLabels("[img]\\u[/img]", "[img=\\s]\\u[/img]");
     }
 
 //    private void addTokenList(List<TOKEN> tokens, CharSequence text, List<String> labels, TOKEN token) {
@@ -603,20 +557,11 @@ public class Tokenizer {
 
         for (int i = 0; i < imageLabels.size(); i++) {
             String imageLabel = imageLabels.get(i);
-            ImgPos imgPos = imgPosList.get(i);
             pattern = Pattern.compile(imageLabel);
             matcher = pattern.matcher(text);
 
             while (matcher.find()) {
-                if (imgPos.heightPos == -1 && imgPos.widthPos == -1) {
-                    tokenList.add(new IMAGE(matcher.start(), matcher.group(1), matcher.group()));
-                } else if (imgPos.heightPos == -1) {
-                    tokenList.add(new IMAGE(matcher.start(), matcher.group(imgPos.urlPos), matcher.group(), Integer.valueOf(matcher.group(imgPos.widthPos)), -1));
-                } else if (imgPos.widthPos == -1) {
-                    tokenList.add(new IMAGE(matcher.start(), matcher.group(imgPos.urlPos), matcher.group(), -1, Integer.valueOf(matcher.group(imgPos.heightPos))));
-                } else {
-                    tokenList.add(new IMAGE(matcher.start(), matcher.group(imgPos.urlPos), matcher.group(), Integer.valueOf(matcher.group(imgPos.widthPos)), Integer.valueOf(matcher.group(imgPos.heightPos))));
-                }
+                tokenList.add(new IMAGE(matcher.start(), matcher.group(), matcher.group(1)));
             }
         }
 

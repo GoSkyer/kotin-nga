@@ -273,22 +273,10 @@ public class Token {
 
     static class IMAGE extends TOKEN {
         String url;
-        int width, height;
 
-        IMAGE(int position, String url, String value) {
-            this(position, url, value, -1);
-        }
-
-        IMAGE(int position, String url, String value, int size) {
-            this(position, url, value, -1, -1);
-        }
-
-        IMAGE(int position, String url, String value, int width, int height) {
+        IMAGE(int position, String value, String url) {
             super(position, value.length(), value);
-
             this.url = setRealUrl(url);
-            this.width = width;
-            this.height = height;
         }
 
         private String setRealUrl(String url) {

@@ -356,7 +356,7 @@ public class FlexibleRichTextView extends LinearLayout {
                 } else if (thisToken() instanceof IMAGE) {
 
                     IMAGE thisToken = (IMAGE) thisToken();
-                    FImageView imageView = loadImage(thisToken.url, thisToken.width, thisToken.height);
+                    FImageView imageView = loadImage(thisToken.url);
                     if (mCenter) {
                         imageView.centered = true;
                     }
