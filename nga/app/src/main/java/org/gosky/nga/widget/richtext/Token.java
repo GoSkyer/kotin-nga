@@ -171,6 +171,14 @@ public class Token {
         }
     }
 
+//    static class DELETE extends TOKEN {
+//
+//        public DELETE(int position, CharSequence value) {
+//            super(position, value.length(), value);
+//        }
+//    }
+
+
     static class LIST_START extends TOKEN {
         LIST_START(int position, String content) {
             super(position, content.length(), content);
@@ -205,15 +213,6 @@ public class Token {
     static class TITLE_END extends TOKEN {
         TITLE_END(int position, String value) {
             super(position, value.length(), value);
-        }
-    }
-
-    static class ATTACHMENT extends TOKEN {
-        Attachment attachment;
-
-        ATTACHMENT(int position, Attachment attachment, String value) {
-            super(position, value.length(), value);
-            this.attachment = attachment;
         }
     }
 

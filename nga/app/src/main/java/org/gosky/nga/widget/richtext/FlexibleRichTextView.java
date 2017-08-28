@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.Spannable;
@@ -29,6 +28,7 @@ import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +44,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.gosky.nga.R;
-import org.gosky.nga.widget.richtext.Token.ATTACHMENT;
 import org.gosky.nga.widget.richtext.Token.BOLD_END;
 import org.gosky.nga.widget.richtext.Token.BOLD_START;
 import org.gosky.nga.widget.richtext.Token.CENTER_END;
@@ -101,7 +100,6 @@ public class FlexibleRichTextView extends LinearLayout {
     private Context mContext;
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private int mConversationId;
-    private List<Attachment> mAttachmentList;
     private OnViewClickListener mOnViewClickListener;
 
     private List<TOKEN> mTokenList;
@@ -139,27 +137,14 @@ public class FlexibleRichTextView extends LinearLayout {
         init(context);
     }
 
-    public void setToken(List<TOKEN> tokens, List<Attachment> attachmentList) {
+    public void setToken(List<TOKEN> tokens) {
         removeAllViews();
 
-        mAttachmentList = attachmentList;
         mTokenList = tokens;
 
-        for (TOKEN token : tokens) {
-            if (token instanceof ATTACHMENT) {
-                mAttachmentList.remove(((ATTACHMENT) token).attachment);
-            }
-        }
 
         resetTokenIndex();
         List<Object> result = until(END.class);
-
-        if (mShowRemainingAtt) {
-            // remaining attachments will show at the bottom of view
-            for (Attachment att : mAttachmentList) {
-                append(result, attachment(att));
-            }
-        }
 
         if (result == null) {
             return;
@@ -168,11 +153,8 @@ public class FlexibleRichTextView extends LinearLayout {
         for (final Object o : result) {
             if (o instanceof TextWithFormula) {
                 final TextWithFormula textWithFormula = (TextWithFormula) o;
-
-                final LaTeXtView textView = new LaTeXtView(mContext);
-
-                textView.setTextWithFormula(textWithFormula);
-
+                final TextView textView = new TextView(mContext);
+                textView.setText(textWithFormula);
                 textView.setMovementMethod(LinkMovementMethod.getInstance());
                 myAddView(textView);
             } else if (o instanceof CodeView) {
@@ -189,19 +171,12 @@ public class FlexibleRichTextView extends LinearLayout {
         }
     }
 
-    public void setText(@NonNull String text) {
-        setText(text, new ArrayList<Attachment>());
-    }
-
-    public void setText(String text, List<Attachment> attachmentList) {
+    public void setText(String text) {
         text = text.replaceAll("\u00AD", "");
         //</br> 替换为\n
         text = text.replace("<br/>", "\n");
-//        text = BBCodeMaps.bbcodeListParse(text);
-        mAttachmentList = attachmentList;
-        mTokenList = tokenizer(text, mAttachmentList);
-
-        setToken(mTokenList, attachmentList);
+        mTokenList = tokenizer(text);
+        setToken(mTokenList);
     }
 
     private void myAddView(View view) {
@@ -252,7 +227,10 @@ public class FlexibleRichTextView extends LinearLayout {
             int tmp;
 
             for (Class anEnd : end) {
-                if (anEnd.isInstance(thisToken())) {
+                TOKEN object = thisToken();
+                Log.i(TAG, "until: " + object.toString());
+                Log.i(TAG, "isInstance: " + anEnd.isInstance(object));
+                if (anEnd.isInstance(object)) {
                     append(ret, new TextWithFormula(thisToken().value));
                     flag = true;
                     break;
@@ -367,19 +345,6 @@ public class FlexibleRichTextView extends LinearLayout {
                     View table = table(thisToken().value);
                     append(ret, table);
 
-                }
-//                else if (thisToken() instanceof Tokenizer.LIST) {
-//
-//                    View list = list(thisToken().value);
-//                    append(ret, list);
-//
-//                }
-                else if (thisToken() instanceof ATTACHMENT) {
-
-                    final ATTACHMENT thisToken = (ATTACHMENT) thisToken();
-
-                    append(ret, attachment(thisToken.attachment));
-
                 } else if (thisToken() instanceof QUOTE_START) {
                     int i = 1;
                     List<TOKEN> tokens = new ArrayList<>();
@@ -406,7 +371,6 @@ public class FlexibleRichTextView extends LinearLayout {
 
                     if (thisToken() instanceof QUOTE_END) {
                         final QuoteView quoteView = QuoteView.newInstance(this, mQuoteViewId);
-                        quoteView.setAttachmentList(mAttachmentList);
                         quoteView.setPadding(0, 8, 0, 8);
                         quoteView.setTokens(tokens);
                         quoteView.setOnButtonClickListener(mOnViewClickListener);
@@ -424,31 +388,6 @@ public class FlexibleRichTextView extends LinearLayout {
         }
 
         return null;
-    }
-
-    private Object attachment(final Attachment attachment) {
-        if (attachment.isImage()) {
-            String url = attachment.getUrl();
-            FImageView imageView = loadImage(url);
-            if (mCenter) {
-                imageView.centered = true;
-            }
-
-            return imageView;
-        } else {
-            TextWithFormula builder = new TextWithFormula(attachment.getText());
-            builder.setSpan(new ClickableSpan() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnViewClickListener != null) {
-                        mOnViewClickListener.onAttClick(attachment);
-                    }
-                }
-            }, 0, attachment.getText().length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            builder.append("\n\n");
-
-            return builder;
-        }
     }
 
     private void append(List<Object> list, Object element) {
@@ -714,7 +653,7 @@ public class FlexibleRichTextView extends LinearLayout {
             tableRow.addView(getVerticalDivider());
             for (int j = 0; j < row.length; j++) {
                 String cell = row[j];
-                FlexibleRichTextView flexibleRichTextView = FlexibleRichTextView.newInstance(getContext(), cell, mAttachmentList, mOnViewClickListener, false);
+                FlexibleRichTextView flexibleRichTextView = FlexibleRichTextView.newInstance(getContext(), cell, mOnViewClickListener, false);
                 TableRow.LayoutParams pcvParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                 pcvParams.gravity = Gravity.CENTER;
                 /*switch (margins[j]) {
@@ -786,14 +725,13 @@ public class FlexibleRichTextView extends LinearLayout {
     }
 
     public static FlexibleRichTextView newInstance(Context context, String string,
-                                                   List<Attachment> attachmentList,
                                                    OnViewClickListener onViewClickListener,
                                                    boolean showRemainingAtt) {
 
         FlexibleRichTextView flexibleRichTextView = new FlexibleRichTextView(context, onViewClickListener, showRemainingAtt);
 
         if (!TextUtils.isEmpty(string)) {
-            flexibleRichTextView.setText(string, attachmentList);
+            flexibleRichTextView.setText(string);
         }
 
         return flexibleRichTextView;
@@ -849,8 +787,6 @@ public class FlexibleRichTextView extends LinearLayout {
 
     public interface OnViewClickListener {
         void onImgClick(ImageView imageView);
-
-        void onAttClick(Attachment attachment);
 
         void onQuoteButtonClick(View view, boolean collapsed);
     }

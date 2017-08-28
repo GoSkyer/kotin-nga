@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import org.gosky.nga.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,8 +27,6 @@ public class QuoteView extends LinearLayout {
     Boolean mCollapsed;
     Context mContext;
     FlexibleRichTextView.OnViewClickListener mOnButtonClickListener;
-    List<Attachment> mAttachmentList = new ArrayList<>();
-
     int mLayoutId;
     int mButtonId;
 
@@ -43,12 +40,7 @@ public class QuoteView extends LinearLayout {
 
     public QuoteView(Context context) {
         super(context);
-        init(context, null);
-    }
-
-    public QuoteView(Context context, List<Attachment> attachmentList) {
-        super(context);
-        init(context, attachmentList);
+        init(context);
     }
 
     public QuoteView(Context context, AttributeSet attributeSet) {
@@ -63,7 +55,7 @@ public class QuoteView extends LinearLayout {
         } finally {
             array.recycle();
         }
-        init(context, null);
+        init(context);
     }
 
     static QuoteView newInstance(ViewGroup parent, int layoutId) {
@@ -86,14 +78,14 @@ public class QuoteView extends LinearLayout {
         mCollapsed = false;
     }
 
-    private void init(final Context context, final List<Attachment> attachmentList) {
+    private void init(final Context context) {
         post(new Runnable() {
             @Override
             public void run() {
                 mContext = context;
                 mCollapsed = false;
                 mTextView = new TextView(context);
-                mFlexibleRichTextView = FlexibleRichTextView.newInstance(context, "", attachmentList, null, false);
+                mFlexibleRichTextView = FlexibleRichTextView.newInstance(context, "", null, false);
 
                 LayoutParams params = new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 mTextView.setLayoutParams(params);
@@ -133,7 +125,7 @@ public class QuoteView extends LinearLayout {
             @Override
             public void run() {
                 mTokens = tokens;
-                mFlexibleRichTextView.setToken(tokens, mAttachmentList);
+                mFlexibleRichTextView.setToken(tokens);
                 mFlexibleRichTextView.post(new Runnable() {
                     @Override
                     public void run() {
@@ -159,9 +151,6 @@ public class QuoteView extends LinearLayout {
         });
     }
 
-    public void setAttachmentList(List<Attachment> AttachmentList) {
-        mAttachmentList = AttachmentList;
-    }
 
     public void setOnButtonClickListener(FlexibleRichTextView.OnViewClickListener onButtonClickListener) {
         mOnButtonClickListener = onButtonClickListener;

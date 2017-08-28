@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.github.promeg.pinyinhelper.Pinyin;
 
-import org.gosky.nga.widget.richtext.Token.ATTACHMENT;
 import org.gosky.nga.widget.richtext.Token.BOLD_END;
 import org.gosky.nga.widget.richtext.Token.BOLD_START;
 import org.gosky.nga.widget.richtext.Token.CENTER_END;
@@ -69,11 +68,11 @@ public class Tokenizer {
     private static List<String> italicEndLabels = Arrays.asList("(?i)\\[/i]");
     private static List<String> deleteStartLabels = Arrays.asList("(?i)\\[del]");
     private static List<String> deleteEndLabels = Arrays.asList("(?i)\\[/del]");
+    private static List<String> deleteLabels = Arrays.asList("(?i)\\[del](.+?)\\[/del]");
     private static List<String> centerStartLabels = Arrays.asList("(?i)\\[align=center]");
     private static List<String> centerEndLabels = Arrays.asList("(?i)\\[/align]");
     private static List<String> titleStartLabels = Arrays.asList("(?i)===");
     private static List<String> titleEndLabels = Arrays.asList("(?i)===\n");
-    private static List<String> attachmentLabels = Arrays.asList("(?i)\\[attachment:(.+?)]");
     private static List<String> imageLabels = Arrays.asList("(?i)\\[img](.+?)\\[/img]");
     private static List<String> codeStartLabels = Arrays.asList("(?i)\\[code]");
     private static List<String> codeEndLabels = Arrays.asList("(?i)\\[/code]");
@@ -111,7 +110,6 @@ public class Tokenizer {
         Log.i(TAG, "static initializer: " + centerEndLabels.toString());
         Log.i(TAG, "static initializer: " + titleStartLabels.toString());
         Log.i(TAG, "static initializer: " + titleEndLabels.toString());
-        Log.i(TAG, "static initializer: " + attachmentLabels.toString());
         Log.i(TAG, "static initializer: " + imageLabels.toString());
         Log.i(TAG, "static initializer: " + codeStartLabels.toString());
         Log.i(TAG, "static initializer: " + codeEndLabels.toString());
@@ -242,7 +240,7 @@ public class Tokenizer {
 //        }
 //    }
 
-    public static List<TOKEN> tokenizer(CharSequence text, List<Attachment> attachmentList) {
+    public static List<TOKEN> tokenizer(CharSequence text) {
 
         List<TOKEN> tokenList = new ArrayList<>();
 
@@ -326,23 +324,6 @@ public class Tokenizer {
             }
         }
 
-        for (String attachmentLabel : attachmentLabels) {
-            pattern = Pattern.compile(attachmentLabel);
-            matcher = pattern.matcher(text);
-
-            while (matcher.find()) {
-                String id = matcher.group(1);
-                if (attachmentList != null) {
-                    for (Attachment attachment : attachmentList) {
-                        if (attachment.getAttachmentId().equals(id)) {
-                            tokenList.add(new ATTACHMENT(matcher.start(), attachment, matcher.group()));
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
         for (String colorEndLabel : colorEndLabels) {
             pattern = Pattern.compile(colorEndLabel);
             matcher = pattern.matcher(text);
@@ -405,6 +386,15 @@ public class Tokenizer {
                 tokenList.add(new DELETE_START(matcher.start(), matcher.group()));
             }
         }
+
+//        for (String deleteLabel :deleteLabels){
+//            pattern = Pattern.compile(deleteLabel);
+//            matcher = pattern.matcher(text);
+//
+//            while (matcher.find()) {
+//                tokenList.add(new Token.DELETE(matcher.start(), matcher.group(1)));
+//            }
+//        }
 
         for (String deleteEndLabel : deleteEndLabels) {
             pattern = Pattern.compile(deleteEndLabel);
