@@ -605,7 +605,7 @@ public class FlexibleRichTextView extends LinearLayout {
     }
 
     private View table(CharSequence str) {
-        str = str.toString().replace("\n","");
+        str = str.toString().replace("\n", "");
         Pattern pattern = Pattern.compile("\\[th\\](.+?)\\[/th\\]");
         Matcher matcher = pattern.matcher(str);
 

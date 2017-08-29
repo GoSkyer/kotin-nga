@@ -583,7 +583,9 @@ public class Tokenizer {
         for (int i = 0; i < tokenList.size(); i++) {
             TOKEN token = tokenList.get(i);
             if (token.position > start) {
-                tokenList.add(i, new PLAIN(start, text.subSequence(start, token.position)));
+                CharSequence value = text.subSequence(start, token.position);
+                tokenList.add(i, new PLAIN(start, value));
+                Log.i(TAG, "PLAIN: " + value);
                 i++;
             }
             start = token.position + token.length;
