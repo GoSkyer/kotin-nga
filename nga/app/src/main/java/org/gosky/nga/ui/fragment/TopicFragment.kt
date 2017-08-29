@@ -44,6 +44,7 @@ class TopicFragment constructor(var tid: String = "", var p: Int = 0, var reply:
     }
 
     override fun showTopics(p0: TopicBean.DataBean) {
+        list.clear()
         list.addAll(p0.__R?.values?.toMutableList() as ArrayList<TopicBean.DataBean.RBean>);
         p0.__U?.run { __U = this }
         p0.__T?.replies?.let { reply(it) }
