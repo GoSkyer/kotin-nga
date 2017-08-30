@@ -64,7 +64,7 @@ public class QuoteView extends LinearLayout {
         return quoteView;
     }
 
-    private void collapse(){
+    private void collapse() {
         mTextView.setVisibility(VISIBLE);
         mTextView.setText(mTextView.getText()); // without it, textview will show the last three lines
         mTextView.setEllipsize(TextUtils.TruncateAt.END);
@@ -72,7 +72,7 @@ public class QuoteView extends LinearLayout {
         mCollapsed = true;
     }
 
-    private void expand(){
+    private void expand() {
         mTextView.setVisibility(GONE);
         mFlexibleRichTextView.setVisibility(VISIBLE);
         mCollapsed = false;
@@ -85,7 +85,7 @@ public class QuoteView extends LinearLayout {
                 mContext = context;
                 mCollapsed = false;
                 mTextView = new TextView(context);
-                mFlexibleRichTextView = FlexibleRichTextView.newInstance(context, "", null, false);
+                mFlexibleRichTextView = FlexibleRichTextView.newInstance(context, "", mOnButtonClickListener, false);
 
                 LayoutParams params = new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 mTextView.setLayoutParams(params);
@@ -107,12 +107,7 @@ public class QuoteView extends LinearLayout {
                             } else {
                                 collapse();
                             }
-
-                            if (mOnButtonClickListener != null) {
-                                mOnButtonClickListener.onQuoteButtonClick(mButton, mCollapsed);
-                            } else if (mLayoutId == R.layout.default_quote_view) {
-                                ((Button) mButton).setText(getResources().getString(mCollapsed ? R.string.expand : R.string.collapse));
-                            }
+                            ((Button) mButton).setText(getResources().getString(mCollapsed ? R.string.expand : R.string.collapse));
                         }
                     });
                 }

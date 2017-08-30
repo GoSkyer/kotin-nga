@@ -1,6 +1,7 @@
 package org.gosky.nga.ui.item
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import jp.wasabeef.glide.transformations.CropCircleTransformation
@@ -15,7 +16,9 @@ import org.gosky.nga.data.entity.TopicBean
  * @date 2017/7/27
  */
 class TopicItem(var __U: Map<String, TopicBean.DataBean.UBean>) : AdapterItem<TopicBean.DataBean.RBean> {
+    private val TAG = "TopicItem";
     private lateinit var view: View
+
 
     override fun getLayoutResId() = R.layout.item_topic;
 
@@ -46,6 +49,9 @@ class TopicItem(var __U: Map<String, TopicBean.DataBean.UBean>) : AdapterItem<To
             Glide.with(view.context).load(avatar.toString()).bitmapTransform(CropCircleTransformation(view.context)).into(view.iv_avatar_topic_item)
             view.tv_username_topic_item.text = username
             view.tv_user_profile_topic_item.text = "威望:$rvrc   发帖:$postnum"
+            view.tv_item_topic.setOnImageClickListener { imageUrls, p ->
+                Log.i(TAG, ": $imageUrls")
+            }
         }
 
     }

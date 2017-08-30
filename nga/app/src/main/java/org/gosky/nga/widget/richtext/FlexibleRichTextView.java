@@ -109,6 +109,8 @@ public class FlexibleRichTextView extends LinearLayout {
 
     private int mQuoteViewId = R.layout.default_quote_view;
 
+    private List<String> imageUrls = new ArrayList<>();
+
     public FlexibleRichTextView(Context context) {
         this(context, null, true);
 
@@ -332,7 +334,14 @@ public class FlexibleRichTextView extends LinearLayout {
                 } else if (thisToken() instanceof IMAGE) {
 
                     IMAGE thisToken = (IMAGE) thisToken();
-                    FImageView imageView = loadImage(thisToken.url);
+                    String url = thisToken.url;
+                    imageUrls.add(url);
+                    FImageView imageView = loadImage(url);
+                    imageView.setTag(url);
+                    imageView.setOnClickListener(v -> {
+                        if (mOnViewClickListener != null)
+                            mOnViewClickListener.onImgClick(imageUrls, imageUrls.indexOf(v.getTag().toString()));
+                    });
                     if (mCenter) {
                         imageView.centered = true;
                     }
@@ -371,7 +380,10 @@ public class FlexibleRichTextView extends LinearLayout {
                         final QuoteView quoteView = QuoteView.newInstance(this, mQuoteViewId);
                         quoteView.setPadding(0, 8, 0, 8);
                         quoteView.setTokens(tokens);
-                        quoteView.setOnButtonClickListener(mOnViewClickListener);
+                        quoteView.setOnButtonClickListener((imageUrls1, p) -> {
+                            if (mOnViewClickListener != null)
+                                mOnViewClickListener.onImgClick(imageUrls1, p);
+                        });
                         ret.add(quoteView);
                     } else {
                         append(ret, new TextWithFormula(thisToken().value));
@@ -387,6 +399,7 @@ public class FlexibleRichTextView extends LinearLayout {
 
         return null;
     }
+
 
     private void append(List<Object> list, Object element) {
         concat(list, Collections.singletonList(element));
@@ -753,7 +766,7 @@ public class FlexibleRichTextView extends LinearLayout {
         removeAllViews();
     }
 
-    public void setOnClickListener(OnViewClickListener onViewClickListener) {
+    public void setOnImageClickListener(OnViewClickListener onViewClickListener) {
         mOnViewClickListener = onViewClickListener;
     }
 
@@ -770,9 +783,7 @@ public class FlexibleRichTextView extends LinearLayout {
     }
 
     public interface OnViewClickListener {
-        void onImgClick(ImageView imageView);
-
-        void onQuoteButtonClick(View view, boolean collapsed);
+        void onImgClick(List<String> imageUrls, int p);
     }
 
     private Bitmap getBitmapFromAsset(Context context, String strName) {
