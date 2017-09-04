@@ -138,6 +138,7 @@ public class FlexibleRichTextView extends LinearLayout {
     }
 
     public void setToken(List<TOKEN> tokens) {
+        imageUrls.clear();
         removeAllViews();
 
         mTokenList = tokens;
@@ -334,7 +335,7 @@ public class FlexibleRichTextView extends LinearLayout {
                 } else if (thisToken() instanceof IMAGE) {
 
                     IMAGE thisToken = (IMAGE) thisToken();
-                    String url = thisToken.url;
+                    String url = thisToken.url.replace(".medium.jpg", "");
                     imageUrls.add(url);
                     FImageView imageView = loadImage(url);
                     imageView.setTag(url);

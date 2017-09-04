@@ -93,6 +93,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".widget.gallery.GalleryActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
 
         <meta-data
             android:name="design_width"
