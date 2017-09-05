@@ -25,7 +25,6 @@ import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.Toast
 import kotlinx.android.synthetic.main.gallery_view_pager.*
 import org.gosky.nga.R
 
@@ -59,6 +58,7 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
             }
 
         })
+        tv_position_gallery.text = "${position + 1} / ${IMAGES?.size}"
         horizontalPager.currentItem = position
     }
 
@@ -68,9 +68,7 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.imageView) {
-            Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
