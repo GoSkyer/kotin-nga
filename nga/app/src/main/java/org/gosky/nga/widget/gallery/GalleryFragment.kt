@@ -31,8 +31,11 @@ import org.gosky.nga.R
 import java.io.File
 
 class GalleryFragment : Fragment() {
+    private var resource: File? = null
 
     private var asset: String? = null
+
+    fun getAsset() = asset
 
     fun setAsset(asset: String) {
         this.asset = asset
@@ -51,6 +54,7 @@ class GalleryFragment : Fragment() {
 
             Glide.with(this).load(asset).downloadOnly(object : SimpleTarget<File>() {
                 override fun onResourceReady(resource: File, glideAnimation: GlideAnimation<in File>) {
+                    this@GalleryFragment.resource = resource
                     imageView.setImage(ImageSource.uri(Uri.fromFile(resource)))
                 }
             })
@@ -58,6 +62,10 @@ class GalleryFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    fun getResourceFile(): File? {
+        return resource
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

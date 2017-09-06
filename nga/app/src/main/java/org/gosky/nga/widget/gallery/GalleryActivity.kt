@@ -16,7 +16,11 @@ limitations under the License.
 
 package org.gosky.nga.widget.gallery
 
+import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
@@ -25,8 +29,13 @@ import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.gallery_view_pager.*
 import org.gosky.nga.R
+import org.gosky.nga.common.utils.showSnackbar
+import java.io.File
+
 
 class GalleryActivity : FragmentActivity(), OnClickListener {
 
@@ -34,6 +43,7 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
 
     private var position: Int = 0
 
+    private val screenSlidePagerAdapter by lazy { ScreenSlidePagerAdapter(supportFragmentManager) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +55,7 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
         IMAGES = images.toTypedArray<String>()
         position = intent.getIntExtra("position", 0)
         val horizontalPager = findViewById(R.id.vp_gallery) as ViewPager
-        horizontalPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
+        horizontalPager.adapter = screenSlidePagerAdapter
         horizontalPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -60,6 +70,9 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
         })
         tv_position_gallery.text = "${position + 1} / ${IMAGES?.size}"
         horizontalPager.currentItem = position
+        iv_download_gallery.setOnClickListener {
+            savePic()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -71,12 +84,40 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
 
     }
 
+    private fun savePic() {
+        RxPermissions(this).request(Manifest.permission_group.STORAGE)
+                .subscribe({
+                    if (it) {
+                        val item = screenSlidePagerAdapter.getCurrentFragment()
+                        if (item is GalleryFragment) {
+                            println(item.getResourceFile())
+                            val let = item.getAsset()?.let { File(it.toString()) }?.name
+                            println(let)
+                            item.getResourceFile()?.let {
+                                val target = File("${Environment.getExternalStorageDirectory()}/nga/$let")
+                                it.copyTo(target, true)
+                                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                        Uri.fromFile(target)))
+                                iv_download_gallery.showSnackbar("图片保存至$target~")
+                            }
+                        }
+                    } else {
+                        iv_download_gallery.showSnackbar("没有sd卡权限 无法保存图片啦")
+                    }
+                }, {
+                    it.printStackTrace()
+                })
+
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
     }
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+
+        private lateinit var mCurrentFragment: GalleryFragment
 
         override fun getItem(position: Int): Fragment {
             val fragment = GalleryFragment()
@@ -86,6 +127,15 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
 
         override fun getCount(): Int {
             return IMAGES!!.size
+        }
+
+        override fun setPrimaryItem(container: ViewGroup?, position: Int, `object`: Any) {
+            mCurrentFragment = `object` as GalleryFragment
+            super.setPrimaryItem(container, position, `object`)
+        }
+
+        fun getCurrentFragment(): GalleryFragment? {
+            return mCurrentFragment
         }
     }
 
