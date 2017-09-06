@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import android.view.View
@@ -33,6 +34,7 @@ import android.view.ViewGroup
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.gallery_view_pager.*
 import org.gosky.nga.R
+import org.gosky.nga.common.utils.share
 import org.gosky.nga.common.utils.showSnackbar
 import java.io.File
 
@@ -72,6 +74,13 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
         horizontalPager.currentItem = position
         iv_download_gallery.setOnClickListener {
             savePic()
+        }
+        iv_share_gallery.setOnClickListener {
+            val item = screenSlidePagerAdapter.getCurrentFragment()
+            if (item is GalleryFragment) {
+                println(item.getResourceFile())
+                item.getResourceFile()?.let { FileProvider.getUriForFile(this, packageName, it) }?.let { baseContext.share(it) }
+            }
         }
     }
 

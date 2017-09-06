@@ -16,17 +16,18 @@ limitations under the License.
 
 package org.gosky.nga.widget.gallery
 
+
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+import org.gosky.base.GlideApp
 import org.gosky.nga.R
 import java.io.File
 
@@ -52,12 +53,21 @@ class GalleryFragment : Fragment() {
         if (asset != null) {
             val imageView = rootView.findViewById(R.id.vp_imageView) as SubsamplingScaleImageView
 
-            Glide.with(this).load(asset).downloadOnly(object : SimpleTarget<File>() {
-                override fun onResourceReady(resource: File, glideAnimation: GlideAnimation<in File>) {
+            GlideApp.with(this).load(asset).downloadOnly(object : SimpleTarget<File>() {
+                override fun onResourceReady(resource: File?, p1: Transition<in File>?) {
                     this@GalleryFragment.resource = resource
                     imageView.setImage(ImageSource.uri(Uri.fromFile(resource)))
                 }
             })
+//            doAsync {
+//                val resource = Glide.with(this@GalleryFragment).downloadOnly().load(asset).submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+//                        .get()
+//                uiThread {
+//                    this@GalleryFragment.resource = resource
+//                    imageView.setImage(ImageSource.uri(Uri.fromFile(resource)))
+//                }
+//            }
+
 
         }
 

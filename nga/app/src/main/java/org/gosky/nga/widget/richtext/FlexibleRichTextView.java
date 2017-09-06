@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
@@ -428,7 +427,7 @@ public class FlexibleRichTextView extends LinearLayout {
 
         Glide.with(mContext)
                 .load(url)
-                .placeholder(new ColorDrawable(ContextCompat.getColor(mContext, android.R.color.darker_gray)))
+//                .placeholder(new ColorDrawable(ContextCompat.getColor(mContext, android.R.color.darker_gray)))
                 .into(imageView);
         return imageView;
     }

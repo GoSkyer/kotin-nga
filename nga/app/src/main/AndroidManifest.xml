@@ -155,6 +155,17 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name=".common.utils.ImageTypeFileProvider"
+            android:authorities="${applicationId}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+
         <activity
             android:name=".ui.activity.TestActivity"
             android:label="ngaDebug">

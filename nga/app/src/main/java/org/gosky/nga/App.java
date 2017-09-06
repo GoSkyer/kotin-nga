@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Process;
 import android.util.Log;
 
+import com.bumptech.glide.request.target.ViewTarget;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.BallPulseView;
 import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
@@ -71,6 +72,7 @@ public class App extends BaseApplication {
         TwinklingRefreshLayout.setDefaultFooter(BallPulseView.class.getName());
         RouterTableKt.init();
         LeakCanary.install(this);
+        ViewTarget.setTagId(R.id.glide_tag);
     }
 
 
