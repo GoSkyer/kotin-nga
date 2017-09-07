@@ -96,7 +96,7 @@ class GalleryActivity : FragmentActivity() {
     }
 
     private fun savePic() {
-        RxPermissions(this).request(Manifest.permission_group.STORAGE)
+        RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe({
                     if (it) {
                         val item = screenSlidePagerAdapter.getCurrentFragment()
