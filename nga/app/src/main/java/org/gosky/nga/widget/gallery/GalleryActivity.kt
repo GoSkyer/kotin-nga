@@ -17,6 +17,7 @@ limitations under the License.
 package org.gosky.nga.widget.gallery
 
 import android.Manifest
+import android.animation.Animator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -29,7 +30,6 @@ import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.gallery_view_pager.*
@@ -39,7 +39,7 @@ import org.gosky.nga.common.utils.showSnackbar
 import java.io.File
 
 
-class GalleryActivity : FragmentActivity(), OnClickListener {
+class GalleryActivity : FragmentActivity() {
 
     private var IMAGES: Array<String>? = null
 
@@ -76,12 +76,10 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
             savePic()
         }
         iv_share_gallery.setOnClickListener {
-            val item = screenSlidePagerAdapter.getCurrentFragment()
-            if (item is GalleryFragment) {
-                println(item.getResourceFile())
-                item.getResourceFile()?.let { FileProvider.getUriForFile(this, packageName, it) }?.let { baseContext.share(it) }
-            }
+            sharePic()
         }
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -89,8 +87,12 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
         outState.putInt(BUNDLE_POSITION, position)
     }
 
-    override fun onClick(view: View) {
-
+    private fun sharePic() {
+        val item = screenSlidePagerAdapter.getCurrentFragment()
+        if (item is GalleryFragment) {
+            println(item.getResourceFile())
+            item.getResourceFile()?.let { FileProvider.getUriForFile(this, packageName, it) }?.let { baseContext.share(it) }
+        }
     }
 
     private fun savePic() {
@@ -116,7 +118,38 @@ class GalleryActivity : FragmentActivity(), OnClickListener {
                 }, {
                     it.printStackTrace()
                 })
+    }
 
+    fun changerBottomBarVisibility() {
+        if (ll_bottom_bar_gallery.visibility == View.VISIBLE) {
+            hiddenBottomBar()
+        } else {
+            showBottomBar()
+        }
+    }
+
+    private fun hiddenBottomBar() {
+        val duration = ll_bottom_bar_gallery.animate().alpha(0f).setDuration(150)
+        duration.setListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                ll_bottom_bar_gallery.visibility = View.INVISIBLE
+            }
+        })
+    }
+
+    private fun showBottomBar() {
+        ll_bottom_bar_gallery.visibility = View.VISIBLE
+        val duration = ll_bottom_bar_gallery.animate().alpha(1f).setDuration(150)
+        duration.setListener(null)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

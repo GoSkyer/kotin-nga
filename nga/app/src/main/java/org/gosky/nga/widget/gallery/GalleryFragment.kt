@@ -59,16 +59,11 @@ class GalleryFragment : Fragment() {
                     imageView.setImage(ImageSource.uri(Uri.fromFile(resource)))
                 }
             })
-//            doAsync {
-//                val resource = Glide.with(this@GalleryFragment).downloadOnly().load(asset).submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-//                        .get()
-//                uiThread {
-//                    this@GalleryFragment.resource = resource
-//                    imageView.setImage(ImageSource.uri(Uri.fromFile(resource)))
-//                }
-//            }
-
-
+            imageView.setOnClickListener {
+                if (activity is GalleryActivity) {
+                    (activity as GalleryActivity).changerBottomBarVisibility()
+                }
+            }
         }
 
         return rootView
