@@ -1,12 +1,14 @@
 package org.gosky.nga.data.entity
 
+import java.io.Serializable
+
 /**
  * @author guozhong
  * *
  * @date 2017/6/23
  */
 
-open class ThreadBean {
+open class ThreadBean : Serializable {
 
     open var tid: Int = 0
     var fid: Int = 0
@@ -47,4 +49,6 @@ open class ThreadBean {
                 ", tpcurl='" + tpcurl + '\'' +
                 '}'
     }
+
+
 }

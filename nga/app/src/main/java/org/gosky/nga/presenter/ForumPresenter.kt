@@ -1,7 +1,6 @@
 package org.gosky.nga.presenter
 
 import org.gosky.base.mvp.BaseMvpPresenter
-import org.gosky.nga.data.entity.ThreadBean
 import org.gosky.nga.data.impl.BrowsingHistoryImpl
 import org.gosky.nga.data.impl.ThreadImpl
 import org.gosky.nga.view.ForumView
@@ -26,7 +25,4 @@ constructor(private val threadImpl: ThreadImpl, private val browsingHistoryImpl:
                 .subscribe({ mutableList -> mvpView.loadMoreRcv(mutableList) }, { throwable -> throwable.printStackTrace() })
     }
 
-    fun addBrowsing(threadBean: ThreadBean) {
-        browsingHistoryImpl.insertBrowsingHistory(threadBean)
-    }
 }

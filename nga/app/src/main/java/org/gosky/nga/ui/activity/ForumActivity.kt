@@ -47,12 +47,9 @@ class ForumActivity : MvpActivity<ForumPresenter>(), ForumView {
 
             override fun onItemClick(model: ThreadBean?, position: Int) {
                 super.onItemClick(model, position)
-                model?.apply {
-                    mPresenter.addBrowsing(model)
-                }
                 router {
                     url = topicActivity
-                    addParams("tid" to model?.tid.toString(), "replies" to model?.replies!!.toInt())
+                    addParams("tid" to model?.tid.toString(), "replies" to model?.replies!!.toInt(), "model" to model)
                 }
             }
         }

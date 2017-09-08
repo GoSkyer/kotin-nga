@@ -49,7 +49,7 @@ class BookMarkActivity : MvpActivity<BookMarkPresenter>(), BookMarkView {
                 super.onItemClick(model, position)
                 router {
                     url = topicActivity
-                    addParams("tid" to model?.tid.toString(), "replies" to model?.replies!!.toInt())
+                    addParams("tid" to model?.tid.toString(), "replies" to model?.replies!!.toInt(), "model" to model)
                 }
             }
         }

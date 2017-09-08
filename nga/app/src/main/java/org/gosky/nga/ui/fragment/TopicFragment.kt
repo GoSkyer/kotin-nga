@@ -37,6 +37,7 @@ class TopicFragment constructor(var tid: String = "", var p: Int = 0, var reply:
             }
 
         }
+
     }
 
     override fun initData() {
