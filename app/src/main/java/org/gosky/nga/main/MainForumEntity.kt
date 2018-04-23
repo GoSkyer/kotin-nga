@@ -1,5 +1,8 @@
 package org.gosky.nga.main
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Created by guo on 2018/4/13.
  * desc:
@@ -27,13 +30,14 @@ data class Group(
 		val forums: List<Forum>
 )
 
+@Parcelize
 data class Forum(
 		val id: Int,
 		val name: String,
 		val info: String,
 		val icon: String,
 		val is_forumlist: Boolean
-)
+): Parcelable
 
 data class AppcolumnNotis(
 		val version: Int,

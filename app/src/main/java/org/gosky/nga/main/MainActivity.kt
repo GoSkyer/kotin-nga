@@ -13,9 +13,13 @@ import org.gosky.nga.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity";
+    private var groups: MutableList<Group> = mutableListOf()
+
     val mainViewModel = MainViewModel()
     val listener = mainViewModel.model.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(p0: Observable?, p1: Int) {
+            groups.clear()
+            groups.addAll(mainViewModel.model.get().result[0].groups)
             vp_main.adapter.notifyDataSetChanged()
         }
     })
@@ -33,15 +37,15 @@ class MainActivity : AppCompatActivity() {
 
     inner class MainViewPagerAdapter : FragmentStatePagerAdapter(supportFragmentManager) {
         override fun getItem(position: Int): Fragment {
-            return ForumFragment()
+            return ForumFragment.newInstance(ArrayList(groups[position].forums), "")
         }
 
         override fun getCount(): Int {
-            return mainViewModel.model.get()?.result?.size ?: 0
+            return groups.size
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return mainViewModel.model.get().result[position].name
+            return groups[position].name
         }
 
     }
