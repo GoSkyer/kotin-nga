@@ -1,4 +1,4 @@
-package org.gosky.nga.data
+package org.gosky.base.data
 
 import org.gosky.nga.main.MainForumEntity
 import retrofit2.Call

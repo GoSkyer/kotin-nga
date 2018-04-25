@@ -4,13 +4,12 @@ import android.databinding.BaseObservable
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.util.Log
-import com.google.gson.Gson
-import org.gosky.nga.data.NGAService
+import org.gosky.base.data.NGAService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 /**
@@ -25,7 +24,7 @@ class MainViewModel : BaseObservable() {
     fun getData() {
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://bbs.nga.cn/")
-                .addConverterFactory(GsonConverterFactory.create(Gson()))
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
 
         val service = retrofit.create<NGAService>(NGAService::class.java)
