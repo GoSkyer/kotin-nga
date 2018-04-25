@@ -37,7 +37,7 @@ class MainViewModel : BaseObservable() {
                     }
 
                     override fun onFailure(call: Call<MainForumEntity>?, t: Throwable?) {
-
+                        t?.printStackTrace()
                     }
 
                 })

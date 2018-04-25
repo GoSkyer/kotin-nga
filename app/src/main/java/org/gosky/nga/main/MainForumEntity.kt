@@ -23,12 +23,13 @@ data class Result(
 		val groups: List<Group>
 )
 
+@Parcelize
 data class Group(
 		val id: Int,
 		val name: String,
 		val info: String,
 		val forums: List<Forum>
-)
+) : Parcelable
 
 @Parcelize
 data class Forum(

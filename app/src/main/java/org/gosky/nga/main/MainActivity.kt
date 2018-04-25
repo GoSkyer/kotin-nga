@@ -1,52 +1,90 @@
 package org.gosky.nga.main
 
 import android.databinding.DataBindingUtil
-import android.databinding.Observable
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.design.widget.NavigationView
+import android.support.v4.view.GravityCompat
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-import org.gosky.nga.ForumFragment
+import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
 import org.gosky.nga.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity";
-    private var groups: MutableList<Group> = mutableListOf()
-
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     val mainViewModel = MainViewModel()
-    val listener = mainViewModel.model.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-        override fun onPropertyChanged(p0: Observable?, p1: Int) {
-            groups.clear()
-            groups.addAll(mainViewModel.model.get().result[0].groups)
-            vp_main.adapter.notifyDataSetChanged()
-        }
-    })
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.vm = mainViewModel
+        setSupportActionBar(toolbar)
+
+        val toggle = ActionBarDrawerToggle(
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        nav_view.setNavigationItemSelectedListener(this)
+
+
         mainViewModel.getData()
-        vp_main.adapter = MainViewPagerAdapter()
-        tl_main.setupWithViewPager(vp_main)
+
 
     }
 
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
-    inner class MainViewPagerAdapter : FragmentStatePagerAdapter(supportFragmentManager) {
-        override fun getItem(position: Int): Fragment {
-            return ForumFragment.newInstance(ArrayList(groups[position].forums), "")
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> return true
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_home -> {
+                // Handle the camera action
+            }
+            R.id.nav_game -> {
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get().result[0].groups)))
+                fragmentTransaction.commit()
+            }
+            R.id.nav_mobile_game -> {
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get().result[1].groups)))
+                fragmentTransaction.commit()
+            }
+            R.id.nav_talk -> {
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get().result[2].groups)))
+                fragmentTransaction.commit()
+            }
+            R.id.nav_share -> {
+
+            }
+            R.id.nav_send -> {
+
+            }
         }
 
-        override fun getCount(): Int {
-            return groups.size
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return groups[position].name
-        }
-
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
     }
 }
