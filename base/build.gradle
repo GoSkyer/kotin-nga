@@ -36,6 +36,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'com.github.tianzhijiexian:CommonAdapter:1.2.3'
     api 'org.kodein.di:kodein-di-generic-jvm:5.0.0'
+    api 'org.kodein.di:kodein-di-framework-android:5.0.0'
 
 }
 repositories {
