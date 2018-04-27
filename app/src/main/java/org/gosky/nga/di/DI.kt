@@ -1,15 +1,22 @@
 package org.gosky.base.di
 
-import org.gosky.base.data.NGAService
 import org.gosky.base.data.RetrofitBuilder
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.singleton
+import org.gosky.nga.main.MainViewModel
+import org.koin.dsl.module.Module
+import org.koin.dsl.module.applicationContext
 
 /**
  * Created by zohar on 2018/4/25.
  * desc:
  */
-val kodeinModule = Kodein {
-    bind<NGAService>() with singleton { RetrofitBuilder().createService() }
+val myModule : Module = applicationContext {
+    bean {
+        RetrofitBuilder().createService()
+    }
+
+    bean {
+        MainViewModel()
+
+    }
+
 }

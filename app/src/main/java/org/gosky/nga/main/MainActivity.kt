@@ -12,9 +12,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
 import org.gosky.nga.databinding.ActivityMainBinding
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    val mainViewModel = MainViewModel()
+    val mainViewModel : MainViewModel by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

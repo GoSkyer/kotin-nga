@@ -22,7 +22,7 @@ android {
     }
 
 }
-
+def koin_version = '0.9.2'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -35,8 +35,14 @@ dependencies {
     api 'com.android.support:design:26.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'com.github.tianzhijiexian:CommonAdapter:1.2.3'
-    api 'org.kodein.di:kodein-di-generic-jvm:5.0.0'
-    api 'org.kodein.di:kodein-di-framework-android:5.0.0'
+    // Koin for Kotlin
+    api "org.koin:koin-core:$koin_version"
+
+    // Koin for Android
+    api "org.koin:koin-android:$koin_version"
+
+    // Koin for Android Architecture Components
+    api "org.koin:koin-android-architecture:$koin_version"
 
 }
 repositories {

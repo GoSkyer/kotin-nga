@@ -1,21 +1,20 @@
 package org.gosky.nga
 
 import android.app.Application
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
+import org.gosky.base.di.myModule
+import org.koin.android.ext.android.startKoin
 
 /**
  * Created by zohar on 2018/4/25.
  * desc:
  */
-class App : Application(), KodeinAware {
-    override val kodein = Kodein.lazy {
-//        import(kodeinModule)
-    }
+class App : Application() {
+
 
     override fun onCreate() {
         super.onCreate()
         app = this
+        startKoin(this, listOf(myModule))
     }
 
     companion object {
