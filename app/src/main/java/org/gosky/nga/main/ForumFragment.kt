@@ -1,4 +1,4 @@
-package org.gosky.nga
+package org.gosky.nga.main
 
 
 import android.databinding.ObservableArrayList
@@ -12,7 +12,7 @@ import kale.adapter.CommonRcvAdapter
 import kale.adapter.item.AdapterItem
 import kotlinx.android.synthetic.main.fragment_forum.*
 import kotlinx.android.synthetic.main.item_forum.view.*
-import org.gosky.nga.main.Forum
+import org.gosky.nga.R
 
 
 class ForumFragment : Fragment() {

@@ -9,4 +9,5 @@ interface NGAService {
     @GET("http://bbs.nga.cn/app_api.php?__lib=home&__act=category&")
     fun appApi(): Call<MainForumEntity>
 
+
 }

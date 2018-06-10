@@ -13,6 +13,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi","x86"
+        }
+
     }
     buildTypes {
         release {
@@ -29,7 +34,10 @@ android {
     androidExtensions {
         experimental = true
     }
+
+
 }
+
 
 
 dependencies {
@@ -43,5 +51,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':base')
     kapt "com.android.databinding:compiler:2.3.0"
-
+    implementation 'com.just.agentweb:agentweb:4.0.2'
+    implementation 'com.github.shuza:kt-jsonq:v0.2'
 }

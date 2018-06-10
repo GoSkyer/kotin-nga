@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main.*
-import org.gosky.nga.ForumFragment
 import org.gosky.nga.R
 import org.gosky.nga.databinding.FragmentMainBinding
 

@@ -1,5 +1,6 @@
 package org.gosky.nga.main
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -11,8 +12,11 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
+import org.gosky.nga.R.id.*
 import org.gosky.nga.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     val mainViewModel : MainViewModel by inject()
@@ -33,7 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         mainViewModel.getData()
-
+        startActivity(Intent(this,WebViewActivity::class.java))
 
     }
 
