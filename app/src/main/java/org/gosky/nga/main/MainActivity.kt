@@ -68,17 +68,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_game -> {
                 val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get().result[0].groups)))
+                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get()?.result?.get(0)?.groups)))
                 fragmentTransaction.commit()
             }
             R.id.nav_mobile_game -> {
                 val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get().result[1].groups)))
+                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get()?.result?.get(1)?.groups)))
                 fragmentTransaction.commit()
             }
             R.id.nav_talk -> {
                 val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get().result[2].groups)))
+                fragmentTransaction.replace(R.id.fl_main_content, MainFragment.newInstance(ArrayList(mainViewModel.model.get()?.result?.get(2)?.groups)))
                 fragmentTransaction.commit()
             }
             R.id.nav_share -> {

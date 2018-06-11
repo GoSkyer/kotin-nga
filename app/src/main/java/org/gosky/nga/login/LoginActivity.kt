@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.webkit.*
 import android.webkit.WebSettings.LOAD_NO_CACHE
-import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.squareup.moshi.Moshi
@@ -67,7 +66,6 @@ class LoginActivity : AppCompatActivity() {
         fun doAction(s: String, s1: String): String? {
             Log.e("TAG s:", s)
             Log.e("TAG s1:", s1)
-            Toast.makeText(this@LoginActivity, s + s1, Toast.LENGTH_SHORT).show()
             when (s) {
                 "style" -> {
                     return "default"
