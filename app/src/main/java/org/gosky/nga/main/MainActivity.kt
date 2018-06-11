@@ -12,8 +12,8 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.gosky.nga.R
-import org.gosky.nga.R.id.*
 import org.gosky.nga.databinding.ActivityMainBinding
+import org.gosky.nga.login.LoginActivity
 import org.koin.android.ext.android.inject
 
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         mainViewModel.getData()
-        startActivity(Intent(this,WebViewActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
 
     }
 

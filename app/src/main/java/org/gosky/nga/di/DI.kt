@@ -1,5 +1,6 @@
 package org.gosky.base.di
 
+import com.squareup.moshi.Moshi
 import org.gosky.base.data.RetrofitBuilder
 import org.gosky.nga.main.MainViewModel
 import org.koin.dsl.module.Module
@@ -16,6 +17,10 @@ val myModule : Module = applicationContext {
 
     bean {
         MainViewModel()
+
+    }
+
+    bean {
 
     }
 
