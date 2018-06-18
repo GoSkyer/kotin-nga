@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName
 @Entity
 data class User(
         @PrimaryKey
+        var id: Long,
         @SerializedName("uid") val uid: Int,
         @SerializedName("username") val username: String,
         @SerializedName("avatar") val avatar: String,

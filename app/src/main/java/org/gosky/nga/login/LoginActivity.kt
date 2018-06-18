@@ -88,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
                         val moshi = Moshi.Builder().build().adapter(User::class.java)
                         val user = moshi.fromJson(s1)
                         if (user != null) {
+                            user.id = 1L
                             AppDatabase
                                     .getInstance(applicationContext)
                                     .userDao().insert(user)

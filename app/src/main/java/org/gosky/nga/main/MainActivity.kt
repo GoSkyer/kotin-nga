@@ -1,26 +1,28 @@
 package org.gosky.nga.main
 
-import android.content.Intent
+import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import org.gosky.nga.R
 import org.gosky.nga.databinding.ActivityMainBinding
-import org.gosky.nga.login.LoginActivity
+import org.gosky.nga.util.load
 import org.koin.android.ext.android.inject
 
 
-
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    val mainViewModel : MainViewModel by inject()
+    private val TAG = "MainActivity";
 
+    val mainViewModel: MainViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         mainViewModel.getData()
-        startActivity(Intent(this, LoginActivity::class.java))
+//        startActivity(Intent(this, LoginActivity::class.java))
+        mainViewModel.user.observe(this, Observer {
+            Log.d(TAG, ": $it.toString()");
+            if (it != null) {
+                tv_name.text = it.username
+                iv_head.load(it.avatar)
+            }
+        })
 
     }
 

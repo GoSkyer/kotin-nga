@@ -5,6 +5,8 @@ import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.util.Log
 import org.gosky.base.data.NGAService
+import org.gosky.nga.App
+import org.gosky.nga.data.local.AppDatabase
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import retrofit2.Call
@@ -18,9 +20,11 @@ import retrofit2.Response
  */
 class MainViewModel : BaseObservable(), KoinComponent {
     private val TAG = "MainViewModel";
-    var model = ObservableField<MainForumEntity>()
-    var title = ObservableArrayList<Result>()
+    val model = ObservableField<MainForumEntity>()
+    val title = ObservableArrayList<Result>()
     private val service: NGAService by inject()
+    val user = AppDatabase.getInstance(App.getInstance()).userDao().getUser()
+
 
     fun getData() {
 

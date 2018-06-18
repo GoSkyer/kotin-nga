@@ -32,9 +32,9 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        groups = arguments.getParcelableArrayList<Group>(ARGUMENT_GROUPS).toMutableList()
+        groups = arguments?.getParcelableArrayList<Group>(ARGUMENT_GROUPS)?.toMutableList()!!
         vp_main.adapter = MainViewPagerAdapter()
         tl_main.setupWithViewPager(vp_main)
     }
