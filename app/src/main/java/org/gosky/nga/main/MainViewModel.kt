@@ -1,11 +1,12 @@
 package org.gosky.nga.main
 
-import android.databinding.BaseObservable
+import android.app.Application
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.util.Log
 import org.gosky.base.data.NGAService
 import org.gosky.nga.App
+import org.gosky.nga.base.ObservableViewModel
 import org.gosky.nga.data.local.AppDatabase
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -18,7 +19,7 @@ import retrofit2.Response
  * Created by guo on 2018/4/13.
  * desc:
  */
-class MainViewModel : BaseObservable(), KoinComponent {
+class MainViewModel(context: Application) : ObservableViewModel(context), KoinComponent {
     private val TAG = "MainViewModel";
     val model = ObservableField<MainForumEntity>()
     val title = ObservableArrayList<Result>()
@@ -40,6 +41,16 @@ class MainViewModel : BaseObservable(), KoinComponent {
                     }
 
                 })
+//        service.getThreads("-7")
+//                .enqueue(object: Callback<ResponseBody?> {
+//                    override fun onFailure(call: Call<ResponseBody?>?, t: Throwable?) {
+//                        t?.printStackTrace()
+//                    }
+//
+//                    override fun onResponse(call: Call<ResponseBody?>?, response: Response<ResponseBody?>?) {
+//                        println(response?.body())
+//                    }
+//                })
     }
 
 }

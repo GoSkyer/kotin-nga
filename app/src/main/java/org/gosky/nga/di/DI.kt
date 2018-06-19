@@ -1,7 +1,8 @@
 package org.gosky.base.di
 
-import com.squareup.moshi.Moshi
-import org.gosky.base.data.RetrofitBuilder
+import org.gosky.nga.App
+import org.gosky.nga.data.local.AppDatabase
+import org.gosky.nga.data.remote.RetrofitBuilder
 import org.gosky.nga.main.MainViewModel
 import org.koin.dsl.module.Module
 import org.koin.dsl.module.applicationContext
@@ -16,12 +17,12 @@ val myModule : Module = applicationContext {
     }
 
     bean {
-        MainViewModel()
+        MainViewModel(get())
 
     }
 
     bean {
-
+        AppDatabase.getInstance(App.getInstance()).userDao()
     }
 
 }

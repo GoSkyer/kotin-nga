@@ -16,6 +16,8 @@ interface UserDao {
     @Query("SELECT * FROM User Limit 1")
     fun getUser(): LiveData<User>
 
+    @Query("SELECT * FROM User Limit 1")
+    fun getUserSync(): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)

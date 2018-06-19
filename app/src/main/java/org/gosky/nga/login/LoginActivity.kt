@@ -1,6 +1,5 @@
 package org.gosky.nga.login
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -24,10 +23,14 @@ import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private val TAG = "LoginActivity";
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        title = "登陆"
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
 
         WebView.setWebContentsDebuggingEnabled(true);
 
@@ -108,5 +111,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+//        onBackPressed()
+        finish()
+        return true
     }
 }
