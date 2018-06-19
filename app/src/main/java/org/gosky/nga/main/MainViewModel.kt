@@ -4,6 +4,7 @@ import android.app.Application
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.util.Log
+import okhttp3.ResponseBody
 import org.gosky.base.data.NGAService
 import org.gosky.nga.App
 import org.gosky.nga.base.ObservableViewModel
@@ -41,16 +42,16 @@ class MainViewModel(context: Application) : ObservableViewModel(context), KoinCo
                     }
 
                 })
-//        service.getThreads("-7")
-//                .enqueue(object: Callback<ResponseBody?> {
-//                    override fun onFailure(call: Call<ResponseBody?>?, t: Throwable?) {
-//                        t?.printStackTrace()
-//                    }
-//
-//                    override fun onResponse(call: Call<ResponseBody?>?, response: Response<ResponseBody?>?) {
-//                        println(response?.body())
-//                    }
-//                })
+        service.getThreads("-7")
+                .enqueue(object: Callback<ResponseBody?> {
+                    override fun onFailure(call: Call<ResponseBody?>?, t: Throwable?) {
+                        t?.printStackTrace()
+                    }
+
+                    override fun onResponse(call: Call<ResponseBody?>?, response: Response<ResponseBody?>?) {
+                        println(response?.body())
+                    }
+                })
     }
 
 }

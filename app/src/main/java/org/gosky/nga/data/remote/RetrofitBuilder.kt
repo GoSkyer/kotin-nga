@@ -1,6 +1,5 @@
 package org.gosky.nga.data.remote
 
-import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.gosky.base.data.NGAService
@@ -33,6 +32,8 @@ class RetrofitBuilder {
     }
 
     private fun okHttpLogger(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message -> Log.d("OkHttp", message) });
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        return logging;
     }
 }

@@ -2,7 +2,7 @@ package org.gosky.nga.util;
 
 import android.util.Log;
 
-import gov.pianzong.androidnga.jni.v;
+import gov.pianzong.androidnga.jni.MD5;
 
 /**
  * Created by guo on 2018/6/16.
@@ -28,10 +28,9 @@ public class Sign {
 
 
     public String sign(String uid, String token, String t, String[] params) {
-        String s = a("1010", uid, token
-                , a(params)
+        String sign = a("1010", uid, token
+                , b(params)
                 , t, "392e916a6d1d8b7523e2701470000c30bc2165a1");
-        String sign = v.a(s);
         Log.d(TAG, "sign: " + sign);
         return sign;
     }
@@ -41,6 +40,14 @@ public class Sign {
         for (String append : paramVarArgs) {
             stringBuilder.append(append);
         }
-        return v.a(stringBuilder.toString());
+        return MD5.a(stringBuilder.toString());
+    }
+
+    private String b(String... paramVarArgs) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String append : paramVarArgs) {
+            stringBuilder.append(append);
+        }
+        return stringBuilder.toString();
     }
 }

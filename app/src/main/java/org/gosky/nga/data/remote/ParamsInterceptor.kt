@@ -1,9 +1,5 @@
 package org.gosky.nga.data.remote
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
 import okhttp3.FormBody
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -32,29 +28,29 @@ class ParamsInterceptor : Interceptor, KoinComponent {
                         params.put(formBody.encodedName(i), formBody.encodedValue(i))
                 }
 
-                launch(UI) {
-                    val deferred = async(CommonPool) {
-                        val t = (System.currentTimeMillis() / 1000).toString()
-                        bodyBuilder
-                                .addEncoded("t", t)
-                                .addEncoded("app_id", "1010")
+//                launch(UI) {
+//                    val deferred = async(CommonPool) {
+                val t = (System.currentTimeMillis() / 1000).toString()
+                bodyBuilder
+                        .addEncoded("t", t)
+                        .addEncoded("app_id", "1010")
 
-                        val user = userDao.getUserSync()
-                        if (user != null) {
-                            bodyBuilder
-                                    .addEncoded("access_token", user.token)
-                                    .addEncoded("access_uid", user.uid.toString())
+                val user = userDao.getUserSync()
+                if (user != null) {
+                    bodyBuilder
+                            .addEncoded("access_token", user.token)
+                            .addEncoded("access_uid", user.uid.toString())
 
 
-                            val sign = Sign.getInstance().sign(user.uid.toString(), user.token, t, params.values.toTypedArray())
-                            bodyBuilder.add("sign", sign)
-                        }
-
-                        bodyBuilder.build()
-                    }
-
-                    request = request.newBuilder().post(deferred.await()).build()
+                    val sign = Sign.getInstance().sign(user.uid.toString(), user.token, t, params.values.toTypedArray())
+                    bodyBuilder.add("sign", sign)
                 }
+
+
+//                    }
+
+                request = request.newBuilder().post(bodyBuilder.build()).build()
+//                }
             }
         }
         return chain.proceed(request)
