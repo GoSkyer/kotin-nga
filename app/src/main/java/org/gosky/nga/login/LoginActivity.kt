@@ -16,6 +16,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import org.gosky.nga.R
+import org.gosky.nga.R.id.webview_test
 import org.gosky.nga.data.local.AppDatabase
 import org.jetbrains.anko.toast
 import java.util.*

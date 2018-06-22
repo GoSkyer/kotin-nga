@@ -16,8 +16,9 @@
 
     <ImageView
         android:id="@+id/iv_head"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:scaleType="centerCrop"
         app:srcCompat="@mipmap/ic_launcher_round"/>
 
     <TextView

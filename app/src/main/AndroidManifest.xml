@@ -33,6 +33,7 @@
         </activity>
         <activity android:name=".login.LoginActivity">
         </activity>
+        <activity android:name=".forum.ForumActivity"/>
     </application>
 
 </manifest>

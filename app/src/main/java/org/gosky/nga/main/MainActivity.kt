@@ -13,11 +13,11 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 import org.gosky.nga.R
 import org.gosky.nga.databinding.ActivityMainBinding
 import org.gosky.nga.login.LoginActivity
-import org.gosky.nga.util.load
+import org.gosky.nga.util.loadCropCircle
 import org.koin.android.ext.android.inject
 
 
@@ -38,24 +38,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-
-
         mainViewModel.getData()
+        val headerView = nav_view.getHeaderView(0)
         mainViewModel.user.observe(this, Observer {
             Log.d(TAG, ": $it.toString()");
             if (it != null) {
-                tv_name?.text = it.username
-                iv_head?.load(it.avatar)
-                tv_desc?.text = it.uid.toString()
-                nav_view.getHeaderView(0).isClickable = false
+                headerView.apply {
+                    tv_name?.text = it.username
+                    iv_head?.loadCropCircle(it.avatar)
+                    tv_desc?.text = it.uid.toString()
+                    isClickable = false
+                }
+
             } else {
-                tv_name?.text = "游客"
-                tv_desc?.text = "点这里登陆"
-                nav_view.getHeaderView(0).isClickable = true
+                headerView.apply {
+                    tv_name?.text = "游客"
+                    tv_desc?.text = "点这里登陆"
+                    isClickable = true
+                }
             }
         })
 
-        nav_view.getHeaderView(0).setOnClickListener {
+        headerView.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
