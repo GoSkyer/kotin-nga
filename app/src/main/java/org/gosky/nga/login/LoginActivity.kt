@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
                 return super.onJsAlert(view, url, message, result)
             }
         }
-        webview_test.loadUrl("https://bbs.nga.cn/nuke/account.html?login")
+        webview_test.loadUrl("https://bbs.ngacn.cc/nuke/account.html?login")
 
         webview_test.clearHistory()
     }

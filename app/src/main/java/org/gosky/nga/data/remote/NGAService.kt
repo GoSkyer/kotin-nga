@@ -10,11 +10,11 @@ import retrofit2.http.POST
 
 interface NGAService {
 
-    @GET("http://bbs.nga.cn/app_api.php?__lib=home&__act=category&")
+    @GET("http://bbs.ngacn.cc/app_api.php?__lib=home&__act=category&")
     fun appApi(): Call<MainForumEntity>
 
 
-    @POST("http://bbs.nga.cn/app_api.php?__lib=subject&__act=list&")
+    @POST("http://bbs.ngacn.cc/app_api.php?__lib=subject&__act=list&")
     @FormUrlEncoded
     fun getThreads(@Field("fid") fid: String): Call<ResponseBody>
 
